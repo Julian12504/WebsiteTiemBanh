@@ -1,6 +1,6 @@
 .create-grn-container {
     padding: 20px;
-  max-width: 1500px;
+  max-width: 1600px;
   margin: 0 auto;
   width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -176,12 +176,14 @@
   border: 1px solid #eee;
   background-color: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: none;
 }
 
 .items-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1000px;
+  min-width: 1200px;
 }
 
 .items-table th {
@@ -189,13 +191,14 @@
   font-weight: 600;
   color: #591b0d;
   font-size: 14px;
-  padding: 14px 16px;
+  padding: 12px 14px;
   text-align: left;
   border-bottom: 2px solid #e0e0e0;
+  white-space: nowrap;
 }
 
 .items-table td {
-  padding: 14px 16px;
+  padding: 12px 14px;
   border-bottom: 1px solid #eee;
   vertical-align: top;
 }
