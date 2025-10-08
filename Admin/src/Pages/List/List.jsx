@@ -109,12 +109,24 @@ const List = ({url}) => {
     navigate('/bulk-barcode');
   }
 
+  // Chuyển đổi category từ tiếng Anh sang tiếng Việt
+  const translateCategory = (category) => {
+    const categoryMap = {
+      'Cake': 'Bánh',
+      'Cake Ingredients': 'Nguyên liệu làm bánh',
+      'Party Items': 'Đồ trang trí tiệc'
+    };
+    return categoryMap[category] || category;
+  };
+
   // Filter items based on search term
   const filteredItems = list.filter(item => {
     const searchTermLower = searchTerm.toLowerCase();
+    const translatedCategory = translateCategory(item.category);
     return (
       item.name.toLowerCase().includes(searchTermLower) ||
       item.category.toLowerCase().includes(searchTermLower) ||
+      translatedCategory.toLowerCase().includes(searchTermLower) ||
       (item.sku && item.sku.toLowerCase().includes(searchTermLower)) ||
       (item.barcode && item.barcode.toLowerCase().includes(searchTermLower))
     );
@@ -164,13 +176,13 @@ const List = ({url}) => {
         <div className="list-table">
           <div className="list-table-format title">
             <b>Ảnh</b>
+            <b>Số lượng</b>
             <b>Tên sản phẩm</b>
             <b>Danh mục</b>
             <b>SKU</b>
             <b>Giá nhập</b>
             <b>Giá bán</b>
             {hasRole('admin') && <b>Lợi nhuận</b>}
-            <b>Tồn kho</b>
             <b>Thao tác</b>
           </div>
 
@@ -190,11 +202,16 @@ const List = ({url}) => {
               return (
                 <div className="list-table-format" key={item.id}>
                   <img src={item.image} alt={item.name} />
+                  <p className="item-quantity">
+                    <span className={`quantity-badge ${isLowStock ? 'low-stock' : ''}`}>
+                      {stockDisplay}
+                    </span>
+                  </p>
                   <p className="item-name">
                     {item.name}
                     {item.weight_value && <span className="item-weight">({item.weight_value}{item.weight_unit})</span>}
                   </p>
-                  <p className="item-category">{item.category}</p>
+                  <p className="item-category">{translateCategory(item.category)}</p>
                   <p className="item-sku">{item.sku || 'Chưa có SKU'}</p>
                   <p className="item-cost">{hasRole('admin') ? `${costPrice.toLocaleString('vi-VN')} VNĐ` : "-"}</p>
                   <p className="item-price">{sellingPrice.toLocaleString('vi-VN')} VNĐ</p>
@@ -204,10 +221,6 @@ const List = ({url}) => {
                       <span className="profit-margin">({profitMargin}%)</span>
                     </p>
                   )}
-                  <p className={`item-stock ${isLowStock ? 'low-stock' : ''}`}>
-                    {stockDisplay}
-                    {isLowStock && <span className="reorder-indicator">Cần nhập thêm</span>}
-                  </p>
                   <div className="action-buttons">
                     {hasRole('admin') && (
                       <button 
