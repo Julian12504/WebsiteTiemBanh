@@ -41,6 +41,7 @@ const ItemDisplay = ({ category, customItems }) => {
             weight_unit={item.weight_unit}
             unit={item.unit}
             rating={item.rating || 0}
+            stock_quantity={item.stock_quantity || 0}
           />
         ))}
       </div>
