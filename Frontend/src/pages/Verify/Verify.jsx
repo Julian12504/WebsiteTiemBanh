@@ -8,6 +8,8 @@ const Verify = () => {
   const [searchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
+  const paymentMethod = searchParams.get("paymentMethod") || "stripe";
+  const message = searchParams.get("message");
   const { url } = useContext(StoreContext);
   
   const [loading, setLoading] = useState(true);
@@ -19,29 +21,33 @@ const Verify = () => {
   // ✅ Xác minh thanh toán
   const verifyPayment = useCallback(async () => {
     try {
-      const response = await axios.post(`${url}/api/order/verify`, { success, orderId });
+      const response = await axios.post(`${url}/api/order/verify`, { success, orderId, paymentMethod });
 
       if (response.data.success) {
+        const isMock = searchParams.get("mock") === "true";
+        const paymentText = paymentMethod === "momo" ? "MoMo" : "thẻ tín dụng";
+        const mockText = isMock ? " (Test Mode)" : "";
+        
         setVerificationStatus({
           isVerified: true,
-          message: 'Thanh toán thành công! Đơn hàng của bạn đã được ghi nhận.'
+          message: `Thanh toán qua ${paymentText} thành công!${mockText} Đơn hàng của bạn đã được ghi nhận.`
         });
       } else {
         setVerificationStatus({
           isVerified: false,
-          message: response.data.message || 'Xác minh thanh toán thất bại. Vui lòng liên hệ hỗ trợ.'
+          message: response.data.message || message || 'Xác minh thanh toán thất bại. Vui lòng liên hệ hỗ trợ.'
         });
       }
     } catch (error) {
       console.error("Lỗi khi xác minh thanh toán:", error);
       setVerificationStatus({
         isVerified: false,
-        message: 'Đã xảy ra lỗi trong quá trình xác minh thanh toán. Vui lòng liên hệ hỗ trợ.'
+        message: message || 'Đã xảy ra lỗi trong quá trình xác minh thanh toán. Vui lòng liên hệ hỗ trợ.'
       });
     } finally {
       setLoading(false);
     }
-  }, [url, success, orderId]);
+  }, [url, success, orderId, paymentMethod, message]);
 
   useEffect(() => {
     if (orderId && success !== null) {
