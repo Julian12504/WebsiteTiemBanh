@@ -3,6 +3,7 @@ import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import PaymentMethod from "../../components/PaymentMethod/PaymentMethod";
 
 const PlaceOrder = () => {
   const { getTotalCartAmount, token, item_list, cartItems, url } = useContext(StoreContext);
@@ -18,6 +19,7 @@ const PlaceOrder = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("stripe");
   const [submitError, setSubmitError] = useState(null);
 
   const [locationLoading, setLocationLoading] = useState(false);
@@ -124,7 +126,8 @@ const PlaceOrder = () => {
         lastName: formData.lastName,
         contactNumber1: formData.contactNumber1,
         contactNumber2: formData.contactNumber2 || null,
-        specialInstructions: formData.specialInstructions || null
+        specialInstructions: formData.specialInstructions || null,
+        paymentMethod: paymentMethod
       };
 
       const response = await axios.post(`${url}/api/order/place`, orderData, {
@@ -271,6 +274,13 @@ const PlaceOrder = () => {
           rows="3"
           className="special-instructions"
         />
+
+        {/* Payment Method Selection */}
+        <PaymentMethod
+          selectedMethod={paymentMethod}
+          onMethodChange={setPaymentMethod}
+          totalAmount={getTotalCartAmount() + 15000}
+        />
       </div>
 
       {/* Cột phải - Tổng đơn hàng */}
@@ -307,8 +317,11 @@ const PlaceOrder = () => {
               Object.values(errors).some((e) => e) ||
               isSubmitting
             }
+            className={`payment-button ${paymentMethod}`}
           >
-            {isSubmitting ? "Đang xử lý..." : "TIẾN HÀNH THANH TOÁN"}
+            {isSubmitting ? "Đang xử lý..." : 
+              paymentMethod === "momo" ? "THANH TOÁN BẰNG MOMO" : 
+              "THANH TOÁN BẰNG THẺ"}
           </button>
         </div>
       </div>
