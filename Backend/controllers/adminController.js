@@ -19,7 +19,7 @@ const adminLogin = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ 
         success: false, 
-        message: "Please enter a valid email" 
+        message: "Vui lòng nhập email hợp lệ" 
       });
     }
 
@@ -29,7 +29,7 @@ const adminLogin = async (req, res) => {
     if (!admin) {
       return res.status(401).json({ 
         success: false, 
-        message: "Invalid credentials" 
+        message: "Tài khoản hoặc mật khẩu không đúng" 
       });
     }
 
@@ -39,7 +39,7 @@ const adminLogin = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ 
         success: false, 
-        message: "Invalid credentials" 
+        message: "Tài khoản hoặc mật khẩu không đúng" 
       });
     }
 
@@ -64,7 +64,7 @@ const adminLogin = async (req, res) => {
     console.error("Admin login error:", error);
     res.status(500).json({ 
       success: false, 
-      message: "Server error", 
+      message: "Lỗi hệ thống, vui lòng thử lại sau", 
       error: error.message 
     });
   }
@@ -79,7 +79,7 @@ const createAdmin = async (req, res) => {
     if (!username || !email || !password || !firstName || !lastName) {
       return res.status(400).json({ 
         success: false, 
-        message: "All fields are required" 
+        message: "Vui lòng điền đầy đủ thông tin" 
       });
     }
 
@@ -87,7 +87,7 @@ const createAdmin = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ 
         success: false, 
-        message: "Please enter a valid email" 
+        message: "Vui lòng nhập email hợp lệ" 
       });
     }
 
@@ -95,7 +95,7 @@ const createAdmin = async (req, res) => {
     if (password.length < 8) {
       return res.status(400).json({ 
         success: false, 
-        message: "Password must be at least 8 characters long" 
+        message: "Mật khẩu phải có ít nhất 8 ký tự" 
       });
     }
 
@@ -104,7 +104,7 @@ const createAdmin = async (req, res) => {
     if (existingAdmin) {
       return res.status(400).json({ 
         success: false, 
-        message: "Email already in use" 
+        message: "Email đã được sử dụng" 
       });
     }
 
@@ -133,7 +133,7 @@ const createAdmin = async (req, res) => {
     console.error("Create admin error:", error);
     res.status(500).json({ 
       success: false, 
-      message: "Server error", 
+      message: "Lỗi hệ thống, vui lòng thử lại sau", 
       error: error.message 
     });
   }
@@ -148,7 +148,7 @@ const createEmployee = async (req, res) => {
     if (!username || !email || !password || !firstName || !lastName) {
       return res.status(400).json({ 
         success: false, 
-        message: "All fields are required" 
+        message: "Vui lòng điền đầy đủ thông tin" 
       });
     }
 
@@ -156,7 +156,7 @@ const createEmployee = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ 
         success: false, 
-        message: "Please enter a valid email" 
+        message: "Vui lòng nhập email hợp lệ" 
       });
     }
 
@@ -164,7 +164,7 @@ const createEmployee = async (req, res) => {
     if (password.length < 8) {
       return res.status(400).json({ 
         success: false, 
-        message: "Password must be at least 8 characters long" 
+        message: "Mật khẩu phải có ít nhất 8 ký tự" 
       });
     }
 
@@ -173,7 +173,7 @@ const createEmployee = async (req, res) => {
     if (existingEmployee) {
       return res.status(400).json({ 
         success: false, 
-        message: "Email already in use" 
+        message: "Email đã được sử dụng" 
       });
     }
 
@@ -202,7 +202,7 @@ const createEmployee = async (req, res) => {
     console.error("Create employee error:", error);
     res.status(500).json({ 
       success: false, 
-      message: "Server error", 
+      message: "Lỗi hệ thống, vui lòng thử lại sau", 
       error: error.message 
     });
   }
@@ -236,7 +236,7 @@ const updateEmployee = async (req, res) => {
     if (!username || !email || !firstName || !lastName) {
       return res.status(400).json({ 
         success: false, 
-        message: "All fields are required" 
+        message: "Vui lòng điền đầy đủ thông tin" 
       });
     }
 
