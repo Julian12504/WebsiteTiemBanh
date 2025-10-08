@@ -1,0 +1,232 @@
+.payment-method-container {
+  margin: 20px 0;
+}
+
+.payment-method-container h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-method-card {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.payment-method-card:hover:not(.disabled) {
+  border-color: #ff6b6b;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+}
+
+.payment-method-card.selected {
+  border-color: #ff6b6b;
+  background: #fff5f5;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
+}
+
+.payment-method-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+.payment-method-icon {
+  font-size: 24px;
+  margin-right: 16px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.payment-method-info {
+  flex: 1;
+}
+
+.payment-method-info h4 {
+  margin: 0 0 4px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.payment-method-info p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.unavailable-badge {
+  display: inline-block;
+  background: #ff6b6b;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.payment-method-radio input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #ff6b6b;
+}
+
+/* Momo Payment Info */
+.momo-payment-info {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  border-radius: 12px;
+  color: white;
+}
+
+.momo-info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.momo-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.momo-info-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.momo-info-content p {
+  margin: 0 0 16px 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.momo-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.step-text {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.momo-security {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.security-icon {
+  font-size: 16px;
+}
+
+/* Stripe Payment Info */
+.stripe-payment-info {
+  margin-top: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, #635bff, #8b7fff);
+  border-radius: 12px;
+  color: white;
+}
+
+.stripe-info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stripe-icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.stripe-info-header h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.stripe-info-content p {
+  margin: 0 0 16px 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.stripe-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.feature-icon {
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .payment-method-card {
+    padding: 12px;
+  }
+  
+  .momo-steps {
+    grid-template-columns: 1fr;
+  }
+  
+  .stripe-features {
+    flex-direction: column;
+  }
+  
+  .momo-payment-info,
+  .stripe-payment-info {
+    padding: 16px;
+  }
+}
