@@ -40,6 +40,49 @@
 margin-top: 25px;
 }
 
+/* Payment Button Styles */
+.payment-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-button.stripe {
+  background: linear-gradient(135deg, #635bff, #8b7fff);
+  color: white;
+}
+
+.payment-button.momo {
+  background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+  color: white;
+}
+
+.payment-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.payment-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.payment-button.stripe:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(99, 91, 255, 0.3);
+}
+
+.payment-button.momo:hover:not(:disabled) {
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
 .address-field {
     display: flex;
     gap: 8px;
