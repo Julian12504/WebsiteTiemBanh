@@ -12,6 +12,8 @@ const StoreContextProvider = (props) => {
   const [item_list, setItemList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pendingCartItem, setPendingCartItem] = useState(null); // Lưu sản phẩm pending khi chưa đăng nhập
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // Hiển thị popup đăng nhập
 
   // 🛒 Thêm sản phẩm vào giỏ
   const addToCart = async (id, quantity = 1) => {
@@ -21,7 +23,61 @@ const StoreContextProvider = (props) => {
     }
 
     if (!token) {
-      toast.error("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+      // Lưu sản phẩm pending và redirect đến trang đăng nhập
+      const item = item_list.find(item => 
+        String(item._id) === String(id) || 
+        String(item.id) === String(id)
+      );
+
+      if (!item) {
+        toast.error("Không tìm thấy sản phẩm");
+        return;
+      }
+
+      const stockQuantity = parseFloat(item.stock_quantity) || 0;
+      
+      if (stockQuantity <= 0) {
+        toast.error("Sản phẩm đã hết hàng");
+        return;
+      }
+
+      // Lưu thông tin sản phẩm pending
+      setPendingCartItem({
+        id: id,
+        quantity: quantity,
+        item: item
+      });
+
+      toast.info("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng");
+      
+      // Hiển thị popup đăng nhập
+      setShowLoginPopup(true);
+      
+      return false; // Trả về false để component biết chưa thành công
+    }
+
+    // Kiểm tra số lượng tồn kho trước khi thêm vào giỏ
+    const item = item_list.find(item => 
+      String(item._id) === String(id) || 
+      String(item.id) === String(id)
+    );
+
+    if (!item) {
+      toast.error("Không tìm thấy sản phẩm");
+      return;
+    }
+
+    const stockQuantity = parseFloat(item.stock_quantity) || 0;
+    const currentCartQuantity = cartItems[id] || 0;
+    const totalQuantity = currentCartQuantity + quantity;
+
+    if (stockQuantity <= 0) {
+      toast.error("Sản phẩm đã hết hàng");
+      return;
+    }
+
+    if (totalQuantity > stockQuantity) {
+      toast.error(`Số lượng tồn kho chỉ còn ${stockQuantity} ${item.unit || 'cái'}`);
       return;
     }
 
@@ -29,7 +85,7 @@ const StoreContextProvider = (props) => {
 
     try {
       // Cập nhật số lượng mới
-      const newQuantity = quantity;
+      const newQuantity = totalQuantity;
 
       // Cập nhật tạm thời trong giao diện (optimistic UI)
       setCartItems(prev => ({
@@ -37,7 +93,8 @@ const StoreContextProvider = (props) => {
         [id]: newQuantity
       }));
 
-      console.log(`🛍 Cập nhật giỏ hàng: Sản phẩm ${id} số lượng = ${newQuantity}`);
+      console.log(`🛍 Thêm vào giỏ hàng: Sản phẩm ${id} số lượng = ${quantity} (Tổng: ${newQuantity})`);
+      toast.success(`Đã thêm ${quantity} ${item.unit || 'cái'} vào giỏ hàng`);
       return true;
     } catch (err) {
       console.error("Lỗi khi thêm vào giỏ:", err);
@@ -56,7 +113,7 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // ❌ Xóa hoặc giảm số lượng trong giỏ hàng
+  // ❌ Giảm số lượng trong giỏ hàng (giảm 1)
   const removeFromCart = async (itemId) => {
     if (!itemId) {
       console.error("ID sản phẩm không hợp lệ khi xóa");
@@ -127,6 +184,119 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  // 🗑️ Xóa hoàn toàn sản phẩm khỏi giỏ hàng
+  const clearFromCart = async (itemId) => {
+    if (!itemId) {
+      console.error("ID sản phẩm không hợp lệ khi xóa hoàn toàn");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      console.log(`🗑️ Xóa hoàn toàn sản phẩm ${itemId} khỏi giỏ hàng`);
+
+      // Xóa khỏi state local
+      setCartItems(prev => {
+        const newCart = { ...prev };
+        delete newCart[itemId];
+        return newCart;
+      });
+
+      // Nếu đã đăng nhập thì xóa khỏi server
+      if (token) {
+        const response = await axios.post(
+          `${url}/api/cart/remove`,
+          { item_id: itemId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        if (!response.data.success)
+          throw new Error(response.data.message || "Xóa sản phẩm thất bại");
+      }
+
+      toast.success("Đã xóa sản phẩm khỏi giỏ hàng");
+      console.log(`✅ Đã xóa hoàn toàn sản phẩm ${itemId}`);
+    } catch (err) {
+      console.error("Lỗi khi xóa sản phẩm:", err);
+      // Hoàn tác lại thao tác
+      setCartItems(prev => ({
+        ...prev,
+        [itemId]: cartItems[itemId] || 0,
+      }));
+      toast.error("Không thể xóa sản phẩm khỏi giỏ hàng");
+      setError(err.message || "Không thể xóa sản phẩm khỏi giỏ hàng");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 🔢 Cập nhật số lượng sản phẩm trong giỏ
+  const updateCartQuantity = async (itemId, newQuantity) => {
+    if (!itemId || newQuantity < 0) {
+      console.error("ID sản phẩm hoặc số lượng không hợp lệ");
+      return;
+    }
+
+    // Tìm sản phẩm để kiểm tra số lượng tồn kho
+    const item = item_list.find(item => 
+      String(item._id) === String(itemId) ||
+      item.id === itemId ||
+      String(item.id) === String(itemId)
+    );
+    
+    if (!item) {
+      console.error("Không tìm thấy sản phẩm");
+      return;
+    }
+
+    // Kiểm tra số lượng tồn kho
+    const stockQuantity = parseFloat(item.stock_quantity) || 0;
+    if (newQuantity > stockQuantity) {
+      toast.error(`Số lượng tồn kho chỉ còn ${stockQuantity} ${item.unit || 'cái'}`);
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Cập nhật số lượng mới
+      setCartItems(prev => ({
+        ...prev,
+        [itemId]: newQuantity
+      }));
+
+      // Nếu đã đăng nhập thì cập nhật server
+      if (token) {
+        const response = await axios.post(
+          `${url}/api/cart/add`,
+          { item_id: itemId, quantity: newQuantity },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        if (!response.data.success)
+          throw new Error(response.data.message || "Cập nhật giỏ hàng thất bại");
+      }
+
+      console.log(`🔢 Cập nhật số lượng sản phẩm ${itemId}: ${newQuantity}`);
+      return true;
+    } catch (err) {
+      console.error("Lỗi khi cập nhật số lượng:", err);
+      toast.error("Không thể cập nhật số lượng sản phẩm");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // 💰 Tính tổng tiền giỏ hàng
   const getTotalCartAmount = () => {
     if (!item_list || item_list.length === 0) {
@@ -187,6 +357,7 @@ const StoreContextProvider = (props) => {
     delete axios.defaults.headers.common['Authorization'];
     setToken("");
     setCartItems({});
+    toast.success("Đã đăng xuất thành công!");
   }, []);
 
   // 🛍 Lấy giỏ hàng của người dùng từ server
@@ -260,8 +431,18 @@ const StoreContextProvider = (props) => {
     if (token) {
       console.log("🔁 Token hợp lệ - đang tải dữ liệu giỏ hàng");
       fetchUserCart();
+      
+      // Tự động thêm sản phẩm pending sau khi đăng nhập
+      if (pendingCartItem) {
+        console.log("🛒 Tự động thêm sản phẩm pending sau khi đăng nhập:", pendingCartItem);
+        setTimeout(() => {
+          addToCart(pendingCartItem.id, pendingCartItem.quantity);
+          setPendingCartItem(null); // Xóa pending item sau khi thêm
+          toast.success(`Đã thêm ${pendingCartItem.quantity} ${pendingCartItem.item.unit || 'cái'} "${pendingCartItem.item.name}" vào giỏ hàng!`);
+        }, 1000); // Delay 1 giây để đảm bảo cart đã load xong
+      }
     }
-  }, [token, fetchUserCart]);
+  }, [token, fetchUserCart, pendingCartItem]);
 
   const contextValue = {
     item_list,
@@ -269,6 +450,8 @@ const StoreContextProvider = (props) => {
     setCartItems,
     addToCart,
     removeFromCart,
+    clearFromCart,
+    updateCartQuantity,
     getTotalCartAmount,
     url,
     token,
@@ -277,6 +460,10 @@ const StoreContextProvider = (props) => {
     error,
     logout,
     getUserId,
+    pendingCartItem,
+    setPendingCartItem,
+    showLoginPopup,
+    setShowLoginPopup,
   };
 
   return (
