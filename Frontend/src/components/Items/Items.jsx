@@ -4,9 +4,9 @@ import { StoreContext } from '../../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
-const Items = ({ id, name, price, image, unit, category, weight_value, weight_unit, rating = 0 }) => {
+const Items = ({ id, name, price, image, unit, category, weight_value, weight_unit, rating = 0, stock_quantity = 0 }) => {
   const navigate = useNavigate();
-  const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
+  const { cartItems, addToCart, removeFromCart, token } = useContext(StoreContext);
 
   const handleViewDetails = () => {
     navigate(`/product/${id}`);
@@ -66,6 +66,31 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
     const button = e.target.closest('.add-to-cart-btn');
     const originalText = button.innerHTML;
     
+    // Kiểm tra số lượng tồn kho
+    if (stock_quantity <= 0) {
+      button.classList.add('error');
+      button.innerHTML = '<span class="cart-icon">❌</span>Hết hàng';
+      setTimeout(() => {
+        button.classList.remove('error');
+        button.innerHTML = originalText;
+      }, 2000);
+      return;
+    }
+    
+    // Kiểm tra số lượng trong giỏ (chỉ khi đã đăng nhập)
+    if (token) {
+      const currentCartQuantity = cartItems[id] || 0;
+      if (currentCartQuantity >= stock_quantity) {
+        button.classList.add('error');
+        button.innerHTML = '<span class="cart-icon">⚠️</span>Đủ rồi';
+        setTimeout(() => {
+          button.classList.remove('error');
+          button.innerHTML = originalText;
+        }, 2000);
+        return;
+      }
+    }
+    
     // Thêm class loading
     button.classList.add('loading');
     button.innerHTML = '<span class="cart-icon">🛒</span>Đang thêm...';
@@ -74,18 +99,35 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
     await new Promise(resolve => setTimeout(resolve, 800));
     
     // Thêm vào giỏ hàng
-    addToCart(id);
+    const success = await addToCart(id);
     
-    // Thêm class success
-    button.classList.remove('loading');
-    button.classList.add('added');
-    button.innerHTML = '<span class="cart-icon">✅</span>Đã thêm!';
-    
-    // Reset sau 2 giây
-    setTimeout(() => {
-      button.classList.remove('added');
+    if (success === true) {
+      // Thêm class success
+      button.classList.remove('loading');
+      button.classList.add('added');
+      button.innerHTML = '<span class="cart-icon">✅</span>Đã thêm!';
+      
+      // Reset sau 2 giây
+      setTimeout(() => {
+        button.classList.remove('added');
+        button.innerHTML = originalText;
+      }, 2000);
+    } else if (success === false) {
+      // Chưa đăng nhập - không hiển thị lỗi, chỉ reset về trạng thái ban đầu
+      button.classList.remove('loading');
       button.innerHTML = originalText;
-    }, 2000);
+    } else {
+      // Thêm class error cho các lỗi khác
+      button.classList.remove('loading');
+      button.classList.add('error');
+      button.innerHTML = '<span class="cart-icon">❌</span>Lỗi';
+      
+      // Reset sau 2 giây
+      setTimeout(() => {
+        button.classList.remove('error');
+        button.innerHTML = originalText;
+      }, 2000);
+    }
   };
 
   return (
@@ -118,12 +160,13 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
 
         {/* Nút thêm vào giỏ hàng */}
         <button 
-          className="add-to-cart-btn" 
+          className={`add-to-cart-btn ${stock_quantity <= 0 ? 'disabled' : ''}`}
           onClick={handleAddToCart}
-          title="Thêm vào giỏ hàng"
+          disabled={stock_quantity <= 0}
+          title={stock_quantity <= 0 ? "Sản phẩm đã hết hàng" : "Thêm vào giỏ hàng"}
         >
           <span className="cart-icon">🛒</span>
-          Thêm vào giỏ
+          {stock_quantity <= 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
         </button>
       </div>
     </div>
