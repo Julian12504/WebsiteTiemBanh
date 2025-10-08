@@ -3,6 +3,7 @@ import './LoginPopup.css';
 import assets from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const LoginPopup = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
@@ -41,13 +42,22 @@ const LoginPopup = ({ setShowLogin }) => {
         // Gắn token vào header mặc định
         axios.defaults.headers.common['Authorization'] = `Bearer ${authToken}`;
 
+        toast.success("Đăng nhập thành công!");
         setShowLogin(false);
       } else {
-        alert(response.data.message || "Đăng nhập không thành công");
+        toast.error(response.data.message || "Tài khoản hoặc mật khẩu không đúng");
       }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
-      alert(error.response?.data?.message || "Đăng nhập thất bại, vui lòng thử lại!");
+      if (error.response?.status === 401) {
+        toast.error("Tài khoản hoặc mật khẩu không đúng");
+      } else if (error.response?.status === 400) {
+        toast.error("Vui lòng kiểm tra lại thông tin đăng nhập");
+      } else if (error.code === 'NETWORK_ERROR') {
+        toast.error("Không thể kết nối đến server. Vui lòng thử lại sau");
+      } else {
+        toast.error(error.response?.data?.message || "Đăng nhập thất bại, vui lòng thử lại");
+      }
     }
   };
 
