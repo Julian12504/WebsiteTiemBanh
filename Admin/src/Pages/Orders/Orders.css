@@ -1,8 +1,201 @@
   .orders-container {
-      padding: 20px;
-  max-width: 1500px;
+      padding: 15px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  }
+
+  /* Fix table layout for orders - 8 columns */
+  .orders-container .list-table-format {
+    display: grid !important;
+    grid-template-columns: 0.7fr 1fr 1.3fr 0.8fr 1fr 1fr 1fr 0.8fr !important;
+    align-items: center;
+    justify-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #cacaca;
+    font-size: 13px;
+  }
+
+  .orders-container .list-table-format:last-child {
+    border-bottom: none;
+  }
+
+  .orders-container .list-table-format.title {
+    background-color: #f9f9f9;
+    font-weight: bold;
+  }
+
+  .list-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .view-btn, .bill-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    color: #591b0d;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .view-btn:hover, .bill-btn:hover {
+    background-color: #591b0d;
+    color: white;
+    border-color: #591b0d;
+  }
+
+  .bill-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+  }
+
+  /* Pagination styling */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 15px 0;
+  }
+
+  .pagination-btn {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #591b0d;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    background-color: #591b0d;
+    color: white;
+    border-color: #591b0d;
+  }
+
+  .pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .page-info {
+    font-size: 13px;
+    color: #666;
+    margin: 0 10px;
+  }
+
+  /* Specific column alignments */
+  .orders-container .list-table-format > p:nth-child(1), /* Mã đơn */
+  .orders-container .list-table-format > p:nth-child(2), /* Khách hàng */
+  .orders-container .list-table-format > p:nth-child(3) { /* Ngày đặt */
+    justify-self: center;
+  }
+
+  .orders-container .list-table-format > p:nth-child(4), /* Số sản phẩm */
+  .orders-container .list-table-format > p:nth-child(5) { /* Tổng tiền */
+    justify-self: center;
+  }
+
+  .orders-container .list-table-format > p:nth-child(6), /* Trạng thái */
+  .orders-container .list-table-format > p:nth-child(7) { /* Thanh toán */
+    justify-self: center;
+  }
+
+  .orders-container .list-table-format > div:nth-child(8) { /* Thao tác */
+    justify-self: center;
+  }
+
+  /* Responsive design for orders table */
+  @media (max-width: 1200px) {
+    .orders-container .list-table-format {
+      grid-template-columns: 0.6fr 0.9fr 1.1fr 0.7fr 0.9fr 0.9fr 0.9fr 0.8fr !important;
+      font-size: 12px;
+      gap: 6px;
+      padding: 8px 10px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .orders-container .list-table-format {
+      grid-template-columns: 0.5fr 0.7fr 0.9fr 0.5fr 0.7fr 0.7fr 0.7fr 0.7fr !important;
+      gap: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
+    }
+    
+    .orders-filters {
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .orders-container .list-table-format {
+      grid-template-columns: 0.4fr 0.6fr 1fr 0.5fr !important;
+      gap: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
+    }
+    
+    .orders-container .list-table-format.title {
+      display: none;
+    }
+    
+    .action-buttons {
+      grid-column: 1 / -1;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    
+    .orders-filters {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .filter-group {
+      min-width: 200px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .orders-container {
+      padding: 10px;
+    }
+    
+    .orders-container .list-table-format {
+      grid-template-columns: 0.3fr 0.5fr 1fr 0.4fr !important;
+      gap: 4px;
+      padding: 6px 8px;
+      font-size: 10px;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .view-btn, .bill-btn {
+      padding: 4px 8px;
+      font-size: 10px;
+    }
   }
 
   .orders-filters {
