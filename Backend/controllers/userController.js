@@ -12,17 +12,17 @@ const loginUser = async (req, res) => {
 
     try {
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ success: false, message: "Please enter a valid email" });
+            return res.status(400).json({ success: false, message: "Vui lòng nhập email hợp lệ" });
         }
 
         const user = await User.findByEmail(email);
         if (!user) {
-            return res.status(400).json({ success: false, message: "User not found" });
+            return res.status(400).json({ success: false, message: "Tài khoản không tồn tại" });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ success: false, message: "Invalid credentials" });
+            return res.status(400).json({ success: false, message: "Tài khoản hoặc mật khẩu không đúng" });
         }
 
         const token = createToken(user.id);
@@ -41,7 +41,7 @@ const loginUser = async (req, res) => {
         console.error("Login error:", error);
         res.status(500).json({ 
             success: false, 
-            message: "Internal server error", 
+            message: "Lỗi hệ thống, vui lòng thử lại sau", 
             error: error.message 
         });
     }
@@ -52,16 +52,16 @@ const registerUser = async (req, res) => {
 
     try {
         if (!validator.isEmail(email)) {
-            return res.status(400).json({ success: false, message: "Please enter a valid email" });
+            return res.status(400).json({ success: false, message: "Vui lòng nhập email hợp lệ" });
         }
 
         if (password.length < 8) {
-            return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
+            return res.status(400).json({ success: false, message: "Mật khẩu phải có ít nhất 8 ký tự" });
         }
 
         const existingUser = await User.findByEmail(email);
         if (existingUser) {
-            return res.status(400).json({ success: false, message: "User already exists" });
+            return res.status(400).json({ success: false, message: "Tài khoản đã tồn tại" });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -84,7 +84,7 @@ const registerUser = async (req, res) => {
         console.error("Registration error:", error);
         res.status(500).json({ 
             success: false, 
-            message: "Internal server error", 
+            message: "Lỗi hệ thống, vui lòng thử lại sau", 
             error: error.message 
         });
     }
