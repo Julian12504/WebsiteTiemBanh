@@ -394,20 +394,16 @@ const Order = {
   // Find order by ID
   findById: async (orderId) => {
     try {
-      console.log(`Finding order by ID: ${orderId}`);
-      
       // First get the basic order info
       const [orders] = await db.query(`
         SELECT * FROM orders WHERE id = ? LIMIT 1
       `, [orderId]);
       
       if (!orders.length) {
-        console.log(`Order ${orderId} not found`);
         return null;
       }
       
       const order = orders[0];
-      console.log(`Found basic info for order ${orderId}`);
       
       // Then get the order items separately
       const [items] = await db.query(`
@@ -421,8 +417,6 @@ const Order = {
         LEFT JOIN items i ON oi.item_id = i.id
         WHERE oi.order_id = ?
       `, [orderId]);
-      
-      console.log(`Found ${items.length} items for order ${orderId}`);
       
       // Add items to the order object
       order.items = items;
