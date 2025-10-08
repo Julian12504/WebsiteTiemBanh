@@ -264,17 +264,10 @@ npm run build
 3. **Payment webhook** - Kiểm tra endpoint public
 4. **File upload** - Cấu hình Cloudinary
 
-## 📞 Hỗ trợ
-
-Nếu gặp vấn đề, vui lòng:
-1. Kiểm tra logs trong console
-2. Xem lại cấu hình .env
-3. Đảm bảo tất cả services đang chạy
-4. Liên hệ team phát triển
 
 ## 📄 License
 
-Dự án được phát triển cho mục đích học tập và thương mại.
+Dự án được phát triển cho mục đích học tập.
 
 ---
 
