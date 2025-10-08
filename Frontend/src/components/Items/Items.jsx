@@ -20,6 +20,22 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
     return num.toLocaleString('vi-VN'); // tự động thêm dấu . ngăn cách
   };
 
+  // Chuyển đổi đơn vị từ tiếng Anh sang tiếng Việt
+  const translateUnit = (unit) => {
+    const unitMap = {
+      'piece': 'cái',
+      'kg': 'kg',
+      'g': 'g',
+      'ml': 'ml',
+      'l': 'l',
+      'box': 'hộp',
+      'pack': 'gói',
+      'bottle': 'chai',
+      'can': 'lon'
+    };
+    return unitMap[unit] || unit;
+  };
+
   // Tạo hiển thị đánh giá bằng sao
   const renderStars = (rating, count = 0) => {
     const stars = [];
@@ -41,6 +57,35 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
         {count > 0 && <span className="rating-count">({count})</span>}
       </div>
     );
+  };
+
+  // Xử lý thêm vào giỏ hàng với hiệu ứng
+  const handleAddToCart = async (e) => {
+    e.stopPropagation(); // Ngăn không cho click event bubble lên parent
+    
+    const button = e.target.closest('.add-to-cart-btn');
+    const originalText = button.innerHTML;
+    
+    // Thêm class loading
+    button.classList.add('loading');
+    button.innerHTML = '<span class="cart-icon">🛒</span>Đang thêm...';
+    
+    // Simulate loading time
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
+    // Thêm vào giỏ hàng
+    addToCart(id);
+    
+    // Thêm class success
+    button.classList.remove('loading');
+    button.classList.add('added');
+    button.innerHTML = '<span class="cart-icon">✅</span>Đã thêm!';
+    
+    // Reset sau 2 giây
+    setTimeout(() => {
+      button.classList.remove('added');
+      button.innerHTML = originalText;
+    }, 2000);
   };
 
   return (
@@ -68,8 +113,18 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
 
         <div className="item-price-container">
           <p className="item-price">{formatPrice(price)} VNĐ</p>
-          {unit && <span className="item-unit"> / {unit}</span>}
+          {unit && <span className="item-unit"> / {translateUnit(unit)}</span>}
         </div>
+
+        {/* Nút thêm vào giỏ hàng */}
+        <button 
+          className="add-to-cart-btn" 
+          onClick={handleAddToCart}
+          title="Thêm vào giỏ hàng"
+        >
+          <span className="cart-icon">🛒</span>
+          Thêm vào giỏ
+        </button>
       </div>
     </div>
   );
