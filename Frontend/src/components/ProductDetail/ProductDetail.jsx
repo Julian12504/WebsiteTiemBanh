@@ -60,7 +60,19 @@ const ProductDetail = () => {
     const value = e.target.value;
     const parsedValue = product.is_loose ? parseFloat(value) : parseInt(value);
     if (isNaN(parsedValue)) return;
-    setQuantity(parsedValue);
+    
+    // Ràng buộc số lượng theo stock và giỏ hàng
+    const maxAllowed = maxAllowedQuantity;
+    const minAllowed = 1;
+    
+    if (parsedValue > maxAllowed) {
+      setQuantity(maxAllowed);
+      toast.warning(`Số lượng tối đa là ${maxAllowed} ${product.unit || 'cái'}`);
+    } else if (parsedValue < minAllowed) {
+      setQuantity(minAllowed);
+    } else {
+      setQuantity(parsedValue);
+    }
   };
 
   const handleAddToCart = async () => {
@@ -69,36 +81,18 @@ const ProductDetail = () => {
     try {
       setIsAddingToCart(true);
 
-      const token = localStorage.getItem('token');
-      if (!token) {
-        toast.error('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng');
-        navigate('/login');
-        return;
-      }
-
-      const response = await axios.post(
-        `${url}/api/cart/add`,
-        {
-          item_id: product.id,
-          quantity: quantity,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      if (response.data.success) {
-        addToCart(product.id, quantity);
+      // Sử dụng addToCart từ context để xử lý logic đăng nhập
+      const success = await addToCart(product.id, quantity);
+      
+      if (success) {
+        // Nếu đã đăng nhập, addToCart sẽ tự động gọi API
         toast.success(`${quantity} ${product.unit || 'sản phẩm'} "${product.name}" đã được thêm vào giỏ hàng!`);
-      } else {
-        toast.error(response.data.message || 'Không thể thêm vào giỏ hàng');
       }
+      // Nếu chưa đăng nhập, addToCart sẽ redirect đến login và không cần hiển thị thông báo
+      
     } catch (err) {
       console.error('Lỗi khi thêm vào giỏ hàng:', err);
-      toast.error(err.response?.data?.message || 'Lỗi thêm vào giỏ hàng');
+      toast.error('Không thể thêm sản phẩm vào giỏ hàng');
     } finally {
       setIsAddingToCart(false);
     }
