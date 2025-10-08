@@ -10,7 +10,7 @@ const ItemDisplay = ({ category, customItems }) => {
   // 👉 Map nhãn hiển thị tiếng Việt
   const categoryLabel = {
     'All': 'Tất cả sản phẩm',
-    'Bakery': 'Bánh kem',
+    'Cake': 'Bánh',
     'Cake Ingredients': 'Nguyên liệu làm bánh',
     'Party Items': 'Đồ trang trí tiệc'
   };
