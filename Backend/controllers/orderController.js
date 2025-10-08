@@ -25,7 +25,7 @@ const placeOrder = async (req, res) => {
     if (!firstName || !lastName || !contactNumber1 || !address) {
       return res.status(400).json({
         success: false,
-        message: "Missing required delivery information"
+        message: "Thiếu thông tin giao hàng bắt buộc"
       });
     }
 
@@ -33,7 +33,7 @@ const placeOrder = async (req, res) => {
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "No items in order"
+        message: "Đơn hàng không có sản phẩm nào"
       });
     }
       
@@ -49,7 +49,7 @@ const placeOrder = async (req, res) => {
       if (calculatedAmount <= 0) {
         return res.status(400).json({
           success: false,
-          message: "Order amount is required and must be a valid number"
+          message: "Tổng tiền đơn hàng là bắt buộc và phải là số hợp lệ"
         });
       }
       
@@ -119,6 +119,7 @@ const placeOrder = async (req, res) => {
 
       if (mockResult.success) {
         // Simulate successful payment immediately
+        console.log(`🎭 Mock payment successful - calling updatePaymentStatus with orderId=${orderId}, status=true`);
         await Order.updatePaymentStatus(orderId, true);
         
         res.json({
@@ -129,6 +130,7 @@ const placeOrder = async (req, res) => {
           mock: true
         });
       } else {
+        console.log(`🎭 Mock payment failed - calling updatePaymentStatus with orderId=${orderId}, status=false`);
         await Order.updatePaymentStatus(orderId, false);
         res.status(500).json({
           success: false,
@@ -140,29 +142,34 @@ const placeOrder = async (req, res) => {
     }
     
     // Default: Create real Stripe session (if needed)
+    console.log(`💳 Creating Stripe session for order ${orderId} with ${items.length} items`);
+    console.log(`📋 Items data:`, items.map(item => ({ id: item.id, name: item.name, price: item.price, quantity: item.quantity })));
+    
     const line_items = items.map(item => {
       // Ensure price is valid
       const price = parseFloat(item.price);
       if (isNaN(price) || price <= 0) {
-        console.error(`Invalid price for item ${item.id}: ${item.price}`);
+        console.error(`❌ Invalid price for item ${item.id}: ${item.price}`);
         return null;
       }
       
       // Ensure quantity is valid
       const quantity = parseInt(item.quantity);
       if (isNaN(quantity) || quantity <= 0) {
-        console.error(`Invalid quantity for item ${item.id}: ${item.quantity}`);
+        console.error(`❌ Invalid quantity for item ${item.id}: ${item.quantity}`);
         return null;
       }
       
+      console.log(`✅ Valid item: ${item.name} - Price: ${price}, Quantity: ${quantity}`);
+      
       return {
         price_data: {
-          currency: "lkr",
+          currency: "usd", // Changed from "lkr" to "usd"
           product_data: { 
             name: item.name || `Product ID: ${item.id}`,
             metadata: { item_id: item.id } 
           },
-          unit_amount: Math.round(price * 100) // Convert to cents (LKR)
+          unit_amount: Math.round(price * 100) // Convert to cents (USD)
         },
         quantity: quantity
       };
@@ -171,16 +178,19 @@ const placeOrder = async (req, res) => {
     // Add delivery fee
     line_items.push({
       price_data: {
-        currency: "lkr",
+        currency: "usd", // Changed from "lkr" to "usd"
         product_data: { name: "Delivery Charges" },
-        unit_amount: 15000 // 150 LKR in cents
+        unit_amount: Math.round(150 * 100) // 150 USD in cents
       },
       quantity: 1
     });
     
-    console.log("Creating Stripe session with line items:", line_items.length);
+    console.log(`📦 Final line items count: ${line_items.length}`);
+    console.log(`📦 Line items:`, line_items.map(item => ({ name: item.price_data.product_data.name, amount: item.price_data.unit_amount, quantity: item.quantity })));
     
-    try {      const session = await stripe.checkout.sessions.create({
+    try {
+      console.log(`🔄 Calling Stripe API to create checkout session...`);
+      const session = await stripe.checkout.sessions.create({
         line_items,
         mode: "payment",
         success_url: `${frontend_url}/verify?success=true&orderId=${orderId}`,
@@ -188,7 +198,8 @@ const placeOrder = async (req, res) => {
         metadata: { order_id: orderId }
       });
       
-      console.log(`Stripe session created: ${session.id}`);
+      console.log(`✅ Stripe session created successfully: ${session.id}`);
+      console.log(`🔗 Stripe checkout URL: ${session.url}`);
       
       res.json({ 
         success: true, 
@@ -197,7 +208,13 @@ const placeOrder = async (req, res) => {
         paymentMethod: "stripe"
       });
     } catch (stripeError) {
-      console.error("Stripe session creation error:", stripeError);
+      console.error("❌ Stripe session creation error:", stripeError);
+      console.error("❌ Stripe error details:", {
+        type: stripeError.type,
+        code: stripeError.code,
+        message: stripeError.message,
+        statusCode: stripeError.statusCode
+      });
       
       // Order was created but payment failed - update the order status
       await Order.updatePaymentStatus(orderId, false);
@@ -232,14 +249,19 @@ const placeOrder = async (req, res) => {
 
 const verifyOrder = async (req, res) => {
   const { orderId, success } = req.body;
+  console.log(`🔍 verifyOrder called with: orderId=${orderId}, success=${success} (type: ${typeof success})`);
+  console.log(`📋 Request body:`, req.body);
+  
   try {
     if (success === "true") {
+      console.log(`✅ Payment successful - calling updatePaymentStatus with orderId=${orderId}, status=true`);
       await Order.updatePaymentStatus(orderId, true);
       res.json({
         success: true,
         message: "Payment verified successfully"
       });
     } else {
+      console.log(`❌ Payment failed - calling updatePaymentStatus with orderId=${orderId}, status=false`);
       await Order.updatePaymentStatus(orderId, false);
       res.json({
         success: false,
@@ -247,7 +269,8 @@ const verifyOrder = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Verify order error:", error);
+    console.error("🚨 Verify order error:", error);
+    console.error("🚨 Error stack:", error.stack);
     res.status(500).json({
       success: false,
       message: "Error verifying payment"
@@ -371,10 +394,12 @@ const momoWebhook = async (req, res) => {
 
     if (verification.success) {
       // Payment successful
+      console.log(`💰 MoMo webhook payment successful - calling updatePaymentStatus with orderId=${originalOrderId}, status=true`);
       await Order.updatePaymentStatus(originalOrderId, true);
       console.log(`Payment successful for order ${originalOrderId}`);
     } else {
       // Payment failed
+      console.log(`❌ MoMo webhook payment failed - calling updatePaymentStatus with orderId=${originalOrderId}, status=false`);
       await Order.updatePaymentStatus(originalOrderId, false);
       console.log(`Payment failed for order ${originalOrderId}: ${verification.message}`);
     }
@@ -400,10 +425,12 @@ const momoReturn = async (req, res) => {
     
     if (resultCode === '0') {
       // Payment successful
+      console.log(`💰 MoMo return payment successful - calling updatePaymentStatus with orderId=${orderId}, status=true`);
       await Order.updatePaymentStatus(orderId, true);
       res.redirect(`http://localhost:5173/verify?success=true&orderId=${orderId}&paymentMethod=momo`);
     } else {
       // Payment failed
+      console.log(`❌ MoMo return payment failed - calling updatePaymentStatus with orderId=${orderId}, status=false`);
       await Order.updatePaymentStatus(orderId, false);
       res.redirect(`http://localhost:5173/verify?success=false&orderId=${orderId}&paymentMethod=momo&message=${encodeURIComponent(message)}`);
     }
