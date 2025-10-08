@@ -4,10 +4,11 @@ import assets from '../../assets/assets';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = () => {
   const [menu, setMenu] = useState('menu');
-  const { getTotalCartAmount, token, setToken, item_list } = useContext(StoreContext);
+  const { getTotalCartAmount, token, setToken, item_list, setShowLoginPopup, logout } = useContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [showSearch, setShowSearch] = useState(false);
@@ -58,11 +59,9 @@ const Navbar = ({ setShowLogin }) => {
     setSearchResults(filteredItems);
   }, [searchTerm, item_list]);
 
-  // Đăng xuất
-  const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-    setToken('');
+  // Đăng xuất - sử dụng hàm từ StoreContext
+  const handleLogout = () => {
+    logout(); // Gọi hàm logout từ StoreContext (đã xóa giỏ hàng)
     navigate('/');
   };
 
@@ -187,14 +186,25 @@ const Navbar = ({ setShowLogin }) => {
         </div>
 
         <div className="navbar-search-icon">
-          <Link to="/cart">
-            <img src={assets.cart} className="cart-icon" alt="Giỏ hàng" />
-          </Link>
+          <img 
+            src={assets.cart} 
+            className="cart-icon" 
+            alt="Giỏ hàng" 
+            onClick={() => {
+              if (!token) {
+                toast.info("Vui lòng đăng nhập để xem giỏ hàng");
+                setShowLoginPopup(true);
+              } else {
+                navigate('/cart');
+              }
+            }}
+            style={{ cursor: 'pointer' }}
+          />
           <div className={getTotalCartAmount() === 0 ? '0' : 'dot'}></div>
         </div>
 
         {!token ? (
-          <button onClick={() => setShowLogin(true)}>Đăng nhập</button>
+          <button onClick={() => setShowLoginPopup(true)}>Đăng nhập</button>
         ) : (
           <div className="navbar-profile">
             <img className="profile-icon" src={assets.profile_icon} alt="Tài khoản" />
@@ -208,7 +218,7 @@ const Navbar = ({ setShowLogin }) => {
                 </Link>
               </li>
               <hr />
-              <li onClick={logout}>
+              <li onClick={handleLogout}>
                 <img src={assets.logout_icon} alt="" />
                 <span>Đăng xuất</span>
               </li>
