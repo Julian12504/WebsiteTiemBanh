@@ -25,6 +25,16 @@ const POS = ({ url }) => {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [categories, setCategories] = useState([]);
 
+  // Chuyển đổi category từ tiếng Anh sang tiếng Việt
+  const translateCategory = (category) => {
+    const categoryMap = {
+      'Cake': 'Bánh',
+      'Cake Ingredients': 'Nguyên liệu làm bánh',
+      'Party Items': 'Đồ trang trí tiệc'
+    };
+    return categoryMap[category] || category;
+  };
+
   // Lấy danh sách sản phẩm
   const fetchProducts = useCallback(async () => {
     try {
@@ -38,7 +48,7 @@ const POS = ({ url }) => {
         const items = response.data.data;
         setProducts(items);
         setFilteredProducts(items);
-        const uniqueCategories = [...new Set(items.map(item => item.category))];
+        const uniqueCategories = [...new Set(items.map(item => translateCategory(item.category)))];
         setCategories(uniqueCategories);
       } else {
         setError("Không thể tải danh sách sản phẩm");
@@ -60,7 +70,15 @@ const POS = ({ url }) => {
   // Lọc sản phẩm
   useEffect(() => {
     let filtered = products;
-    if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
+    if (categoryFilter !== 'all') {
+      // Tìm category gốc từ category đã dịch
+      const originalCategory = Object.keys({
+        'Cake': 'Bánh',
+        'Cake Ingredients': 'Nguyên liệu làm bánh',
+        'Party Items': 'Đồ trang trí tiệc'
+      }).find(key => translateCategory(key) === categoryFilter);
+      filtered = filtered.filter(p => p.category === originalCategory);
+    }
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(p =>
