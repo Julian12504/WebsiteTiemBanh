@@ -11,8 +11,8 @@
 }
 
 .item:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 @keyframes fadeInUp {
@@ -40,7 +40,7 @@
 }
 
 .item:hover .item-image {
-  transform: scale(1.1) rotate(2deg);
+  transform: scale(1.05) rotate(1deg);
 }
 
 .item-actions {
