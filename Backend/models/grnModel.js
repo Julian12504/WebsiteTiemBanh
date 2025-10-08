@@ -230,22 +230,7 @@ export const GRN = {
           [d.received_quantity, d.unit_price, d.item_id]
         );
 
-        // log tồn kho
-        await connection.query(
-          `INSERT INTO inventory_logs (
-            item_id, adjustment_quantity, previous_quantity,
-            new_quantity, adjustment_type, admin_id, notes
-          ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [
-            d.item_id,
-            d.received_quantity,
-            d.current_stock,
-            d.current_stock + d.received_quantity,
-            'add',
-            1,
-            `GRN #${grnId} completion`
-          ]
-        );
+        // Đã bỏ inventory_logs - không cần thiết
       }
 
       await connection.query(
