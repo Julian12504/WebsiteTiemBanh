@@ -21,7 +21,17 @@ const Verify = () => {
   // ✅ Xác minh thanh toán
   const verifyPayment = useCallback(async () => {
     try {
-      const response = await axios.post(`${url}/api/order/verify`, { success, orderId, paymentMethod });
+      // Ensure success is a string "true" or "false"
+      const successParam = success === "true" ? "true" : "false";
+      console.log(`🔍 Frontend sending verify request: orderId=${orderId}, success=${successParam}, paymentMethod=${paymentMethod}`);
+      
+      const response = await axios.post(`${url}/api/order/verify`, { 
+        success: successParam, 
+        orderId, 
+        paymentMethod 
+      });
+
+      console.log(`📋 Frontend received response:`, response.data);
 
       if (response.data.success) {
         const isMock = searchParams.get("mock") === "true";
@@ -40,9 +50,19 @@ const Verify = () => {
       }
     } catch (error) {
       console.error("Lỗi khi xác minh thanh toán:", error);
+      
+      // Extract error message from response if available
+      let errorMessage = message || 'Đã xảy ra lỗi trong quá trình xác minh thanh toán. Vui lòng liên hệ hỗ trợ.';
+      
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       setVerificationStatus({
         isVerified: false,
-        message: message || 'Đã xảy ra lỗi trong quá trình xác minh thanh toán. Vui lòng liên hệ hỗ trợ.'
+        message: errorMessage
       });
     } finally {
       setLoading(false);
