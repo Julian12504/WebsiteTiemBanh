@@ -6,22 +6,23 @@ import Cart from "./pages/Cart/Cart";
 import PlaceOrder from "./pages/PlacerOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Verify from "./pages/Verify/Verify";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import ProductDetail from "./components/ProductDetail/ProductDetail"; 
 import ViewItems from "./pages/ViewItems/ViewItems";
-import StoreContextProvider from "./context/StoreContext";
+import StoreContextProvider, { StoreContext } from "./context/StoreContext";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const App = () => {
-
-  const [showLogin, setShowLogin] = useState(false)
+const AppContent = () => {
+  const { showLoginPopup, setShowLoginPopup } = useContext(StoreContext);
 
   return (
-    <StoreContextProvider>
-      {showLogin?<LoginPopup setShowLogin={setShowLogin} />:<></>}
+    <>
+      {showLoginPopup && <LoginPopup setShowLogin={setShowLoginPopup} />}
         <div className='app'>
-          <Navbar setShowLogin={setShowLogin} />
+          <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/viewitems' element={<ViewItems />} />
@@ -33,6 +34,26 @@ const App = () => {
           </Routes>
         </div>
         <Footer />
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <StoreContextProvider>
+      <ToastContainer 
+        position="top-right" 
+        autoClose={3000} 
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <AppContent />
     </StoreContextProvider>
   );
 };
