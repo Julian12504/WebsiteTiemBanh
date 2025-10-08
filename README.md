@@ -278,4 +278,4 @@ Dự án được phát triển cho mục đích học tập và thương mại.
 
 ---
 
-**Developed with ❤️ by [Your Team Name]**
+**Developed with ❤️ by Võ Duy Toàn**
