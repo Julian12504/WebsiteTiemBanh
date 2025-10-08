@@ -18,6 +18,16 @@ const BulkBarcodePrint = ({ url }) => {
     fetchItems();
   }, []);
 
+  // Chuyển đổi category từ tiếng Anh sang tiếng Việt
+  const translateCategory = (category) => {
+    const categoryMap = {
+      'Cake': 'Bánh',
+      'Cake Ingredients': 'Nguyên liệu làm bánh',
+      'Party Items': 'Đồ trang trí tiệc'
+    };
+    return categoryMap[category] || category;
+  };
+
   const fetchItems = async () => {
     try {
       setLoading(true);
@@ -313,7 +323,7 @@ const BulkBarcodePrint = ({ url }) => {
                   </td>
                   <td>{item.name}</td>
                   <td>{item.sku}</td>
-                  <td>{item.category}</td>
+                  <td>{translateCategory(item.category)}</td>
                   <td>VNĐ {parseFloat(item.selling_price).toFixed(2)}</td>
                 </tr>
               ))
