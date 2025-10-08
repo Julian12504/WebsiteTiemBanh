@@ -15,7 +15,7 @@ const Add = ({url}) => {
   const [data, setData] = useState({
     name: '',
     description: '',
-    category: 'Bakery', 
+    category: 'Cake', 
     barcode: '',
     customSKU: '',
     cost_price: '',
@@ -139,7 +139,7 @@ const Add = ({url}) => {
 
   // Giữ value tiếng Anh để không ảnh hưởng logic, chỉ đổi nhãn hiển thị
   const categoryLabel = {
-    "Bakery": "Bánh kem",
+    "Cake": "Bánh",
     "Cake Ingredients": "Nguyên liệu làm bánh",
     "Party Items": "Đồ trang trí tiệc"
   };
@@ -187,7 +187,7 @@ const Add = ({url}) => {
                 required
                 className="form-input"
               >
-                <option value="Bakery">{categoryLabel["Bakery"]}</option>
+                <option value="Cake">{categoryLabel["Cake"]}</option>
                 <option value="Cake Ingredients">{categoryLabel["Cake Ingredients"]}</option>
                 <option value="Party Items">{categoryLabel["Party Items"]}</option>
               </select>
