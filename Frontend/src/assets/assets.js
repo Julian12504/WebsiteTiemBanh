@@ -60,7 +60,7 @@ const assets = {
 
 export const category_list = [
     {
-        category: "Bakery",
+        category: "Cake",
         category_image: cake_tools
     },
     {
@@ -89,7 +89,7 @@ export const item_list = [
         image: silicone_spatula,
         price: 100,
         description: "",
-        category: "Bakery",
+        category: "Cake",
     },
     {
         _id: "3",
@@ -113,7 +113,7 @@ export const item_list = [
         image: silicone_mat,
         price: 100,
         description: "",
-        category: "Bakery",
+        category: "Cake",
     },
     {
         _id: "6",
