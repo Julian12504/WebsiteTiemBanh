@@ -133,6 +133,22 @@ const ProductDetail = () => {
     );
   }
 
+  // Chuyển đổi đơn vị từ tiếng Anh sang tiếng Việt
+  const translateUnit = (unit) => {
+    const unitMap = {
+      'piece': 'cái',
+      'kg': 'kg',
+      'g': 'g',
+      'ml': 'ml',
+      'l': 'l',
+      'box': 'hộp',
+      'pack': 'gói',
+      'bottle': 'chai',
+      'can': 'lon'
+    };
+    return unitMap[unit] || unit;
+  };
+
   const currentCartQuantity = cartItems[product.id] || 0;
   const maxAllowedQuantity = Math.max(0, product.stock_quantity - currentCartQuantity);
   const canAddToCart = maxAllowedQuantity > 0 && quantity > 0;
@@ -246,7 +262,7 @@ const ProductDetail = () => {
                 className={`stock-status ${product.stock_quantity > 0 ? 'in-stock' : 'out-of-stock'}`}
               >
                 {product.stock_quantity > 0
-                  ? `Còn hàng (${product.stock_quantity} ${product.unit})`
+                  ? `Còn hàng (${product.stock_quantity} ${translateUnit(product.unit)})`
                   : 'Hết hàng'}
               </span>
             </div>
