@@ -1,7 +1,7 @@
 import express from 'express';
 import { Order } from '../models/orderModel.js';
 import authMiddleware from '../middleware/auth.js';
-import { listOrders, placeOrder, userOrders, verifyOrder } from '../controllers/orderController.js';
+import { listOrders, placeOrder, userOrders, verifyOrder, momoWebhook, momoReturn } from '../controllers/orderController.js';
 import adminMiddleware from '../middleware/admin.js';
 
 const router = express.Router();
@@ -19,6 +19,10 @@ router.post("/place", authMiddleware, placeOrder, (req, res, next) => {
 
 // Verify payment (for payment gateways)
 router.post("/verify", verifyOrder);
+
+// Momo payment routes
+router.post("/momo/webhook", momoWebhook);
+router.get("/momo/return", momoReturn);
 
 // Get order history (simple list)
 router.get("/history", authMiddleware, userOrders, async (req, res) => {
@@ -47,7 +51,6 @@ router.get("/admin/list", authMiddleware, adminMiddleware(), listOrders);
 // Get order details for admin
 router.get("/admin/:orderId", authMiddleware, adminMiddleware(), async (req, res) => {
     try {
-        console.log("Finding order by ID:", req.params.orderId);
         const order = await Order.findById(req.params.orderId);
         
         if (!order) {
@@ -55,13 +58,6 @@ router.get("/admin/:orderId", authMiddleware, adminMiddleware(), async (req, res
                 success: false, 
                 message: "Order not found" 
             });
-        }
-        
-        console.log("Found basic info for order", order.id);
-        
-        // Get order items if needed
-        if (order.items && order.items.length > 0) {
-            console.log(`Found ${order.items.length} items for order ${order.id}`);
         }
         
         res.json({ 
