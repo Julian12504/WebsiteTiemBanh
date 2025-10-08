@@ -80,7 +80,7 @@ const CreateGRN = ({ url }) => {
   const generateSKU = (category) => {
     const prefixes = {
       'Cake Ingredients': 'CI',
-      'Bakery': 'CT',
+      'Cake': 'CT',
       'Party Items': 'PI',
     };
     const prefix = prefixes[category] || 'IT';
@@ -560,7 +560,7 @@ const CreateGRN = ({ url }) => {
                           }
                           required
                         >
-                          <option value="Bakery">Bánh kem</option>
+                          <option value="Cake">Bánh</option>
                           <option value="Cake Ingredients">Nguyên liệu</option>
                           <option value="Party Items">Đồ trang trí</option>
                         </select>
