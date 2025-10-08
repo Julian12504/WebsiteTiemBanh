@@ -28,6 +28,16 @@ const prettyKey = (k) =>
   SUMMARY_LABELS[k] ||
   k.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase());
 
+// Chuyển đổi category từ tiếng Anh sang tiếng Việt
+const translateCategory = (category) => {
+  const categoryMap = {
+    'Cake': 'Bánh',
+    'Cake Ingredients': 'Nguyên liệu làm bánh',
+    'Party Items': 'Đồ trang trí tiệc'
+  };
+  return categoryMap[category] || category;
+};
+
 const formatSummaryValue = (key, value) => {
   // Chuẩn hoá chuỗi LKR -> VNĐ nếu backend trả kèm text
   if (typeof value === 'string') value = value.replace(/\bLKR\b/g, 'VNĐ');
@@ -240,7 +250,7 @@ const Reports = ({ url }) => {
                 {reportType === 'inventory' && (
                   <>
                     <td>{row.name}</td>
-                    <td>{row.category}</td>
+                    <td>{translateCategory(row.category)}</td>
                     <td>{`${row.stock_quantity} ${row.unit}`}</td>
                     <td>{row.unit}</td>
                     <td>{row.reorder_level}</td>
@@ -257,7 +267,7 @@ const Reports = ({ url }) => {
                 {reportType === 'products' && (
                   <>
                     <td>{row.name}</td>
-                    <td>{row.category}</td>
+                    <td>{translateCategory(row.category)}</td>
                     <td>{row.quantity_sold}</td>
                     <td>{row.unit}</td>
                     <td>{`VNĐ ${parseFloat(row.total_revenue).toLocaleString('vi-VN', { minimumFractionDigits: 2 })}`}</td>
@@ -303,7 +313,7 @@ const Reports = ({ url }) => {
                 <tr key={idx}>
                   {reportType === 'sales' && (
                     <>
-                      <td>{row.category}</td>
+                      <td>{translateCategory(row.category)}</td>
                       <td>{row.order_count}</td>
                       <td>{row.quantity_sold}</td>
                       <td>{`VNĐ ${parseFloat(row.revenue).toLocaleString('vi-VN', { minimumFractionDigits: 2 })}`}</td>
@@ -315,7 +325,7 @@ const Reports = ({ url }) => {
 
                   {reportType === 'products' && (
                     <>
-                      <td>{row.category}</td>
+                      <td>{translateCategory(row.category)}</td>
                       <td>{row.quantity_sold}</td>
                       <td>{`VNĐ ${parseFloat(row.total_revenue).toLocaleString('vi-VN', { minimumFractionDigits: 2 })}`}</td>
                       <td>{`VNĐ ${parseFloat(row.total_profit).toLocaleString('vi-VN', { minimumFractionDigits: 2 })}`}</td>
