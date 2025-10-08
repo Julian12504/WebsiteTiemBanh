@@ -29,6 +29,87 @@
     cursor: pointer;
 }
 
+/* Quantity controls styling */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    color: #591b0d;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover:not(:disabled) {
+    background-color: #591b0d;
+    color: white;
+    border-color: #591b0d;
+}
+
+.quantity-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f0f0f0;
+    color: #999;
+}
+
+.quantity-display {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+}
+
+.quantity-input {
+    min-width: 50px;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px;
+    background-color: #f8f9fa;
+    font-size: 14px;
+}
+
+.quantity-input:focus {
+    outline: none;
+    border-color: #591b0d;
+    box-shadow: 0 0 0 2px rgba(89, 27, 13, 0.1);
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.stock-warning {
+    font-size: 10px;
+    color: #dc3545;
+    background-color: #f8d7da;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
 .cart-bottom{
     margin-top: 80px;
     display: flex;
