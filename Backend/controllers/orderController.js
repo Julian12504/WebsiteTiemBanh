@@ -1,5 +1,7 @@
 import { Order } from "../models/orderModel.js";
 import Stripe from "stripe";
+import momoPaymentService from "../services/momoPaymentService.js";
+import mockPaymentService from "../services/mockPaymentService.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -17,7 +19,8 @@ const placeOrder = async (req, res) => {
       lastName,
       contactNumber1,
       contactNumber2 = "", 
-      specialInstructions = "" 
+      specialInstructions = "",
+      paymentMethod = "stripe" // Default to stripe, can be "stripe" or "momo"
     } = req.body;    // Validate required fields
     if (!firstName || !lastName || !contactNumber1 || !address) {
       return res.status(400).json({
@@ -54,12 +57,7 @@ const placeOrder = async (req, res) => {
       amount = calculatedAmount;
     }
 
-    console.log("Creating order with data:", {
-      userId: userId || req.user.id,
-      itemsCount: items.length,
-      amount,
-      address: address.substring(0, 20) + "..." // Log truncated for brevity
-    });
+    // Creating order with data
 
     // 1. Create order in database
     const orderId = await Order.create(
@@ -74,11 +72,74 @@ const placeOrder = async (req, res) => {
       specialInstructions
     );
     
-    console.log(`Order ${orderId} created successfully, now clearing cart`);
+    // Order created successfully, now clearing cart
     
     // 2. Clear user's cart using Order model
     await Order.clearCart(userId || req.user.id);
-      // 3. Create Stripe session
+    
+    // 3. Create payment session based on payment method
+    if (paymentMethod === "momo") {
+      // Create Momo payment URL
+      const orderInfo = `Thanh toán đơn hàng #${orderId} - ${firstName} ${lastName}`;
+      const momoResult = await momoPaymentService.createPaymentUrl({
+        orderId,
+        amount,
+        orderInfo,
+        items
+      });
+
+      if (momoResult.success) {
+        res.json({
+          success: true,
+          url: momoResult.url,
+          orderId,
+          paymentMethod: "momo",
+          momoOrderId: momoResult.momoOrderId
+        });
+      } else {
+        // Order was created but payment failed
+        await Order.updatePaymentStatus(orderId, false);
+        res.status(500).json({
+          success: false,
+          message: momoResult.message || "Không thể tạo link thanh toán Momo",
+          orderId
+        });
+      }
+      return;
+    }
+    
+    // Mock payment for testing (stripe method)
+    if (paymentMethod === "stripe") {
+      const mockResult = await mockPaymentService.createPaymentSession({
+        orderId,
+        amount,
+        orderInfo: `Thanh toán đơn hàng #${orderId} - ${firstName} ${lastName}`,
+        items
+      });
+
+      if (mockResult.success) {
+        // Simulate successful payment immediately
+        await Order.updatePaymentStatus(orderId, true);
+        
+        res.json({
+          success: true,
+          url: `${frontend_url}/verify?success=true&orderId=${orderId}&paymentMethod=stripe&mock=true`,
+          orderId,
+          paymentMethod: "stripe",
+          mock: true
+        });
+      } else {
+        await Order.updatePaymentStatus(orderId, false);
+        res.status(500).json({
+          success: false,
+          message: "Mock payment failed",
+          orderId
+        });
+      }
+      return;
+    }
+    
+    // Default: Create real Stripe session (if needed)
     const line_items = items.map(item => {
       // Ensure price is valid
       const price = parseFloat(item.price);
@@ -132,7 +193,8 @@ const placeOrder = async (req, res) => {
       res.json({ 
         success: true, 
         url: session.url,
-        orderId
+        orderId,
+        paymentMethod: "stripe"
       });
     } catch (stripeError) {
       console.error("Stripe session creation error:", stripeError);
@@ -150,10 +212,20 @@ const placeOrder = async (req, res) => {
     
   } catch (error) {
     console.error("Order error:", error);
+    console.error("Error stack:", error.stack);
+    console.error("Request body:", req.body);
+    console.error("User:", req.user);
+    
     res.status(500).json({ 
       success: false, 
       message: "Error while placing order",
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      debug: process.env.NODE_ENV === 'development' ? {
+        errorType: error.constructor.name,
+        errorMessage: error.message,
+        hasUser: !!req.user,
+        hasToken: !!req.headers.authorization
+      } : undefined
     });
   }
 };
@@ -187,7 +259,6 @@ const verifyOrder = async (req, res) => {
 const userOrders = async (req, res) => {
   try {
     const userId = req.user.id;
-    console.log(`Fetching orders for user ${userId}`);
 
     // Get all orders for this user
     const orders = await Order.findByUserId(userId);
@@ -214,8 +285,6 @@ const userOrders = async (req, res) => {
       })
     );
     
-    console.log(`Found ${detailedOrders.length} orders for user ${userId}`);
-    
     res.json({
       success: true,
       data: detailedOrders
@@ -235,7 +304,7 @@ const listOrders = async (req, res) => {
     // Get query parameters for filtering
     const { status, payment, sort = 'created_at', order = 'desc', page = 1, limit = 20 } = req.query;
     
-    console.log(`Admin fetching orders with filters: status=${status}, payment=${payment}`);
+    // Admin fetching orders with filters
     
     // Get orders with optional filters
     const orders = await Order.listAll({
@@ -253,7 +322,7 @@ const listOrders = async (req, res) => {
       payment: payment === 'true' ? true : payment === 'false' ? false : undefined
     });
     
-    console.log(`Found ${orders.length} orders out of ${total} total`);
+    // Found orders with pagination
     
     // Format response with pagination info
     res.json({
@@ -275,4 +344,73 @@ const listOrders = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders };
+// Momo payment webhook handler
+const momoWebhook = async (req, res) => {
+  try {
+    // Momo webhook received
+    
+    const verification = momoPaymentService.verifyCallback(req.body);
+    
+    if (!verification.valid) {
+      return res.status(400).json({
+        success: false,
+        message: verification.message
+      });
+    }
+
+    // Extract original order ID from extraData
+    const originalOrderId = verification.extraData?.orderId;
+    
+    if (!originalOrderId) {
+      console.error('No order ID found in Momo callback');
+      return res.status(400).json({
+        success: false,
+        message: 'Order ID not found'
+      });
+    }
+
+    if (verification.success) {
+      // Payment successful
+      await Order.updatePaymentStatus(originalOrderId, true);
+      console.log(`Payment successful for order ${originalOrderId}`);
+    } else {
+      // Payment failed
+      await Order.updatePaymentStatus(originalOrderId, false);
+      console.log(`Payment failed for order ${originalOrderId}: ${verification.message}`);
+    }
+
+    res.json({
+      success: true,
+      message: 'Webhook processed successfully'
+    });
+
+  } catch (error) {
+    console.error('Momo webhook error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Webhook processing failed'
+    });
+  }
+};
+
+// Momo payment return handler
+const momoReturn = async (req, res) => {
+  try {
+    const { orderId, resultCode, message } = req.query;
+    
+    if (resultCode === '0') {
+      // Payment successful
+      await Order.updatePaymentStatus(orderId, true);
+      res.redirect(`http://localhost:5173/verify?success=true&orderId=${orderId}&paymentMethod=momo`);
+    } else {
+      // Payment failed
+      await Order.updatePaymentStatus(orderId, false);
+      res.redirect(`http://localhost:5173/verify?success=false&orderId=${orderId}&paymentMethod=momo&message=${encodeURIComponent(message)}`);
+    }
+  } catch (error) {
+    console.error('Momo return error:', error);
+    res.redirect(`http://localhost:5173/verify?success=false&message=${encodeURIComponent('Lỗi xử lý thanh toán')}`);
+  }
+};
+
+export { placeOrder, verifyOrder, userOrders, listOrders, momoWebhook, momoReturn };
