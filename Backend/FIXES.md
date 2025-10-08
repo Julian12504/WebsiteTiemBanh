@@ -1,4 +1,4 @@
-# Cake Fantasy System - Backend Fixes
+# Cake Shop System - Backend Fixes
 
 ## Issues Identified and Fixed
 

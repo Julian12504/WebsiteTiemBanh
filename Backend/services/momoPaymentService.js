@@ -53,8 +53,8 @@ class MomoPaymentService {
     // Dữ liệu gửi lên Momo
     const requestBody = {
       partnerCode: this.partnerCode,
-      partnerName: process.env.MOMO_PARTNER_NAME || "Cake Fantasy",
-      storeId: process.env.MOMO_STORE_ID || "CakeFantasyStore",
+      partnerName: process.env.MOMO_PARTNER_NAME || "Cake Shop",
+      storeId: process.env.MOMO_STORE_ID || "CakeShopStore",
       requestId: requestId,
       amount: Math.round(amount), // Momo yêu cầu số nguyên
       orderId: momoOrderId,

@@ -1,7 +1,7 @@
 {
   "name": "cake-fantasy-db-tools",
   "version": "1.0.0",
-  "description": "Database tools for Cake Fantasy System",
+  "description": "Database tools for Cake Shop System",
   "scripts": {
     "seed": "node --experimental-modules seed.js"
   },

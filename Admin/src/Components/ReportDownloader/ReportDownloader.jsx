@@ -215,7 +215,7 @@ const ReportDownloader = ({ data, reportName, pdfHeaders, csvHeaders, reportSumm
         for (let i = 1; i <= pageCount; i++) {
           doc.setPage(i);
           doc.text(
-            'Cake Fantasy System - Confidential',
+            'Cake Shop System - Confidential',
             14,
             doc.internal.pageSize.height - 10
           );
@@ -281,7 +281,7 @@ const ReportDownloader = ({ data, reportName, pdfHeaders, csvHeaders, reportSumm
         <div className="report-preview-overlay">
           <div className="report-preview-container">
             <div className="preview-header">
-              <img src={assets.font} alt="Cake Fantasy" className="preview-logo" />
+              <img src={assets.font} alt="Cake Shop" className="preview-logo" />
               <h3>{reportName} Report</h3>
               <button 
                 className="close-preview-btn" 

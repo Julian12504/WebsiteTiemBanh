@@ -63,7 +63,7 @@ const BillGenerator = ({ orderData, onClose }) => {
         <body>
           <div class="invoice-container">
             <div class="header">
-              <div class="invoice-title">CAKE FANTASY</div>
+              <div class="invoice-title">CAKE SHOP</div>
               <div class="invoice-title">HÓA ĐƠN #${orderData.id}</div>
             </div>
 
@@ -127,7 +127,7 @@ const BillGenerator = ({ orderData, onClose }) => {
 
             <div class="footer">
               <p>Cảm ơn bạn đã sử dụng dịch vụ!</p>
-              <p>Cake Fantasy - Nguyên liệu làm bánh cao cấp</p>
+              <p>Cake Shop - Nguyên liệu làm bánh cao cấp</p>
             </div>
           </div>
           <script>setTimeout(() => window.print(), 300);</script>
@@ -165,7 +165,7 @@ const BillGenerator = ({ orderData, onClose }) => {
       <div className="bill-preview">
         <div className="preview-header">
           <div className="preview-logo">
-            <img src={assets.font} alt="Cake Fantasy" />
+            <img src={assets.font} alt="Cake Shop" />
           </div>
           <div className="invoice-number">HÓA ĐƠN #{orderData.id}</div>
         </div>

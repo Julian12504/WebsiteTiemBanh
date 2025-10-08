@@ -71,7 +71,7 @@ const Login = ({ url }) => {
     <div className="admin-login">
       <div className="login-container">
         <div className="login-header">
-          <img src={assets.font} alt="Cake Fantasy" className="login-logo" />
+          <img src={assets.font} alt="Cake Shop" className="login-logo" />
           <h2>Bảng điều khiển quản trị</h2>
         </div>
         

@@ -236,7 +236,7 @@ const POS = ({ url }) => {
         <body>
           <div class="receipt">
             <div class="receipt-header">
-              <h1>Cake Fantasy</h1>
+              <h1>Cake Shop</h1>
               <p>123 Đường Bánh Ngọt, TP. HCM</p>
               <p>Điện thoại: 0909 123 456</p>
               <p>Hóa đơn #${orderId}</p>
