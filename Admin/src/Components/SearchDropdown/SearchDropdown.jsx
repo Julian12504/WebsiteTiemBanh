@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SearchDropdown.css';
 
+// Chuyển đổi category từ tiếng Anh sang tiếng Việt
+const translateCategory = (category) => {
+  const categoryMap = {
+    'Cake': 'Bánh',
+    'Cake Ingredients': 'Nguyên liệu làm bánh',
+    'Party Items': 'Đồ trang trí tiệc'
+  };
+  return categoryMap[category] || category;
+};
+
 const SearchDropdown = ({ allItems, onItemSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredItems, setFilteredItems] = useState([]);
@@ -76,7 +86,7 @@ const SearchDropdown = ({ allItems, onItemSelect }) => {
                 >
                   <div className="item-name">{item.name}</div>
                   <div className="item-details">
-                    <span className="item-category">{item.category}</span>
+                    <span className="item-category">{translateCategory(item.category)}</span>
                     <span className="item-price">
                       {parseFloat(item.selling_price || item.cost_price || 0).toLocaleString('vi-VN')} VNĐ
                     </span>
