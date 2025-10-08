@@ -6,7 +6,7 @@ import { category_list } from '../../assets/assets'
 const ExploreCategories = ({ category, setCategory }) => {
   // Map hiển thị tiếng Việt
   const labelMap = {
-    'Bakery': 'Bánh kem',
+    'Cake': 'Bánh',
     'Cake Ingredients': 'Nguyên liệu làm bánh',
     'Party Items': 'Đồ trang trí tiệc'
   };
