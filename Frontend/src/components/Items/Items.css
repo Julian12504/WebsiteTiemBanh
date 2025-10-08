@@ -241,6 +241,23 @@
   overflow: hidden;
 }
 
+/* Disabled state for out of stock */
+.add-to-cart-btn.disabled,
+.add-to-cart-btn:disabled {
+  background: linear-gradient(135deg, #ccc, #ddd);
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.add-to-cart-btn.disabled:hover,
+.add-to-cart-btn:disabled:hover {
+  background: linear-gradient(135deg, #ccc, #ddd);
+  transform: none;
+  box-shadow: none;
+}
+
 .add-to-cart-btn::before {
   content: '';
   position: absolute;
