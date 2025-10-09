@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: cake-shop-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-cake_shop_root_password}
+      MYSQL_DATABASE: ${DB_NAME:-cake_shop}
+      MYSQL_USER: ${DB_USER:-cake_shop_user}
+      MYSQL_PASSWORD: ${DB_PASS:-cake_shop_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Backend/database/cake_shop.sql:/docker-entrypoint-initdb.d/cake_shop.sql
+    networks:
+      - cake-shop-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: cake-shop-backend
+    restart: unless-stopped
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-cake_shop_user}
+      DB_PASS: ${DB_PASS:-cake_shop_password}
+      DB_NAME: ${DB_NAME:-cake_shop}
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:-your_jwt_secret_key}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_SECRET_KEY: ${CLOUDINARY_SECRET_KEY}
+      CLOUDINARY_NAME: ${CLOUDINARY_NAME}
+      MOMO_PARTNER_CODE: ${MOMO_PARTNER_CODE}
+      MOMO_ACCESS_KEY: ${MOMO_ACCESS_KEY}
+      MOMO_SECRET_KEY: ${MOMO_SECRET_KEY}
+      MOMO_ENDPOINT: ${MOMO_ENDPOINT}
+      MOMO_QUERY_ENDPOINT: ${MOMO_QUERY_ENDPOINT}
+      MOMO_RETURN_URL: ${MOMO_RETURN_URL}
+      MOMO_NOTIFY_URL: ${MOMO_NOTIFY_URL}
+      MOMO_PARTNER_NAME: ${MOMO_PARTNER_NAME:-Cake Shop}
+      MOMO_STORE_ID: ${MOMO_STORE_ID:-CakeShopStore}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+    ports:
+      - "4000:4000"
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      - mysql
+    networks:
+      - cake-shop-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: cake-shop-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - cake-shop-network
+
+  # Admin Panel
+  admin:
+    build:
+      context: ./Admin
+      dockerfile: Dockerfile
+    container_name: cake-shop-admin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - cake-shop-network
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: cake-shop-nginx
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - admin
+      - backend
+    networks:
+      - cake-shop-network
+
+volumes:
+  mysql_data:
+  backend_uploads:
+
+networks:
+  cake-shop-network:
+    driver: bridge
