@@ -15,7 +15,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./Backend/database/cake_shop.sql:/docker-entrypoint-initdb.d/cake_shop.sql
+      - ./cake_fantasy_db.sql:/docker-entrypoint-initdb.d/cake_fantasy_db.sql
     networks:
       - cake-shop-network
 
