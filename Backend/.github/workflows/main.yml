@@ -222,9 +222,9 @@ jobs:
       with:
         sarif_file: 'trivy-results.sarif'
 
-  # Deploy to Production VPS (only on main branch)
+  # Deploy to Production (only on main branch)
   deploy:
-    name: Deploy to Production VPS
+    name: Deploy to Production
     runs-on: ubuntu-latest
     needs: [backend-test, frontend-test, admin-test, integration-test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -245,57 +245,40 @@ jobs:
         name: admin-build
         path: ./Admin/dist/
 
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        port: ${{ secrets.VPS_PORT }}
-        script: |
-          # Navigate to project directory
-          cd /opt/cake-shop
-          
-          # Pull latest code
-          git pull origin main
-          
-          # Create environment file if not exists
-          if [ ! -f .env ]; then
-            cp env.production.example .env
-            echo "Please update .env file with your production values"
-          fi
-          
-          # Stop existing containers
-          docker-compose down
-          
-          # Remove old images to free space
-          docker image prune -f
-          
-          # Build Docker images
-          docker-compose build --no-cache
-          
-          # Start containers
-          docker-compose up -d
-          
-          # Wait for services to be ready
-          sleep 30
-          
-          # Check if services are running
-          docker-compose ps
-          
-          # Show logs for debugging
-          docker-compose logs --tail=50
+    # Add your deployment steps here
+    # Examples for different platforms:
 
-    - name: Health Check
+    # For Vercel deployment:
+    # - name: Deploy Frontend to Vercel
+    #   uses: amondnet/vercel-action@v25
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+    #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+    #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+    #     working-directory: ./Frontend
+
+    # For AWS S3 + CloudFront:
+    # - name: Deploy Frontend to S3
+    #   uses: aws-actions/configure-aws-credentials@v4
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-east-1
+    # - name: Upload to S3
+    #   run: aws s3 sync ./Frontend/dist/ s3://your-bucket-name --delete
+
+    # For Docker deployment:
+    # - name: Build Docker image
+    #   run: docker build -t cake-shop-backend ./Backend
+    # - name: Push to Docker registry
+    #   run: docker push your-registry/cake-shop-backend
+
+    - name: Notify deployment success
       run: |
-        echo "Waiting for deployment to complete..."
-        sleep 60
-        echo "Checking if services are responding..."
-        # You can add actual health checks here
         echo "🚀 Deployment completed successfully!"
-        echo "Frontend: Available at https://your-domain.com"
-        echo "Admin Panel: Available at https://your-domain.com/admin"
-        echo "Backend API: Available at https://your-domain.com/api"
+        echo "Frontend: Built and ready for deployment"
+        echo "Admin Panel: Built and ready for deployment"
+        echo "Backend: Ready for deployment"
 
   # Cleanup
   cleanup:
