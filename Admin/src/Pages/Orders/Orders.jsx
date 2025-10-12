@@ -177,6 +177,21 @@ const Orders = ({ url }) => {
     }
   };
 
+  const translateStatus = (status) => {
+    switch (status) {
+      case 'Item Processing':
+        return 'Đang xử lý';
+      case 'Out for Delivery':
+        return 'Đang giao hàng';
+      case 'Delivered':
+        return 'Đã giao';
+      case 'Cancelled':
+        return 'Đã hủy';
+      default:
+        return status;
+    }
+  };
+
   const toggleOrderDetails = (orderId) => {
     if (expandedOrderId === orderId) {
       setExpandedOrderId(null);
@@ -260,7 +275,7 @@ const Orders = ({ url }) => {
                       })}
                     </p>
                     <p className={`status ${getStatusClass(order.status)}`}>
-                      {order.status}
+                      {translateStatus(order.status)}
                     </p>
                     <p
                       className={`payment ${order.payment ? "paid" : "unpaid"}`}

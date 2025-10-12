@@ -29,11 +29,11 @@ router.get('/list', listGRNs);  // Must be BEFORE /:id route!
 // Create new GRN
 router.post('/create', createGRN);
 
-// Complete GRN
-router.post('/:id/complete', completeGRN);
+// Complete GRN - Only admin and owner can approve
+router.post('/:id/complete', adminMiddleware('admin'), completeGRN);
 
-// Cancel GRN
-router.post('/:id/cancel', cancelGRN);
+// Cancel GRN - Only admin and owner can reject
+router.post('/:id/cancel', adminMiddleware('admin'), cancelGRN);
 
 // Get GRN by ID 
 router.get('/:id', getGRNById); 

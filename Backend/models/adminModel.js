@@ -39,6 +39,18 @@ const Admin = {
       throw error;
     }
   },
+
+  findByUsername: async (username) => {
+    try {
+      const [rows] = await db.query(
+        "SELECT * FROM admin_users WHERE username = ?",
+        [username]
+      );
+      return rows[0];
+    } catch (error) {
+      throw error;
+    }
+  },
   
   findById: async (id) => {
     try {

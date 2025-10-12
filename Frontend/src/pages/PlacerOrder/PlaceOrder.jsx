@@ -321,7 +321,7 @@ const PlaceOrder = () => {
           >
             {isSubmitting ? "Đang xử lý..." : 
               paymentMethod === "momo" ? "THANH TOÁN BẰNG MOMO" : 
-              "THANH TOÁN BẰNG THẺ"}
+              "TEST PAYMENT"}
           </button>
         </div>
       </div>

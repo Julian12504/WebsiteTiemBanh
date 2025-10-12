@@ -153,7 +153,7 @@ PORT=4000
 # JWT Authentication
 JWT_SECRET=your_jwt_secret
 
-# Stripe Payment Configuration
+# Test Payment Configuration
 STRIPE_SECRET_KEY=your_stripe_secret_key
 
 # Cloudinary Image Storage Configuration
@@ -186,7 +186,7 @@ FRONTEND_URL=http://localhost:5173
 - ✅ **Chi tiết sản phẩm** - Thông tin, đánh giá, số lượng
 - ✅ **Giỏ hàng** - Quản lý sản phẩm, cập nhật số lượng
 - ✅ **Đặt hàng** - Form thông tin giao hàng
-- ✅ **Thanh toán** - Stripe, MoMo
+- ✅ **Thanh toán** - Test Payment, MoMo
 - ✅ **Đơn hàng của tôi** - Theo dõi trạng thái
 - ✅ **Đăng nhập/Đăng ký** - Xác thực người dùng
 - ✅ **Đánh giá sản phẩm** - Rating và comment
@@ -213,7 +213,7 @@ FRONTEND_URL=http://localhost:5173
 
 ## 💳 Thanh toán
 
-### Stripe
+### Test Payment
 - Thẻ tín dụng/ghi nợ quốc tế
 - Webhook xử lý payment status
 - Currency: USD

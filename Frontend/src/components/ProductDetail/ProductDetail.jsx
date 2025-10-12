@@ -84,11 +84,8 @@ const ProductDetail = () => {
       // Sử dụng addToCart từ context để xử lý logic đăng nhập
       const success = await addToCart(product.id, quantity);
       
-      if (success) {
-        // Nếu đã đăng nhập, addToCart sẽ tự động gọi API
-        toast.success(`${quantity} ${product.unit || 'sản phẩm'} "${product.name}" đã được thêm vào giỏ hàng!`);
-      }
-      // Nếu chưa đăng nhập, addToCart sẽ redirect đến login và không cần hiển thị thông báo
+      // StoreContext đã xử lý việc hiển thị thông báo toast
+      // Không cần hiển thị thêm toast ở đây để tránh trùng lặp
       
     } catch (err) {
       console.error('Lỗi khi thêm vào giỏ hàng:', err);

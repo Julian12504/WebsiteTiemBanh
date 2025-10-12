@@ -77,6 +77,20 @@
     font-size: 13px;
 }
 
+/* Center all columns except product name (3rd column) */
+.list-table-format > *:not(:nth-child(3)) {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure product name stays left-aligned */
+.list-table-format > :nth-child(3) {
+    text-align: left;
+    justify-content: flex-start;
+}
+
 .list-table-format:last-child {
     border-bottom: none;
 }
@@ -84,6 +98,13 @@
 .list-table-format.title {
     background-color: #f9f9f9;
     font-weight: bold;
+    text-align: center;
+}
+
+/* Left-align product name header to match content */
+.list-table-format.title > :nth-child(3) {
+    text-align: left;
+    justify-content: flex-start;
 }
 
 .list-table-format img {
@@ -91,6 +112,8 @@
     height: 50px;
     object-fit: cover;
     border-radius: 4px;
+    display: block;
+    margin: 0 auto;
 }
 
 .item-name {
@@ -162,7 +185,7 @@
 .action-buttons {
     display: flex;
     gap: 8px;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 

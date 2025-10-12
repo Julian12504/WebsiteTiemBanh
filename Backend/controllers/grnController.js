@@ -176,9 +176,8 @@ export const createGRN = async (req, res) => {
       });
     }
 
-    // Tự động duyệt GRN ngay sau khi tạo
-    await GRN.complete(result.id);
-    console.log(`✅ GRN #${result.id} created & completed`);
+    // GRN tạo xong sẽ ở trạng thái pending, cần được duyệt thủ công
+    console.log(`✅ GRN #${result.id} created with pending status`);
 
     res.status(201).json({
       success: true,

@@ -1,9 +1,9 @@
-// Mock Payment Service for testing
+// Test Payment Service for testing
 // This service simulates successful payments without calling external APIs
 
 class MockPaymentService {
   constructor() {
-    this.name = 'Mock Payment Service';
+    this.name = 'Test Payment Service';
   }
 
   // Simulate successful payment
@@ -21,8 +21,8 @@ class MockPaymentService {
     // Always return success
     return {
       success: true,
-      paymentId: `MOCK_${orderId}_${Date.now()}`,
-      message: 'Payment session created successfully (Mock)'
+      paymentId: `TEST_${orderId}_${Date.now()}`,
+      message: 'Payment session created successfully (Test)'
     };
   }
 
@@ -35,7 +35,7 @@ class MockPaymentService {
     return {
       success: true,
       status: 'completed',
-      message: 'Payment verified successfully (Mock)'
+      message: 'Payment verified successfully (Test)'
     };
   }
 
@@ -47,7 +47,7 @@ class MockPaymentService {
     return {
       success: true,
       status: 'completed',
-      message: 'Payment completed successfully (Mock)'
+      message: 'Payment completed successfully (Test)'
     };
   }
 }

@@ -94,6 +94,22 @@ const MyOrders = () => {
     }
   };
 
+  // Dịch trạng thái đơn hàng sang tiếng Việt
+  const translateStatus = (status) => {
+    switch (status) {
+      case 'Item Processing':
+        return 'Đang xử lý';
+      case 'Out for Delivery':
+        return 'Đang giao hàng';
+      case 'Delivered':
+        return 'Đã giao';
+      case 'Cancelled':
+        return 'Đã hủy';
+      default:
+        return status;
+    }
+  };
+
   // ⏳ Khi đang tải
   if (loading) {
     return <div className="my-orders-container loading">Đang tải đơn hàng của bạn...</div>;
@@ -134,15 +150,7 @@ const MyOrders = () => {
               
               <div className="order-meta">
                 <span className={`order-status ${getStatusClass(order.status)}`}>
-                  {order.status === 'Item Processing'
-                    ? 'Đang xử lý'
-                    : order.status === 'Out for Delivery'
-                    ? 'Đang giao hàng'
-                    : order.status === 'Delivered'
-                    ? 'Đã giao'
-                    : order.status === 'Cancelled'
-                    ? 'Đã hủy'
-                    : order.status}
+                  {translateStatus(order.status)}
                 </span>
 
                 <span className="order-amount">{formatCurrency(order.amount)}</span>

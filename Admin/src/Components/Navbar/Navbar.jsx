@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    toast.success("[translate:Đăng xuất thành công]");
+    toast.success("Đăng xuất thành công");
     setShowDropdown(false);
   };
 

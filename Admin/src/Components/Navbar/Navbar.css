@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 5px 4%;
-    background-color: #FFB9DE;
+    background-color: #302B25;
 }
 
 .navbar .logo {
@@ -22,7 +22,7 @@
 }
 
 .user-name {
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     font-size: 14px;
     font-weight: 500;
     margin: 0;
@@ -35,6 +35,7 @@
     padding: 2px 8px;
     border-radius: 10px;
     display: inline-block;
+    font-style: bold;
 }
 
 .user-role.employee {
@@ -46,7 +47,7 @@
 }
 
 .user-role.owner {
-    background-color: #e582d6;
+    background-color: #000000;
 }
 
 /* Dropdown styles */
@@ -64,7 +65,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e582d6;
+    background-color: #616061;
 }
 
 .dropdown-toggle:hover {

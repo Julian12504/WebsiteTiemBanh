@@ -55,7 +55,7 @@ margin-top: 25px;
 }
 
 .payment-button.stripe {
-  background: linear-gradient(135deg, #635bff, #8b7fff);
+  background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
 }
 
@@ -76,7 +76,7 @@ margin-top: 25px;
 }
 
 .payment-button.stripe:hover:not(:disabled) {
-  box-shadow: 0 8px 25px rgba(99, 91, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
 }
 
 .payment-button.momo:hover:not(:disabled) {

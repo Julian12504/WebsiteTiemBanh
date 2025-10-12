@@ -34,7 +34,7 @@ const Login = ({ url }) => {
     
     try {
       setLoading(true);
-      console.log(`Đang đăng nhập tại ${url}/api/admin/login với email: ${credentials.email}`);
+      console.log(`Đang đăng nhập tại ${url}/api/admin/login với email/username: ${credentials.email}`);
       
       const response = await axios.post(`${url}/api/admin/login`, credentials);
       
@@ -56,7 +56,7 @@ const Login = ({ url }) => {
       }
       
       if (error.response?.status === 401) {
-        toast.error("Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra lại email và mật khẩu.");
+        toast.error("Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra lại email/tên đăng nhập và mật khẩu.");
       } else if (error.response?.status === 403) {
         toast.error("Từ chối truy cập. Cần quyền quản trị viên.");
       } else {
@@ -77,13 +77,13 @@ const Login = ({ url }) => {
         
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group flex-col">
-            <p>Email</p>
+            <p>Email hoặc Tên đăng nhập</p>
             <input 
-              type="email" 
+              type="text" 
               name="email" 
               value={credentials.email}
               onChange={handleChange}
-              placeholder="nhanvien@cakefantasy.vn"
+              placeholder="nhanvien@cakefantasy.vn hoặc tên đăng nhập"
               required
             />
           </div>

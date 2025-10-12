@@ -7,8 +7,8 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
   const paymentMethods = [
     {
       id: 'stripe',
-      name: 'Thẻ tín dụng (Test)',
-      icon: '💳',
+      name: 'Test Payment',
+      icon: '🧪',
       description: 'Thanh toán test - nhấn là thành công ngay',
       available: true
     },
@@ -94,12 +94,12 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
         </div>
       )}
 
-      {/* Stripe Payment Info */}
+      {/* Test Payment Info */}
       {selectedMethod === 'stripe' && (
         <div className="stripe-payment-info">
           <div className="stripe-info-header">
-            <span className="stripe-icon">💳</span>
-            <h4>Thanh toán bằng thẻ</h4>
+            <span className="stripe-icon">🧪</span>
+            <h4>Test Payment</h4>
           </div>
           
           <div className="stripe-info-content">

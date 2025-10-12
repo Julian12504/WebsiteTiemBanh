@@ -42,10 +42,7 @@ const Footer = () => {
           <h2>LIÊN HỆ</h2>
           <ul>
             <li>
-              <a href="tel:+94774718672">+94 77 471 8672</a>
-            </li>
-            <li>
-              <a href="tel:+94773047749">+94 77 304 7749</a>
+              <a href="tel:+84352773474">+84 352 773 474</a>
             </li>
             <li>
               <a href="mailto:info@cakefantasy.com">info@cakefantasy.com</a>
@@ -58,7 +55,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <p className="footer-copyright">
-          Bản quyền © 2025 BakeShop.com — Mọi quyền được bảo lưu.
+          Bản quyền © 2025 Cake Shop
         </p>
         <button className="back-to-top" onClick={scrollToTop}>
           ↑ Lên đầu trang

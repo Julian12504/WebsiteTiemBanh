@@ -12,7 +12,8 @@ const LoginPopup = ({ setShowLogin }) => {
   const [data, setData] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   });
 
   const onChangeHandler = (event) => {
@@ -23,6 +24,19 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (event) => {
     event.preventDefault();
+    
+    // Kiểm tra xác nhận mật khẩu khi đăng ký
+    if (currState === "Đăng ký") {
+      if (data.password !== data.confirmPassword) {
+        toast.error("Mật khẩu xác nhận không khớp!");
+        return;
+      }
+      if (data.password.length < 6) {
+        toast.error("Mật khẩu phải có ít nhất 6 ký tự!");
+        return;
+      }
+    }
+    
     let newUrl = url;
     if (currState === "Đăng nhập") {
       newUrl += "/api/user/login";
@@ -30,8 +44,14 @@ const LoginPopup = ({ setShowLogin }) => {
       newUrl += "/api/user/register";
     }
 
+    // Chuẩn bị dữ liệu gửi lên server (loại bỏ confirmPassword)
+    const submitData = { ...data };
+    if (currState === "Đăng ký") {
+      delete submitData.confirmPassword;
+    }
+
     try {
-      const response = await axios.post(newUrl, data);
+      const response = await axios.post(newUrl, submitData);
 
       if (response.data.success) {
         // Lưu token vào localStorage
@@ -96,6 +116,16 @@ const LoginPopup = ({ setShowLogin }) => {
             placeholder="Mật khẩu"
             required
           />
+          {currState === "Đăng ký" && (
+            <input
+              name="confirmPassword"
+              onChange={onChangeHandler}
+              value={data.confirmPassword}
+              type="password"
+              placeholder="Xác nhận mật khẩu"
+              required
+            />
+          )}
         </div>
 
         <button type="submit">
@@ -106,12 +136,18 @@ const LoginPopup = ({ setShowLogin }) => {
         {currState === "Đăng nhập" ? (
           <p>
             Chưa có tài khoản?{" "}
-            <span onClick={() => setCurrState("Đăng ký")}>Đăng ký ngay</span>
+            <span onClick={() => {
+              setCurrState("Đăng ký");
+              setData({ name: "", email: "", password: "", confirmPassword: "" });
+            }}>Đăng ký ngay</span>
           </p>
         ) : (
           <p>
             Đã có tài khoản?{" "}
-            <span onClick={() => setCurrState("Đăng nhập")}>Đăng nhập tại đây</span>
+            <span onClick={() => {
+              setCurrState("Đăng nhập");
+              setData({ name: "", email: "", password: "", confirmPassword: "" });
+            }}>Đăng nhập tại đây</span>
           </p>
         )}
       </form>

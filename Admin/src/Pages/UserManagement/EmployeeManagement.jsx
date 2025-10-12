@@ -27,11 +27,11 @@ const EmployeeManagement = ({ url }) => {
       if (response.data.success) {
         setEmployees(response.data.data);
       } else {
-        toast.error(response.data.message || "Không tải được danh sách người dùng");
+        toast.error(response.data.message || "Không tải được danh sách nhân viên");
       }
     } catch (error) {
-      console.error("Lỗi khi tải người dùng:", error);
-      toast.error(error.response?.data?.message || "Không tải được danh sách người dùng");
+      console.error("Lỗi khi tải nhân viên:", error);
+      toast.error(error.response?.data?.message || "Không tải được danh sách nhân viên");
     } finally {
       setLoading(false);
     }
@@ -66,11 +66,11 @@ const EmployeeManagement = ({ url }) => {
         resetForm();
         fetchEmployees();
       } else {
-        toast.error(response.data.message || "Thêm người dùng thất bại");
+        toast.error(response.data.message || "Thêm nhân viên thất bại");
       }
     } catch (error) {
-      console.error("Lỗi thêm người dùng:", error);
-      toast.error(error.response?.data?.message || "Thêm người dùng thất bại");
+      console.error("Lỗi thêm nhân viên:", error);
+      toast.error(error.response?.data?.message || "Thêm nhân viên thất bại");
     }
   };
 
@@ -112,7 +112,7 @@ const EmployeeManagement = ({ url }) => {
     return (
       <div className="error-message">
         <h2>Truy cập bị từ chối</h2>
-        <p>Bạn không có quyền quản lý người dùng.</p>
+        <p>Bạn không có quyền quản lý nhân viên.</p>
       </div>
     );
   }
@@ -120,7 +120,7 @@ const EmployeeManagement = ({ url }) => {
   return (
     <div className="employee-management">
       <div className="page-header">
-        <h1>Quản lý người dùng</h1>
+        <h1>Quản lý nhân viên</h1>
         <div className="action-buttons">
           <button onClick={() => openModal('employee')} className="add-btn">Thêm nhân viên</button>
           <button onClick={() => openModal('admin')} className="add-btn admin-btn">Thêm quản trị viên</button>
@@ -153,7 +153,12 @@ const EmployeeManagement = ({ url }) => {
                     <td>{emp.username}</td>
                     <td>{emp.first_name} {emp.last_name}</td>
                     <td>{emp.email}</td>
-                    <td><span className={`role-badge ${emp.role}`}>{emp.role}</span></td>
+                    <td><span className={`role-badge ${emp.role}`}>
+                      {emp.role === 'owner' ? 'Chủ sở hữu' : 
+                       emp.role === 'admin' ? 'Quản trị viên' : 
+                       emp.role === 'employee' ? 'Nhân viên' : 
+                       emp.role}
+                    </span></td>
                     <td>{new Date(emp.created_at).toLocaleDateString('vi-VN')}</td>
                     <td>
                       <button onClick={() => deleteEmployee(emp.id)} className="delete-btn">Xóa</button>

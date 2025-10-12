@@ -138,6 +138,15 @@ const GRNList = ({ url }) => {
     return supplier ? supplier.name : 'Không xác định';
   };
 
+  const getStatusText = (status) => {
+    const statusMap = {
+      'pending': 'Chờ duyệt',
+      'approved': 'Đã duyệt',
+      'rejected': 'Từ chối'
+    };
+    return statusMap[status] || 'Không xác định';
+  };
+
   // Lọc danh sách phiếu nhập theo từ khóa tìm kiếm (số tham chiếu hoặc tên nhà cung cấp)
   const filteredGRNs = searchTerm
     ? grnList.filter(grn =>
@@ -163,6 +172,16 @@ const GRNList = ({ url }) => {
                 {supplier.name}
               </option>
             ))}
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <p>Trạng thái</p>
+          <select name="status" value={filters.status} onChange={handleFilterChange}>
+            <option value="">Tất cả trạng thái</option>
+            <option value="pending">Chờ duyệt</option>
+            <option value="approved">Đã duyệt</option>
+            <option value="rejected">Từ chối</option>
           </select>
         </div>
 
@@ -196,6 +215,7 @@ const GRNList = ({ url }) => {
                 <th>Ngày tạo</th>
                 <th>Số lượng sản phẩm</th>
                 <th>Tổng tiền</th>
+                <th>Trạng thái</th>
                 <th>Hành động</th>
               </tr>
             </thead>
@@ -208,6 +228,11 @@ const GRNList = ({ url }) => {
                   <td>{formatDate(grn.created_at)}</td>
                   <td>{grn.item_count}</td>
                   <td className="grn-amount">{formatCurrency(grn.total_amount)}</td>
+                  <td>
+                    <span className={`status-badge status-${grn.status || 'pending'}`}>
+                      {getStatusText(grn.status || 'pending')}
+                    </span>
+                  </td>
                   <td>
                     <button className="view-btn" onClick={() => handleViewGRN(grn.id)}>Xem chi tiết</button>
                   </td>

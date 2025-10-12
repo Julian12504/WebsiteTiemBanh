@@ -15,16 +15,16 @@ const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Validate email format
-    if (!validator.isEmail(email)) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Vui lòng nhập email hợp lệ" 
-      });
+    let admin;
+    
+    // Check if input is email or username
+    if (validator.isEmail(email)) {
+      // Find admin by email
+      admin = await Admin.findByEmail(email);
+    } else {
+      // Find admin by username
+      admin = await Admin.findByUsername(email);
     }
-
-    // Find admin by email
-    const admin = await Admin.findByEmail(email);
     
     if (!admin) {
       return res.status(401).json({ 

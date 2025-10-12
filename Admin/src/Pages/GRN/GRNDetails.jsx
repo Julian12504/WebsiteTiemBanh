@@ -10,7 +10,7 @@ const GRNDetails = ({ url }) => {
   const [grn, setGRN] = useState(null);
   const [loading, setLoading] = useState(true);
   const [supplier, setSupplier] = useState(null);
-  const { token } = useContext(AdminAuthContext);
+  const { token, hasRole } = useContext(AdminAuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +46,71 @@ const GRNDetails = ({ url }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleApproveGRN = async () => {
+    if (!window.confirm('Bạn có chắc chắn muốn duyệt phiếu nhập này?')) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${url}/api/grn/${grnId}/complete`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.data.success) {
+        toast.success('Đã duyệt phiếu nhập thành công!');
+        fetchGRNDetails(); // Refresh data
+      } else {
+        toast.error(response.data.message || 'Không thể duyệt phiếu nhập');
+      }
+    } catch (err) {
+      console.error('Lỗi khi duyệt phiếu nhập:', err);
+      toast.error(err.response?.data?.message || 'Có lỗi khi duyệt phiếu nhập!');
+    }
+  };
+
+  const handleRejectGRN = async () => {
+    if (!window.confirm('Bạn có chắc chắn muốn từ chối phiếu nhập này?')) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${url}/api/grn/${grnId}/cancel`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.data.success) {
+        toast.success('Đã từ chối phiếu nhập!');
+        fetchGRNDetails(); // Refresh data
+      } else {
+        toast.error(response.data.message || 'Không thể từ chối phiếu nhập');
+      }
+    } catch (err) {
+      console.error('Lỗi khi từ chối phiếu nhập:', err);
+      toast.error(err.response?.data?.message || 'Có lỗi khi từ chối phiếu nhập!');
+    }
+  };
+
+  const getStatusText = (status) => {
+    const statusMap = {
+      'pending': 'Chờ duyệt',
+      'approved': 'Đã duyệt',
+      'rejected': 'Từ chối'
+    };
+    return statusMap[status] || 'Không xác định';
   };
 
   const fetchSupplierDetails = async (supplierId) => {
@@ -163,6 +228,12 @@ const GRNDetails = ({ url }) => {
               <span className="info-label">Người tạo:</span>
               <span className="info-value">{grn.received_by_name || 'Không xác định'}</span>
             </div>
+            <div className="info-item">
+              <span className="info-label">Trạng thái:</span>
+              <span className={`status-badge status-${grn.status || 'pending'}`}>
+                {getStatusText(grn.status || 'pending')}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -254,6 +325,26 @@ const GRNDetails = ({ url }) => {
             <p className="no-notes">Không có ghi chú cho phiếu nhập này</p>
           )}
         </div>
+
+        {/* Approval Actions - Only admin and owner can approve/reject */}
+        {grn.status === 'pending' && hasRole('admin') && (
+          <div className="grn-actions">
+            <button 
+              className="approve-btn" 
+              onClick={handleApproveGRN}
+              disabled={loading}
+            >
+              ✓ Duyệt phiếu nhập
+            </button>
+            <button 
+              className="reject-btn" 
+              onClick={handleRejectGRN}
+              disabled={loading}
+            >
+              ✗ Từ chối
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

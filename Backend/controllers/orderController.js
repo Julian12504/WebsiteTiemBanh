@@ -20,7 +20,7 @@ const placeOrder = async (req, res) => {
       contactNumber1,
       contactNumber2 = "", 
       specialInstructions = "",
-      paymentMethod = "stripe" // Default to stripe, can be "stripe" or "momo"
+      paymentMethod = "stripe" // Default to test payment, can be "stripe" or "momo"
     } = req.body;    // Validate required fields
     if (!firstName || !lastName || !contactNumber1 || !address) {
       return res.status(400).json({
@@ -108,7 +108,7 @@ const placeOrder = async (req, res) => {
       return;
     }
     
-    // Mock payment for testing (stripe method)
+    // Test payment for testing (stripe method)
     if (paymentMethod === "stripe") {
       const mockResult = await mockPaymentService.createPaymentSession({
         orderId,
@@ -119,7 +119,7 @@ const placeOrder = async (req, res) => {
 
       if (mockResult.success) {
         // Simulate successful payment immediately
-        console.log(`🎭 Mock payment successful - calling updatePaymentStatus with orderId=${orderId}, status=true`);
+        console.log(`🧪 Test payment successful - calling updatePaymentStatus with orderId=${orderId}, status=true`);
         await Order.updatePaymentStatus(orderId, true);
         
         res.json({
@@ -130,11 +130,11 @@ const placeOrder = async (req, res) => {
           mock: true
         });
       } else {
-        console.log(`🎭 Mock payment failed - calling updatePaymentStatus with orderId=${orderId}, status=false`);
+        console.log(`🧪 Test payment failed - calling updatePaymentStatus with orderId=${orderId}, status=false`);
         await Order.updatePaymentStatus(orderId, false);
         res.status(500).json({
           success: false,
-          message: "Mock payment failed",
+          message: "Test payment failed",
           orderId
         });
       }

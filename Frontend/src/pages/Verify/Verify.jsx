@@ -35,7 +35,7 @@ const Verify = () => {
 
       if (response.data.success) {
         const isMock = searchParams.get("mock") === "true";
-        const paymentText = paymentMethod === "momo" ? "MoMo" : "thẻ tín dụng";
+        const paymentText = paymentMethod === "momo" ? "MoMo" : "Test Payment";
         const mockText = isMock ? " (Test Mode)" : "";
         
         setVerificationStatus({

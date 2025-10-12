@@ -8,6 +8,7 @@
     align-items: center;
     color: grey;
     font-size: max(1vw, 12px);
+    text-align: center;
 }
 
 .cart-items-item{
@@ -17,6 +18,8 @@
 
 .cart-items-item img{
     width: 50px;
+    display: block;
+    margin: 0 auto;
 }
 
 .cart hr{
@@ -27,6 +30,31 @@
 
 .cart-items-item .cross{
     cursor: pointer;
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+    margin: 0 auto;
+}
+
+.cart-items-item .cross:hover{
+    background-color: #ff3742;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
+}
+
+.cart-items-item .cross:active{
+    transform: scale(0.95);
+    box-shadow: 0 1px 2px rgba(255, 71, 87, 0.3);
 }
 
 /* Quantity controls styling */
