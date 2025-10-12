@@ -8,14 +8,14 @@ const AccessDenied = () => {
   return (
     <div className="access-denied">
       <div className="access-denied-content">
-        <h2>[translate:Truy cập bị từ chối]</h2>
-        <p>[translate:Bạn không có quyền truy cập tính năng này.]</p>
-        <p className="small">[translate:Vui lòng liên hệ quản trị viên nếu bạn cần quyền truy cập.]</p>
+        <h2>Truy cập bị từ chối</h2>
+        <p>Bạn không có quyền truy cập tính năng này.</p>
+        <p className="small">Vui lòng liên hệ quản trị viên nếu bạn cần quyền truy cập.</p>
         <button
           onClick={() => navigate('/list')}
           className="back-button"
         >
-          [translate:Quay lại danh sách hàng tồn kho]
+          Quay lại
         </button>
       </div>
     </div>
