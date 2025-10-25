@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: cake_fantasy_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cake_fantasy_db
+      MYSQL_USER: cakeuser
+      MYSQL_PASSWORD: cakepassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Backend/database/cake_shop.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cake_network
+
+  # Backend API
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: cake_fantasy_backend
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: mysql
+      DB_USER: cakeuser
+      DB_PASS: cakepassword
+      DB_NAME: cake_fantasy_db
+      DB_PORT: 3306
+      JWT_SECRET: random#secret
+      CLOUDINARY_API_KEY: 457247979638639
+      CLOUDINARY_SECRET_KEY: dP1EZCgZoU71sivLXI_saPN616o
+      CLOUDINARY_NAME: dqhdsyaqo
+      MOMO_PARTNER_CODE: MOMO
+      MOMO_ACCESS_KEY: F8BBA842ECF85
+      MOMO_SECRET_KEY: K951B6PE1waDMi640xX08PD3vg6EkVlz
+      MOMO_ENDPOINT: https://test-payment.momo.vn/v2/gateway/api/create
+      MOMO_QUERY_ENDPOINT: https://test-payment.momo.vn/v2/gateway/api/query
+      MOMO_RETURN_URL: http://localhost:5173/verify
+      MOMO_NOTIFY_URL: http://localhost:4000/api/order/momo/webhook
+      MOMO_PARTNER_NAME: Cake Fantasy
+      MOMO_STORE_ID: CakeFantasyStore
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+      - backend_uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - cake_network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: cake_fantasy_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - cake_network
+    stdin_open: true
+    tty: true
+
+  # Admin Panel
+  admin:
+    build:
+      context: ./Admin
+      dockerfile: Dockerfile
+    container_name: cake_fantasy_admin
+    restart: unless-stopped
+    ports:
+      - "5174:5174"
+    volumes:
+      - ./Admin:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - cake_network
+    stdin_open: true
+    tty: true
+
+volumes:
+  mysql_data:
+  backend_uploads:
+
+networks:
+  cake_network:
+    driver: bridge
+
