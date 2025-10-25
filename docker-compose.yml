@@ -35,8 +35,8 @@ services:
       - "4000:4000"
     environment:
       DB_HOST: mysql
-      DB_USER: cakeuser
-      DB_PASS: cakepassword
+      DB_USER: root
+      DB_PASS: rootpassword
       DB_NAME: cake_fantasy_db
       DB_PORT: 3306
       JWT_SECRET: random#secret

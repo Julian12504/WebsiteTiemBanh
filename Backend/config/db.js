@@ -13,24 +13,32 @@ const pool = mysql.createPool({
   debug: process.env.NODE_ENV === 'development' // Enable SQL debugging in dev
 });
 
-// Test connection on startup
-pool.getConnection()
-  .then(connection => {
-    console.log(`Connected to MySQL database: ${process.env.DB_NAME}`);
-    // Test basic query
-    return connection.query('SELECT 1+1 AS result')
-      .then(([rows]) => {
-        console.log('Database query test successful:', rows[0].result);
-        connection.release();
-      });
-  })
-  .catch(err => {
-    console.error('Database connection error:', err);
-    console.error('Database config:', {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      database: process.env.DB_NAME
-    });
-  });
+// Test connection with retry logic
+const testConnection = async (retries = 5, delay = 5000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const connection = await pool.getConnection();
+      console.log(`✅ Connected to MySQL database: ${process.env.DB_NAME}`);
+      const [rows] = await connection.query('SELECT 1+1 AS result');
+      console.log('Database query test successful:', rows[0].result);
+      connection.release();
+      return;
+    } catch (err) {
+      console.log(`⏳ Waiting for MySQL... (attempt ${i + 1}/${retries})`);
+      if (i === retries - 1) {
+        console.error('❌ Database connection failed:', err.message);
+        console.error('Database config:', {
+          host: process.env.DB_HOST,
+          user: process.env.DB_USER,
+          database: process.env.DB_NAME
+        });
+      } else {
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+};
+
+testConnection();
 
 export default pool;
