@@ -19,7 +19,7 @@ const PlaceOrder = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const [paymentMethod, setPaymentMethod] = useState("test");
   const [submitError, setSubmitError] = useState(null);
 
   const [locationLoading, setLocationLoading] = useState(false);

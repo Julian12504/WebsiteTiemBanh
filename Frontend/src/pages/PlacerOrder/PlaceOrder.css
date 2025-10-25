@@ -54,7 +54,7 @@ margin-top: 25px;
   letter-spacing: 0.5px;
 }
 
-.payment-button.stripe {
+.payment-button.test {
   background: linear-gradient(135deg, #28a745, #20c997);
   color: white;
 }
@@ -75,7 +75,7 @@ margin-top: 25px;
   transform: none;
 }
 
-.payment-button.stripe:hover:not(:disabled) {
+.payment-button.test:hover:not(:disabled) {
   box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
 }
 

@@ -6,7 +6,7 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
 
   const paymentMethods = [
     {
-      id: 'stripe',
+      id: 'test',
       name: 'Test Payment',
       icon: '🧪',
       description: 'Thanh toán test - nhấn là thành công ngay',
@@ -95,17 +95,17 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
       )}
 
       {/* Test Payment Info */}
-      {selectedMethod === 'stripe' && (
-        <div className="stripe-payment-info">
-          <div className="stripe-info-header">
-            <span className="stripe-icon">🧪</span>
+      {selectedMethod === 'test' && (
+        <div className="test-payment-info">
+          <div className="test-info-header">
+            <span className="test-icon">🧪</span>
             <h4>Test Payment</h4>
           </div>
           
-          <div className="stripe-info-content">
+          <div className="test-info-content">
             <p><strong>Chế độ Test:</strong> Thanh toán sẽ thành công ngay lập tức khi bạn nhấn nút.</p>
             
-            <div className="stripe-features">
+            <div className="test-features">
               <div className="feature">
                 <span className="feature-icon">🧪</span>
                 <span>Test Mode - Không cần thông tin thẻ</span>

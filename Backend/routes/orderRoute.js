@@ -8,12 +8,6 @@ const router = express.Router();
 
 // Place order (checkout)
 router.post("/place", authMiddleware, placeOrder, (req, res, next) => {
-  console.log("Order route accessed with user:", req.user?.id);
-  console.log("Request body:", {
-    userId: req.body.userId,
-    itemsCount: req.body.items?.length,
-    amount: req.body.amount
-  });
   next();
 }, placeOrder);
 
@@ -43,6 +37,52 @@ router.get("/history", authMiddleware, userOrders, async (req, res) => {
 
 // Get user orders with full details
 router.get("/user/orders", authMiddleware, userOrders);
+
+// Confirm order received by customer
+router.post("/confirm-received", authMiddleware, async (req, res) => {
+  try {
+    const { orderId } = req.body;
+    const userId = req.user.id;
+    
+    if (!orderId) {
+      return res.status(400).json({
+        success: false,
+        message: "Order ID is required"
+      });
+    }
+
+    // Verify order belongs to user
+    const order = await Order.findById(orderId);
+    if (!order || order.user_id !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "Không có quyền truy cập đơn hàng này"
+      });
+    }
+
+    // Check if order is in delivery status
+    if (order.status !== 'Out for Delivery') {
+      return res.status(400).json({
+        success: false,
+        message: "Chỉ có thể xác nhận đơn hàng đang giao"
+      });
+    }
+
+    // Update status to Delivered
+    await Order.updateStatus(orderId, 'Delivered');
+    
+    res.json({
+      success: true,
+      message: "Đã xác nhận nhận hàng thành công"
+    });
+  } catch (error) {
+    console.error("Error confirming order received:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Lỗi khi xác nhận nhận hàng"
+    });
+  }
+});
 
 // Admin routes - move these routes BEFORE the dynamic parameter route
 // Get admin order list

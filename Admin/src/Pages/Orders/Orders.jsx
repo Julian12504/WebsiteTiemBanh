@@ -353,30 +353,50 @@ const Orders = ({ url }) => {
 
                       <div className="details-section">
                         <h3>Thao tác đơn hàng</h3>
-                        <div className="status-update">
-                          <p>
-                            <strong>Cập nhật trạng thái:</strong>
-                          </p>
-                          <select
-                            onChange={(e) => {
-                              if (e.target.value) {
-                                updateOrderStatus(order.id, e.target.value);
-                                e.target.value = "";
-                              }
-                            }}
-                            defaultValue=""
-                          >
-                            <option value="" disabled>
-                              Thay đổi trạng thái
-                            </option>
-                            <option value="Item Processing">Đang xử lý</option>
-                            <option value="Out for Delivery">
-                              Đang giao hàng
-                            </option>
-                            <option value="Delivered">Đã giao</option>
-                            <option value="Cancelled">Đã hủy</option>
-                          </select>
-                        </div>
+                        {order.status === 'Cancelled' ? (
+                          <div className="status-update">
+                            <p>
+                              <strong>Trạng thái:</strong>
+                            </p>
+                            <p className="cancelled-notice">
+                              ⚠️ Đơn hàng đã bị hủy. Không thể cập nhật trạng thái.
+                            </p>
+                          </div>
+                        ) : order.status === 'Delivered' ? (
+                          <div className="status-update">
+                            <p>
+                              <strong>Trạng thái:</strong>
+                            </p>
+                            <p className="delivered-notice">
+                              ✓ Đơn hàng đã giao thành công. Không thể thay đổi trạng thái.
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="status-update">
+                            <p>
+                              <strong>Cập nhật trạng thái:</strong>
+                            </p>
+                            <select
+                              onChange={(e) => {
+                                if (e.target.value) {
+                                  updateOrderStatus(order.id, e.target.value);
+                                  e.target.value = "";
+                                }
+                              }}
+                              defaultValue=""
+                            >
+                              <option value="" disabled>
+                                Thay đổi trạng thái
+                              </option>
+                              <option value="Item Processing">Đang xử lý</option>
+                              <option value="Out for Delivery">
+                                Đang giao hàng
+                              </option>
+                              <option value="Delivered">Đã giao</option>
+                              <option value="Cancelled">Đã hủy</option>
+                            </select>
+                          </div>
+                        )}
 
                         <div className="payment-update">
                           <p>

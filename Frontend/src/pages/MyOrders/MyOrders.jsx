@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './MyOrders.css';
 
 const MyOrders = () => {
@@ -9,6 +10,8 @@ const MyOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   // 🔹 Định dạng tiền VNĐ
   const formatCurrency = (amount) => {
@@ -75,6 +78,54 @@ const MyOrders = () => {
     setExpandedOrderId((prev) => (prev === orderId ? null : orderId));
   };
 
+  // Mở modal xác nhận
+  const openConfirmModal = (orderId) => {
+    setSelectedOrderId(orderId);
+    setShowConfirmModal(true);
+  };
+
+  // Đóng modal
+  const closeConfirmModal = () => {
+    setShowConfirmModal(false);
+    setSelectedOrderId(null);
+  };
+
+  // Xác nhận đã nhận hàng
+  const confirmReceived = async () => {
+    const authToken = token || localStorage.getItem("token");
+    
+    if (!authToken) {
+      toast.error("Vui lòng đăng nhập");
+      closeConfirmModal();
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${url}/api/order/confirm-received`,
+        { orderId: selectedOrderId },
+        { headers: { Authorization: `Bearer ${authToken}` } }
+      );
+
+      if (response.data.success) {
+        toast.success("Đã xác nhận nhận hàng thành công!");
+        // Update local state
+        setOrders(orders.map(order => 
+          order.id === selectedOrderId 
+            ? { ...order, status: 'Delivered' }
+            : order
+        ));
+      } else {
+        toast.error(response.data.message || "Không thể xác nhận nhận hàng");
+      }
+    } catch (err) {
+      console.error("Lỗi khi xác nhận nhận hàng:", err);
+      toast.error(err.response?.data?.message || "Lỗi khi xác nhận nhận hàng");
+    } finally {
+      closeConfirmModal();
+    }
+  };
+
   const getStatusClass = (status) => {
     switch (status) {
       case 'Item Processing':
@@ -133,10 +184,11 @@ const MyOrders = () => {
 
   // ✅ Hiển thị danh sách đơn hàng
   return (
-    <div className="my-orders-container">
-      <h2>Đơn hàng của bạn</h2>
-      
-      <div className="orders-list">
+    <>
+      <div className="my-orders-container">
+        <h2>Đơn hàng của bạn</h2>
+        
+        <div className="orders-list">
         {orders.map((order) => (
           <div className="order-card" key={order.id}>
             <div 
@@ -149,15 +201,24 @@ const MyOrders = () => {
               </div>
               
               <div className="order-meta">
-                <span className={`order-status ${getStatusClass(order.status)}`}>
-                  {translateStatus(order.status)}
-                </span>
+                <div className="meta-item">
+                  <span className="meta-label">Trạng thái đơn hàng:</span>
+                  <span className={`order-status ${getStatusClass(order.status)}`}>
+                    {translateStatus(order.status)}
+                  </span>
+                </div>
 
-                <span className="order-amount">{formatCurrency(order.amount)}</span>
+                <div className="meta-item">
+                  <span className="meta-label">Trạng thái thanh toán:</span>
+                  <span className={`payment-status ${order.payment ? 'paid' : 'unpaid'}`}>
+                    {order.payment ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                  </span>
+                </div>
 
-                <span className={`payment-status ${order.payment ? 'paid' : 'unpaid'}`}>
-                  {order.payment ? 'Đã thanh toán' : 'Chưa thanh toán'}
-                </span>
+                <div className="meta-item">
+                  <span className="meta-label">Tổng tiền:</span>
+                  <span className="order-amount">{formatCurrency(order.amount)}</span>
+                </div>
               </div>
               
               <button className="toggle-details">
@@ -211,12 +272,53 @@ const MyOrders = () => {
                     </tbody>
                   </table>
                 </div>
+
+                {/* Nút xác nhận đã nhận hàng */}
+                {order.status === 'Out for Delivery' && (
+                  <div className="order-actions">
+                    <button 
+                      className="confirm-received-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openConfirmModal(order.id);
+                      }}
+                    >
+                      ✓ Xác nhận đã nhận hàng
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
         ))}
       </div>
     </div>
+
+    {/* Modal xác nhận */}
+    {showConfirmModal && (
+      <div className="confirm-modal-overlay" onClick={closeConfirmModal}>
+        <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-icon">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#28a745" strokeWidth="2"/>
+              <path d="M8 12l2 2 4-4" stroke="#28a745" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <h3>Xác nhận đã nhận hàng</h3>
+          <p>Bạn có chắc chắn đã nhận được hàng?</p>
+          <p className="modal-note">Sau khi xác nhận, trạng thái đơn hàng sẽ chuyển thành "Đã giao"</p>
+          <div className="modal-actions">
+            <button className="modal-btn cancel-btn" onClick={closeConfirmModal}>
+              Hủy
+            </button>
+            <button className="modal-btn confirm-btn" onClick={confirmReceived}>
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </>
   );
 };
 

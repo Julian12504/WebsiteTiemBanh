@@ -228,13 +228,11 @@ const Order = {
           throw new Error("Invalid order amount and couldn't calculate from items");
         }
         
-        console.log(`Calculated order amount: ${calculatedAmount} (original was invalid: ${amount})`);
         amount = calculatedAmount;
       } else {
         amount = validAmount;
       }
       
-      console.log(`Creating order for user ${userId} with ${items.length} items, total: ${amount}`);
       
       // Create order
       const [orderResult] = await connection.query(
@@ -254,7 +252,6 @@ const Order = {
       );
       
       const orderId = orderResult.insertId;
-      console.log(`Created order #${orderId}, now adding items`);
         // Add order items - catching errors for individual items
       for (const item of items) {
         try {
@@ -293,7 +290,6 @@ const Order = {
             throw new Error(`Không đủ hàng cho sản phẩm ID ${item.id}. Yêu cầu: ${item.quantity}, Còn lại: ${availableStock}`);
           }
           
-          console.log(`Adding item #${item.id} x${item.quantity} at price ${itemPrice} to order #${orderId} (Stock: ${availableStock})`);
           
           // Reserve stock immediately by reducing it
           const [stockUpdateResult] = await connection.query(
@@ -319,14 +315,12 @@ const Order = {
             ]
           );
           
-          console.log(`✅ Successfully reserved ${item.quantity} units of item ${item.id} for order ${orderId}`);
         } catch (itemError) {
           console.error(`Failed to add item #${item.id} to order:`, itemError);
           // Continue with other items instead of failing the entire order
         }
       }
       
-      console.log(`Order #${orderId} created successfully, committing transaction`);
       await connection.commit();
       return orderId;
     } catch (error) {
@@ -412,7 +406,6 @@ const Order = {
 
   // Update payment status
   updatePaymentStatus: async (orderId, status) => {
-    console.log(`🔄 updatePaymentStatus called: orderId=${orderId}, status=${status} (type: ${typeof status})`);
     const connection = await db.getConnection();
     try {
       await connection.beginTransaction();
@@ -428,7 +421,6 @@ const Order = {
       }
       
       const currentPaymentStatus = existingPayment[0].payment;
-      console.log(`📋 Current payment status for order ${orderId}: ${currentPaymentStatus}`);
       
       // Update payment status
       await connection.query(
@@ -436,14 +428,10 @@ const Order = {
         [status, orderId]
       );
       
-      console.log(`✅ Payment status updated to ${status} for order ${orderId}`);
       
       // If payment is successful and wasn't already successful
       if ((status === true || status === "true") && currentPaymentStatus !== true) {
-        console.log(`💰 Payment successful for order ${orderId}! Stock was already reserved when order was created.`);
-        console.log(`🎉 Order ${orderId} payment confirmed - no additional stock reduction needed`);
       } else if ((status === true || status === "true") && currentPaymentStatus === true) {
-        console.log(`⚠️ Payment status already set to true for order ${orderId} - no action needed`);
       }
       
       await connection.commit();
@@ -627,14 +615,60 @@ const Order = {
 
   // Update order status
   updateStatus: async (orderId, status) => {
+    const connection = await db.getConnection();
     try {
+      await connection.beginTransaction();
+      
       // Validate status
       const validStatuses = ['Item Processing', 'Out for Delivery', 'Delivered', 'Cancelled'];
       if (!validStatuses.includes(status)) {
         throw new Error('Invalid status');
       }
       
-      const [result] = await db.query(
+      // Check current order status
+      const [currentOrder] = await connection.query(
+        'SELECT status, payment FROM orders WHERE id = ?',
+        [orderId]
+      );
+      
+      if (currentOrder.length === 0) {
+        throw new Error('Order not found');
+      }
+      
+      const currentStatus = currentOrder[0].status;
+      const isPaid = currentOrder[0].payment;
+      
+      // Prevent updating cancelled orders
+      if (currentStatus === 'Cancelled') {
+        throw new Error('Không thể cập nhật đơn hàng đã bị hủy');
+      }
+      
+      // Prevent updating delivered orders
+      if (currentStatus === 'Delivered') {
+        throw new Error('Không thể cập nhật đơn hàng đã giao thành công');
+      }
+      
+      // If cancelling order, restore stock
+      if (status === 'Cancelled') {
+        
+        // Get all items in the order
+        const [orderItems] = await connection.query(
+          'SELECT item_id, quantity FROM order_items WHERE order_id = ?',
+          [orderId]
+        );
+        
+        // Restore stock for each item
+        for (const item of orderItems) {
+          await connection.query(
+            'UPDATE items SET stock_quantity = stock_quantity + ? WHERE id = ?',
+            [item.quantity, item.item_id]
+          );
+          console.log(`✅ Restored ${item.quantity} units of item ${item.item_id}`);
+        }
+      }
+      
+      // Update order status
+      const [result] = await connection.query(
         'UPDATE orders SET status = ?, updated_at = NOW() WHERE id = ?',
         [status, orderId]
       );
@@ -643,14 +677,15 @@ const Order = {
         throw new Error('Order not found');
       }
       
-      console.log(`✅ Order status updated to ${status} for order ${orderId}`);
       
-      // NOTE: Stock reduction happens in updatePaymentStatus when payment is successful
-      
+      await connection.commit();
       return true;
     } catch (error) {
+      await connection.rollback();
       console.error("Error in Order.updateStatus:", error);
       throw error;
+    } finally {
+      connection.release();
     }
   },
 

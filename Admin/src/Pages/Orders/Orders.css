@@ -551,7 +551,6 @@
     .payment-buttons {
       flex-direction: column;
     }
-
     .payment-btn {
       width: 100%;
     }
@@ -560,4 +559,26 @@
       max-width: none;
       width: 100%;
     }
+  }
+
+  .cancelled-notice {
+    padding: 10px 15px;
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+    color: #856404;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+
+  .delivered-notice {
+    padding: 10px 15px;
+    background-color: #d1e7dd;
+    border: 1px solid #198754;
+    border-radius: 4px;
+    color: #0f5132;
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 5px;
   }

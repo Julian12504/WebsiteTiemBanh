@@ -199,36 +199,46 @@ const OrderDetails = ({ url }) => {
                 <div className="status-updates">
                   <div className="status-update-section">
                     <h4>Cập nhật trạng thái đơn hàng</h4>
-                    <div className="status-buttons">
-                      <button 
-                        className={`status-btn ${order.status === 'Item Processing' ? 'active' : ''}`}
-                        onClick={() => updateOrderStatus('Item Processing')}
-                        disabled={updatingStatus || order.status === 'Item Processing'}
-                      >
-                        Đang xử lý
-                      </button>
-                      <button 
-                        className={`status-btn ${order.status === 'Out for Delivery' ? 'active' : ''}`}
-                        onClick={() => updateOrderStatus('Out for Delivery')}
-                        disabled={updatingStatus || order.status === 'Out for Delivery'}
-                      >
-                        Đang giao hàng
-                      </button>
-                      <button 
-                        className={`status-btn ${order.status === 'Delivered' ? 'active' : ''}`}
-                        onClick={() => updateOrderStatus('Delivered')}
-                        disabled={updatingStatus || order.status === 'Delivered'}
-                      >
-                        Đã giao
-                      </button>
-                      <button 
-                        className={`status-btn cancel-btn ${order.status === 'Cancelled' ? 'active' : ''}`}
-                        onClick={() => updateOrderStatus('Cancelled')}
-                        disabled={updatingStatus || order.status === 'Cancelled'}
-                      >
-                        Đã hủy
-                      </button>
-                    </div>
+                    {order.status === 'Cancelled' ? (
+                      <div className="cancelled-notice">
+                        ⚠️ Đơn hàng đã bị hủy. Không thể cập nhật trạng thái.
+                      </div>
+                    ) : order.status === 'Delivered' ? (
+                      <div className="delivered-notice">
+                        ✓ Đơn hàng đã giao thành công. Không thể thay đổi trạng thái.
+                      </div>
+                    ) : (
+                      <div className="status-buttons">
+                        <button 
+                          className={`status-btn ${order.status === 'Item Processing' ? 'active' : ''}`}
+                          onClick={() => updateOrderStatus('Item Processing')}
+                          disabled={updatingStatus || order.status === 'Item Processing'}
+                        >
+                          Đang xử lý
+                        </button>
+                        <button 
+                          className={`status-btn ${order.status === 'Out for Delivery' ? 'active' : ''}`}
+                          onClick={() => updateOrderStatus('Out for Delivery')}
+                          disabled={updatingStatus || order.status === 'Out for Delivery'}
+                        >
+                          Đang giao hàng
+                        </button>
+                        <button 
+                          className={`status-btn ${order.status === 'Delivered' ? 'active' : ''}`}
+                          onClick={() => updateOrderStatus('Delivered')}
+                          disabled={updatingStatus || order.status === 'Delivered'}
+                        >
+                          Đã giao
+                        </button>
+                        <button 
+                          className={`status-btn cancel-btn ${order.status === 'Cancelled' ? 'active' : ''}`}
+                          onClick={() => updateOrderStatus('Cancelled')}
+                          disabled={updatingStatus || order.status === 'Cancelled'}
+                        >
+                          Đã hủy
+                        </button>
+                      </div>
+                    )}
                   </div>
                   
                   <div className="payment-update-section">

@@ -36,8 +36,8 @@ Website tiệm bánh được phát triển với kiến trúc full-stack, bao g
 - **Bcrypt** - Password hashing
 - **Multer** - File upload
 - **Cloudinary** - Image storage
-- **Stripe** - Payment gateway
 - **MoMo Payment** - Payment gateway
+- **Mock Payment Service** - Test payment system
 
 ### Database
 - **MySQL 8.0+** - Relational database
@@ -52,7 +52,46 @@ Website tiệm bánh được phát triển với kiến trúc full-stack, bao g
   - `grn` - Phiếu nhập kho
   - `reviews` - Đánh giá sản phẩm
 
-## 🚀 Cài đặt và chạy dự án
+## ⚡ Quick Start
+
+Để chạy nhanh dự án:
+
+```bash
+# 1. Clone và cài đặt
+git clone <repository-url>
+cd WebsiteTiemBanh
+
+# 2. Cài đặt Backend
+cd Backend
+npm install
+cp .env.example .env
+# Cấu hình database trong .env
+
+# 3. Cài đặt Frontend
+cd ../Frontend
+npm install
+
+# 4. Cài đặt Admin
+cd ../Admin
+npm install
+
+# 5. Chạy tất cả (3 terminal riêng biệt)
+# Terminal 1: Backend
+cd Backend && npm start
+
+# Terminal 2: Frontend
+cd Frontend && npm run dev
+
+# Terminal 3: Admin
+cd Admin && npm run dev
+```
+
+**Truy cập:**
+- Frontend: http://localhost:5173
+- Admin: http://localhost:5174 (hoặc port khác)
+- Backend API: http://localhost:4000
+
+## 🚀 Cài đặt chi tiết
 
 ### Yêu cầu hệ thống
 - Node.js 16.0+
@@ -153,8 +192,7 @@ PORT=4000
 # JWT Authentication
 JWT_SECRET=your_jwt_secret
 
-# Test Payment Configuration
-STRIPE_SECRET_KEY=your_stripe_secret_key
+# Test Payment Configuration (No external keys needed - built-in mock service)
 
 # Cloudinary Image Storage Configuration
 CLOUDINARY_API_KEY=your_cloudinary_api_key
@@ -177,6 +215,35 @@ FRONTEND_URL=http://localhost:5173
 ```
 
 **Lưu ý**: Thay thế tất cả `your_xxx` bằng giá trị thực tế của bạn.
+
+## 🔌 API Endpoints
+
+### Authentication
+- `POST /api/user/login` - Đăng nhập user
+- `POST /api/user/register` - Đăng ký user
+- `POST /api/admin/login` - Đăng nhập admin
+
+### Products
+- `GET /api/item/list` - Lấy danh sách sản phẩm
+- `GET /api/item/:id` - Lấy chi tiết sản phẩm
+- `POST /api/item/add` - Thêm sản phẩm (Admin)
+- `PUT /api/item/:id` - Cập nhật sản phẩm (Admin)
+- `DELETE /api/item/:id` - Xóa sản phẩm (Admin)
+
+### Orders
+- `POST /api/order/place` - Đặt hàng
+- `POST /api/order/verify` - Xác minh thanh toán
+- `GET /api/order/user/:userId` - Lấy đơn hàng của user
+- `GET /api/order/list` - Lấy danh sách đơn hàng (Admin)
+
+### Payment
+- `POST /api/order/momo/webhook` - MoMo webhook
+- `GET /api/order/momo/return` - MoMo return URL
+
+### Cart
+- `POST /api/cart/add` - Thêm vào giỏ hàng
+- `GET /api/cart/:userId` - Lấy giỏ hàng
+- `DELETE /api/cart/:userId` - Xóa giỏ hàng
 
 ## 🎯 Tính năng chính
 
@@ -211,17 +278,25 @@ FRONTEND_URL=http://localhost:5173
 - **Rate Limiting** - Prevent abuse
 - **SQL Injection Protection** - Parameterized queries
 
-## 💳 Thanh toán
+## 💳 Hệ thống thanh toán
 
-### Test Payment
-- Thẻ tín dụng/ghi nợ quốc tế
-- Webhook xử lý payment status
-- Currency: USD
+### 🧪 Test Payment
+- **Mô tả**: Thanh toán test được tích hợp sẵn trong hệ thống
+- **Đặc điểm**: 
+  - Luôn thành công ngay lập tức
+  - Không cần thông tin thẻ hay tài khoản
+  - Phù hợp cho testing và demo
+- **Currency**: VND
+- **Sử dụng**: Chọn "Test Payment" trong quá trình thanh toán
 
-### MoMo
-- Ví điện tử MoMo
-- QR code payment
-- Currency: VND
+### 📱 MoMo Payment
+- **Mô tả**: Tích hợp với ví điện tử MoMo
+- **Đặc điểm**:
+  - QR code payment
+  - Thanh toán an toàn và nhanh chóng
+  - Hỗ trợ đầy đủ các tính năng của MoMo
+- **Currency**: VND
+- **Cấu hình**: Cần cấu hình các key MoMo trong file .env
 
 ## 📱 Responsive Design
 
@@ -248,8 +323,9 @@ npm run build
 Đảm bảo cấu hình đúng các biến môi trường cho production:
 - Database connection
 - JWT secret
-- Payment gateway keys
+- MoMo payment gateway keys (nếu sử dụng MoMo)
 - Cloudinary credentials
+- Frontend URL cho CORS
 
 ## 🐛 Debugging
 
@@ -259,10 +335,12 @@ npm run build
 - Database queries log
 
 ### Common Issues
-1. **Database connection** - Kiểm tra MySQL service
-2. **CORS errors** - Cấu hình đúng FRONTEND_URL
-3. **Payment webhook** - Kiểm tra endpoint public
-4. **File upload** - Cấu hình Cloudinary
+1. **Database connection** - Kiểm tra MySQL service và thông tin kết nối
+2. **CORS errors** - Cấu hình đúng FRONTEND_URL trong .env
+3. **MoMo payment webhook** - Kiểm tra endpoint public và cấu hình MoMo
+4. **File upload** - Cấu hình Cloudinary credentials
+5. **Test payment không hoạt động** - Kiểm tra mockPaymentService
+6. **JWT token errors** - Kiểm tra JWT_SECRET trong .env
 
 
 ## 📄 License

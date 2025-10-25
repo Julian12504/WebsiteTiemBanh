@@ -8,7 +8,7 @@ const Verify = () => {
   const [searchParams] = useSearchParams();
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
-  const paymentMethod = searchParams.get("paymentMethod") || "stripe";
+  const paymentMethod = searchParams.get("paymentMethod") || "test";
   const message = searchParams.get("message");
   const { url } = useContext(StoreContext);
   
@@ -23,7 +23,6 @@ const Verify = () => {
     try {
       // Ensure success is a string "true" or "false"
       const successParam = success === "true" ? "true" : "false";
-      console.log(`🔍 Frontend sending verify request: orderId=${orderId}, success=${successParam}, paymentMethod=${paymentMethod}`);
       
       const response = await axios.post(`${url}/api/order/verify`, { 
         success: successParam, 
@@ -31,7 +30,6 @@ const Verify = () => {
         paymentMethod 
       });
 
-      console.log(`📋 Frontend received response:`, response.data);
 
       if (response.data.success) {
         const isMock = searchParams.get("mock") === "true";

@@ -160,7 +160,7 @@
 }
 
 /* Test Payment Info */
-.stripe-payment-info {
+.test-payment-info {
   margin-top: 20px;
   padding: 20px;
   background: linear-gradient(135deg, #28a745, #20c997);
@@ -168,30 +168,30 @@
   color: white;
 }
 
-.stripe-info-header {
+.test-info-header {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
 }
 
-.stripe-icon {
+.test-icon {
   font-size: 24px;
   margin-right: 12px;
 }
 
-.stripe-info-header h4 {
+.test-info-header h4 {
   margin: 0;
   font-size: 18px;
   font-weight: 600;
 }
 
-.stripe-info-content p {
+.test-info-content p {
   margin: 0 0 16px 0;
   opacity: 0.9;
   line-height: 1.5;
 }
 
-.stripe-features {
+.test-features {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -221,12 +221,12 @@
     grid-template-columns: 1fr;
   }
   
-  .stripe-features {
+  .test-features {
     flex-direction: column;
   }
   
   .momo-payment-info,
-  .stripe-payment-info {
+  .test-payment-info {
     padding: 16px;
   }
 }

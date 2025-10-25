@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const Cart = () => {
   const { cartItems, item_list, removeFromCart, clearFromCart, updateCartQuantity, getTotalCartAmount } = useContext(StoreContext);
   const navigate = useNavigate();
+  const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(false);
+  const [itemToDelete, setItemToDelete] = React.useState(null);
 
   // Hàm định dạng tiền tệ VNĐ
   const formatCurrency = (amount) => {
@@ -15,6 +17,25 @@ const Cart = () => {
 
   // Phí giao hàng cố định
   const deliveryFee = getTotalCartAmount() === 0 ? 0 : 15000; // ví dụ: 15.000₫
+
+  // Xử lý xác nhận xóa
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      clearFromCart(itemToDelete.id);
+    }
+    setShowDeleteConfirm(false);
+    setItemToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setItemToDelete(null);
+  };
 
   return (
     <div className="cart">
@@ -82,7 +103,7 @@ const Cart = () => {
                   </div>
                   <p>{formatCurrency((item.selling_price || item.price || 0) * cartItems[item.id])}</p>
                   <p 
-                    onClick={() => clearFromCart(item.id)} 
+                    onClick={() => handleDeleteClick(item)} 
                     className="cross"
                     title="Xóa hoàn toàn sản phẩm khỏi giỏ hàng"
                   >
@@ -129,6 +150,30 @@ const Cart = () => {
           </button>
         </div>
       </div>
+
+      {/* Popup xác nhận xóa */}
+      {showDeleteConfirm && (
+        <div className="delete-confirm-overlay" onClick={cancelDelete}>
+          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-confirm-header">
+              <h3>Xác nhận xóa</h3>
+            </div>
+            <div className="delete-confirm-body">
+              <p>Bạn có chắc chắn muốn xóa sản phẩm</p>
+              <p className="delete-item-name">"{itemToDelete?.name}"</p>
+              <p>khỏi giỏ hàng không?</p>
+            </div>
+            <div className="delete-confirm-footer">
+              <button className="btn-cancel" onClick={cancelDelete}>
+                Hủy
+              </button>
+              <button className="btn-confirm" onClick={confirmDelete}>
+                Xóa
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
