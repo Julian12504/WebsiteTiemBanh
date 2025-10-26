@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 });
 
 // Test connection with retry logic
-const testConnection = async (retries = 5, delay = 5000) => {
+export const testConnection = async (retries = 5, delay = 5000) => {
   for (let i = 0; i < retries; i++) {
     try {
       const connection = await pool.getConnection();
@@ -22,7 +22,7 @@ const testConnection = async (retries = 5, delay = 5000) => {
       const [rows] = await connection.query('SELECT 1+1 AS result');
       console.log('Database query test successful:', rows[0].result);
       connection.release();
-      return;
+      return true;
     } catch (err) {
       console.log(`⏳ Waiting for MySQL... (attempt ${i + 1}/${retries})`);
       if (i === retries - 1) {
@@ -32,13 +32,12 @@ const testConnection = async (retries = 5, delay = 5000) => {
           user: process.env.DB_USER,
           database: process.env.DB_NAME
         });
+        throw err;
       } else {
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
   }
 };
-
-testConnection();
 
 export default pool;

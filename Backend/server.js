@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import db from "./config/db.js";
+import db, { testConnection } from "./config/db.js";
 import itemRouter from "./routes/itemRoute.js";
 import { initializeTables as userTables } from "./models/userModel.js";
 import createItemTable  from "./models/itemModel.js";
@@ -65,7 +65,13 @@ app.get('/debug/user-structure', async (req, res) => {
 // Async server startup
 const startServer = async () => {
   try {
+    // Wait for database connection first
+    console.log('🔌 Connecting to database...');
+    await testConnection();
+    
     connectCloudinary();
+    
+    console.log('📦 Initializing database tables...');
     await Promise.all([
       userTables(),
       createItemTable(),
@@ -75,10 +81,10 @@ const startServer = async () => {
     ]);
     
     app.listen(port, () => {
-      console.log(`Server running on http://localhost:${port}`);
+      console.log(`🚀 Server running on http://localhost:${port}`);
     });
   } catch (err) {
-    console.error("Failed to initialize database tables:", err);
+    console.error("❌ Failed to start server:", err.message);
     process.exit(1);
   }
 };
