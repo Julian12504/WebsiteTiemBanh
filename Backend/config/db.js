@@ -18,7 +18,7 @@ export const testConnection = async (retries = 5, delay = 5000) => {
   for (let i = 0; i < retries; i++) {
     try {
       const connection = await pool.getConnection();
-      console.log(`✅ Connected to MySQL database: ${process.env.DB_NAME}`);
+      console.log(`Connected to MySQL database: ${process.env.DB_NAME}`);
       const [rows] = await connection.query('SELECT 1+1 AS result');
       console.log('Database query test successful:', rows[0].result);
       connection.release();
@@ -26,7 +26,7 @@ export const testConnection = async (retries = 5, delay = 5000) => {
     } catch (err) {
       console.log(`⏳ Waiting for MySQL... (attempt ${i + 1}/${retries})`);
       if (i === retries - 1) {
-        console.error('❌ Database connection failed:', err.message);
+        console.error('Database connection failed:', err.message);
         console.error('Database config:', {
           host: process.env.DB_HOST,
           user: process.env.DB_USER,
