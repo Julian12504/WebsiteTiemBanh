@@ -1,11 +1,16 @@
 .navbar{
-    padding: 0px 45px;
+    padding: 0.8rem 45px;
     margin: 0px -6.8%;
     display: flex;
     justify-content: space-between; 
     align-items: center;
     color: white;
     background-color: #302B25;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
 }
 
 .navbar .text{
@@ -15,9 +20,10 @@
 .navbar-menu{
     display: flex;
     list-style: none;
-    gap: 20px;
+    gap: 2.5rem;
     color: #efe8e3;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
 }
 .navbar .logo {
   margin-top: 5px;
@@ -28,26 +34,27 @@
 
 .navbar-right{
     display: flex;
-    align-items: right;
-    gap: 15px;
-    height: 30px;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .navbar button{
     background: transparent;
-    font-size: 16px;
+    font-size: 14px;
     color: white;
-    border: 1px solid  white;
+    border: 2px solid #efe8e3;
     border-radius: 30px;
-    padding: 0px 15px;
+    padding: 0.5rem 1.2rem;
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
+    font-weight: 600;
 }
 
 .navbar button:hover{
-    background: #efe8e3;
-    color: #591b0d;
-    
+    background: #f4a582;
+    color: #302B25;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(244, 165, 130, 0.3);
 }
 
 .navbar .active{

@@ -1,0 +1,124 @@
+.why-choose-us {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, rgba(244, 165, 130, 0.05) 0%, rgba(212, 132, 108, 0.05) 100%);
+    border-radius: 20px;
+    margin: 2rem 0;
+}
+
+.why-choose-us-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 0 2rem;
+}
+
+.why-choose-us-header h2 {
+    font-size: max(2.2vw, 28px);
+    font-weight: 700;
+    color: #262626;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.why-choose-us-header p {
+    font-size: max(1.1vw, 16px);
+    color: #808080;
+    font-weight: 400;
+}
+
+.why-choose-us-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.reason-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(212, 132, 108, 0.1);
+}
+
+.reason-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(212, 132, 108, 0.15);
+    border-color: #d4846c;
+}
+
+.reason-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    animation: bounce 2s infinite;
+}
+
+.reason-card:nth-child(1) .reason-icon { animation-delay: 0s; }
+.reason-card:nth-child(2) .reason-icon { animation-delay: 0.1s; }
+.reason-card:nth-child(3) .reason-icon { animation-delay: 0.2s; }
+.reason-card:nth-child(4) .reason-icon { animation-delay: 0.3s; }
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.reason-card h3 {
+    font-size: max(1.3vw, 18px);
+    font-weight: 700;
+    color: #262626;
+    margin-bottom: 0.8rem;
+}
+
+.reason-card p {
+    font-size: max(0.95vw, 14px);
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 750px) {
+    .why-choose-us {
+        padding: 2.5rem 0;
+        margin: 1.5rem 0;
+    }
+
+    .why-choose-us-header {
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+
+    .why-choose-us-header h2 {
+        font-size: max(1.8vw, 24px);
+        margin-bottom: 0.8rem;
+    }
+
+    .why-choose-us-header p {
+        font-size: max(1vw, 14px);
+    }
+
+    .why-choose-us-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .reason-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .reason-card h3 {
+        font-size: 16px;
+        margin-bottom: 0.6rem;
+    }
+
+    .reason-card p {
+        font-size: 13px;
+    }
+}

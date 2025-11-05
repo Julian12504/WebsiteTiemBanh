@@ -14,10 +14,11 @@ const Header = () => {
     <div>
       <div className="header">
         <div className="header-contents">
-          <h1>Bạn cần gì... Chúng tôi đều có!</h1>
+          <h1>Bạn cần gì...
+Chúng tôi đều có!</h1>
           <p>Khám phá những chiếc bánh thơm ngon, tươi mới được làm thủ công với tình yêu và sự chăm sóc tỉ mỉ</p>
           <button onClick={handleViewItems} className="view-btn">
-            Xem sản phẩm
+            Xem sản phẩm ngay ➜
           </button>
         </div>
       </div>
