@@ -7,10 +7,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon server.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+  "server": "nodemon server.js",
+  "test": "jest --config=jest.config.cjs",
+  "test:watch": "jest --config=jest.config.cjs --watch",
+  "test:coverage": "jest --config=jest.config.cjs --coverage"
   },
   "dependencies": {
     "axios": "^1.12.2",

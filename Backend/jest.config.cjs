@@ -1,9 +1,9 @@
-export default {
+module.exports = {
   testEnvironment: 'node',
   transform: {
-    '^.+\\.js$': ['babel-jest', { configFile: '<rootDir>/babel.config.cjs' }],
+    '^.+\\.js$': ['babel-jest', { babelrc: false, configFile: false, presets: [['@babel/preset-env', { targets: { node: 'current' } }]] }],
   },
-  testMatch: ['**/tests/**/*.test.js'], // Chạy tất cả test files
+  testMatch: ['**/tests/**/*.test.js'],
   collectCoverageFrom: [
     'controllers/**/*.js',
     'routes/**/*.js',
