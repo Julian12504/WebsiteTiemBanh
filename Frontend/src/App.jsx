@@ -1,15 +1,15 @@
 //import React from 'react'
 import { Route, Routes } from "react-router-dom";
-import Navbar from "./Components/Navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Cart from "./pages/Cart/Cart";
 import PlaceOrder from "./pages/PlacerOrder/PlaceOrder";
-import Footer from "./Components/Footer/Footer";
-import LoginPopup from "./Components/LoginPopup/LoginPopup";
+import Footer from "./components/Footer/Footer";
+import LoginPopup from "./components/LoginPopup/LoginPopup";
 import { useContext } from "react";
 import Verify from "./pages/Verify/Verify";
 import MyOrders from "./pages/MyOrders/MyOrders";
-import ProductDetail from "./Components/ProductDetail/ProductDetail"; 
+import ProductDetail from "./components/ProductDetail/ProductDetail"; 
 import ViewItems from "./pages/ViewItems/ViewItems";
 import StoreContextProvider, { StoreContext } from "./context/StoreContext";
 import { ToastContainer } from 'react-toastify';

@@ -1,7 +1,7 @@
 import { useState, useContext, useMemo } from 'react'
 import './ViewItems.css'
-import CategoryFilter from '../../Components/CategoryFilter/CategoryFilter'
-import ItemDisplay from '../../Components/ItemDisplay/ItemDisplay'
+import CategoryFilter from '../../components/CategoryFilter/CategoryFilter'
+import ItemDisplay from '../../components/ItemDisplay/ItemDisplay'
 import { StoreContext } from '../../context/StoreContext'
 
 // Function để bỏ dấu tiếng Việt
