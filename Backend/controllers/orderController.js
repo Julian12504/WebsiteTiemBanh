@@ -329,16 +329,57 @@ const momoWebhook = async (req, res) => {
 // Momo payment return handler
 const momoReturn = async (req, res) => {
   try {
-    const { orderId, resultCode, message } = req.query;
-    
+  // (no debug logs)
+    // MoMo may return its own orderId (e.g. MOMO_<originalId>_<ts>) and also include extraData that contains our original orderId.
+    // We must use the original order id (the one stored in our DB) to update the order payment status.
+    const { orderId: momoOrderId, resultCode, message, extraData } = req.query;
+
+    // Try to extract original order id from extraData (JSON string) first
+    let originalOrderId = null;
+    if (extraData) {
+      try {
+        const parsed = JSON.parse(extraData);
+        if (parsed && parsed.orderId) {
+          originalOrderId = parsed.orderId;
+        }
+      } catch (e) {
+        // ignore JSON parse errors
+        console.warn('Could not parse extraData from Momo return:', e.message);
+      }
+    }
+
+    // If still not found, attempt to use verification helper (if signature present)
+    if (!originalOrderId) {
+      try {
+        const verification = momoPaymentService.verifyCallback(req.query);
+        if (verification && verification.valid && verification.extraData && verification.extraData.orderId) {
+          originalOrderId = verification.extraData.orderId;
+        }
+      } catch (e) {
+        // verification may fail if redirect does not include all fields - ignore and continue
+        console.warn('Momo verification on return failed or incomplete:', e.message);
+      }
+    }
+
+    // Fallback: try to parse momoOrderId format MOMO_<id>_...
+    if (!originalOrderId && momoOrderId) {
+      const match = String(momoOrderId).match(/^MOMO_(\d+)_/);
+      if (match) originalOrderId = match[1];
+    }
+
+    if (!originalOrderId) {
+      console.error('Could not determine original order id from Momo return', req.query);
+      return res.redirect(`http://localhost:5173/verify?success=false&message=${encodeURIComponent('Không xác định được đơn hàng')}`);
+    }
+
     if (resultCode === '0') {
       // Payment successful
-      await Order.updatePaymentStatus(orderId, true);
-      res.redirect(`http://localhost:5173/verify?success=true&orderId=${orderId}&paymentMethod=momo`);
+      await Order.updatePaymentStatus(originalOrderId, true);
+      res.redirect(`http://localhost:5173/verify?success=true&orderId=${originalOrderId}&paymentMethod=momo`);
     } else {
       // Payment failed
-      await Order.updatePaymentStatus(orderId, false);
-      res.redirect(`http://localhost:5173/verify?success=false&orderId=${orderId}&paymentMethod=momo&message=${encodeURIComponent(message)}`);
+      await Order.updatePaymentStatus(originalOrderId, false);
+      res.redirect(`http://localhost:5173/verify?success=false&orderId=${originalOrderId}&paymentMethod=momo&message=${encodeURIComponent(message)}`);
     }
   } catch (error) {
     console.error('Momo return error:', error);

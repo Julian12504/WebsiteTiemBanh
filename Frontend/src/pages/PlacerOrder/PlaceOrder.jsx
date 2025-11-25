@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import PaymentMethod from "../../components/PaymentMethod/PaymentMethod";
 
 const PlaceOrder = () => {
-  const { getTotalCartAmount, token, item_list, cartItems, url } = useContext(StoreContext);
+  const { getTotalCartAmount, token, item_list, cartItems, url, setCartItems } = useContext(StoreContext);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -85,14 +85,22 @@ const PlaceOrder = () => {
     setIsSubmitting(true);
 
     try {
+      // Build order items using consistent id key and price fallback
       const orderItems = item_list
-        .filter((item) => cartItems[item.id] > 0)
-        .map((item) => ({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: cartItems[item.id]
-        }));
+        .filter((item) => {
+          const key = item._id ?? item.id;
+          return cartItems[key] > 0;
+        })
+        .map((item) => {
+          const key = item._id ?? item.id;
+          const price = parseFloat(item.price ?? item.selling_price ?? 0) || 0;
+          return {
+            id: key,
+            name: item.name,
+            price: price,
+            quantity: cartItems[key]
+          };
+        });
 
       if (orderItems.length === 0) {
         setSubmitError("Giỏ hàng của bạn đang trống.");
@@ -138,6 +146,14 @@ const PlaceOrder = () => {
       });
 
       if (response.data.success && response.data.url) {
+        // Clear frontend/local cart so it matches backend state (backend also clears server cart)
+        try {
+          setCartItems({});
+          localStorage.removeItem('cartItems');
+        } catch (e) {
+          console.warn('Không thể xóa giỏ hàng local:', e);
+        }
+
         window.location.href = response.data.url; // Chuyển đến trang thanh toán
       } else {
         setSubmitError(response.data.message || "Không thể tạo đơn hàng");

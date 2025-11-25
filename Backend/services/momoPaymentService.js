@@ -7,9 +7,15 @@ class MomoPaymentService {
     this.accessKey = process.env.MOMO_ACCESS_KEY;
     this.secretKey = process.env.MOMO_SECRET_KEY;
     this.endpoint = process.env.MOMO_API_ENDPOINT || process.env.MOMO_ENDPOINT || 'https://test-payment.momo.vn/v2/gateway/api/create';
-    this.returnUrl = process.env.MOMO_RETURN_URL || 'http://localhost:5173/verify';
-    this.notifyUrl = process.env.MOMO_NOTIFY_URL || 'http://localhost:4000/api/payment/momo/notify';
-    this.requestType = 'payWithATM';
+  // Default endpoints should point to backend handlers so MoMo redirects/webhooks arrive
+  const backendBase = process.env.BACKEND_URL || 'http://localhost:4000';
+  this.returnUrl = process.env.MOMO_RETURN_URL || `${backendBase}/api/order/momo/return`;
+  // Order webhook route is defined in Backend/routes/orderRoute.js as POST /momo/webhook
+  this.notifyUrl = process.env.MOMO_NOTIFY_URL || `${backendBase}/api/order/momo/webhook`;
+  // Sử dụng 'captureWallet' để tạo payUrl cho thanh toán ví MoMo (thích hợp cho flow quét QR / mở app MoMo).
+  // 'payWithATM' sẽ dẫn tới flow nhập thẻ/ATM trên web, nên nếu bạn thấy trang thanh toán bằng thẻ,
+  // hãy đổi sang 'captureWallet' và trên frontend render QR từ payUrl trả về.
+  this.requestType = 'captureWallet';
   }
 
   // Tạo chữ ký HMAC SHA256
@@ -87,6 +93,8 @@ class MomoPaymentService {
           'Content-Type': 'application/json'
         }
       });
+
+  // (no debug logs)
 
       if (response.data.resultCode === 0) {
         return {
