@@ -17,7 +17,7 @@ docker-compose up
 | Service | URL | Tài khoản |
 |---------|-----|-----------|
 | 🌐 Frontend | http://localhost:5173 | - |
-| 👨‍💼 Admin | http://localhost:5174 | admin@gmail.com / admin123 |
+| 👨‍💼 Admin | http://localhost:5174 | admin@gmail.com / 12345678 |
 | 🔌 API | http://localhost:4000 | - |
 
 **Dừng:** `docker-compose down`
