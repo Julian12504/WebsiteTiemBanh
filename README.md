@@ -188,12 +188,33 @@ pm2 start server.js --name "cake-backend"
 
 ---
 
-## 🐛 Common Issues
+## � Deploy to Production
+
+Muốn deploy lên production (Vercel + Railway)?
+
+**Xem hướng dẫn chi tiết tại:** [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+**Tóm tắt:**
+- Frontend (Customer) → Vercel
+- Admin Panel → Vercel  
+- Backend + MySQL → Railway
+
+---
+
+## �🐛 Common Issues
 
 **DB connection failed:** Kiểm tra MySQL running, kiểm tra .env  
 **CORS errors:** Kiểm tra backend running  
 **Port in use:** Đổi port trong docker-compose.yml  
 **Hot reload không hoạt động:** Restart container  
+
+---
+
+## 📚 Documentation
+
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Hướng dẫn deploy production
+- [CI-CD_README.md](./CI-CD_README.md) - GitHub Actions CI/CD
+- Backend API docs: http://localhost:4000/api-docs (khi chạy)
 
 ---
 
