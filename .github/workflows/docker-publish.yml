@@ -29,10 +29,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push image
-        working-directory: ${{ matrix.service == 'backend' && 'Backend' || (matrix.service == 'frontend' && 'Frontend') || 'Admin' }}
         uses: docker/build-push-action@v4
         with:
+          context: ${{ matrix.service == 'backend' && './Backend' || (matrix.service == 'frontend' && './Frontend') || './Admin' }}
           push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}:latest
-          file: Dockerfile
+          file: ${{ matrix.service == 'backend' && './Backend/Dockerfile' || (matrix.service == 'frontend' && './Frontend/Dockerfile') || './Admin/Dockerfile' }}
