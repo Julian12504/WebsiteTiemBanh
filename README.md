@@ -563,8 +563,8 @@ dockerfilePath = "Dockerfile"
 
 **Author:** Võ Duy Toàn  
 **Email:** voduytoan6a@gmail.com  
-**GitHub:** [Julian12504](https://github.com/Julian12504)  
-**Repository:** [WebsiteTiemBanh](https://github.com/Julian12504/WebsiteTiemBanh)
+**GitHub:** [Scarlet7153](https://github.com/Scarlet7153)  
+**Repository:** [Cake-Shop](https://github.com/Scarlet7153/Cake-Shop)
 
 ---
 
