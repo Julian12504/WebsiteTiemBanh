@@ -39,7 +39,7 @@ const AdminLayout = ({ children }) => {
 
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AdminAuthContext);
-  const url = "http://localhost:4000";
+  const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
   console.log("Trạng thái xác thực:", isAuthenticated ? "Đã đăng nhập" : "Chưa đăng nhập");
 
