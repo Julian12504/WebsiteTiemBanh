@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 08, 2025 lúc 05:42 PM
+-- Thời gian đã tạo: Th10 25, 2025 lúc 04:06 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.0.30
 
@@ -157,23 +157,16 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `description`, `image`, `cloudinary_id`, `category`, `disabled`, `sku`, `barcode`, `stock_quantity`, `reorder_level`, `cost_price`, `selling_price`, `unit`, `is_loose`, `min_order_quantity`, `increment_step`, `weight_value`, `weight_unit`, `pieces_per_pack`) VALUES
-(2, 'Bánh Cosy Marie', 'Bánh quy Cosy là thương hiệu bánh quy thơm ngon, nổi tiếng với hương vị thơm ngon cho gia đình bạn lựa chọn. Bánh quy Cosy Marie gói 240g gói vừa tiện lợi sử dụng cho cả gia đình, được yêu thích từ trẻ em cho đến người lớn, là món bánh quy thiết thực cho ăn vặt, quà vào dịp lễ, Tết.\r\n\r\nThành phần: Bột mì, dầu cọ, đường, chất tạo xốp (503(ii), 500(ii)), muối, hương thực phẩm tổng hợp, chất xử lý bột,...\r\n\r\nHướng dẫn sử dụng: Dùng trực tiếp.\r\n\r\nBảo quản: Để nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759943997/cake-fantasy/fgznmwmgmc3wvbw5r1gz.webp', 'cake-fantasy/fgznmwmgmc3wvbw5r1gz', 'Cake', 0, 'ITEM-001-991240', NULL, 0, 5, 25000.00, 27000.00, 'piece', 0, 1.000, 1.000, 240.000, 'g', 24),
-(3, 'Bánh Bouchee ', 'Bánh Bouchee Lotte Chocolat Vị Socola với lớp bánh mềm, được phủ sốt socola bên ngoài cùng với lớp nhân marshmallow cao cấp dai dai, ngọt nhẹ bên trong tạo nên hương vị hấp dẫn, sản phẩm này chắc chắn sẽ làm các bạn làm mê ngay từ miếng đầu tiên.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944349/cake-fantasy/fjotyvjvjrdi4lsfdawd.webp', 'cake-fantasy/fjotyvjvjrdi4lsfdawd', 'Cake', 0, 'ITEM-002-343610', NULL, 0, 5, 25000.00, 27000.00, 'piece', 0, 1.000, 1.000, 342.000, 'g', 15),
-(4, 'Bánh Marine Boy', 'Sản phẩm được sản xuất bởi Orion với dây chuyền công nghệ hiện đại của Hàn Quốc, mang đến sự an tâm cho người sử dụng. Bánh quy Marine Boy vị rong biển được đóng hộp nhỏ gọn, họa tiết trang trí bên ngoài hộp ngộ nghĩnh, sẽ khiến các em nhỏ thích thú khi sử dụng.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944435/cake-fantasy/olnq3rcmuez2rlywvq6a.webp', 'cake-fantasy/olnq3rcmuez2rlywvq6a', 'Cake', 0, 'ITEM-003-429479', NULL, 0, 5, 15000.00, 17000.00, 'piece', 0, 1.000, 1.000, 70.000, 'g', 6),
-(5, 'Bánh Hạt dinh dưỡng Goute', 'Bánh Hạt Dinh Dưỡng Goute có hương thơm lừng, cắn vào giòn tan, độ ngọt vừa phải, không tạo cảm giác ngấy.\r\n\r\nBánh cung cấp chất dinh dưỡng và năng lượng cho cơ thể hoạt động suốt ngày dài.\r\n\r\nThành phần: Bột mì, dầu dừa, đường, shortening, hạt mè trắng, sữa tươi, bột whey, mạch nha, chất tạo xốp, bơ, tinh bột bắp, hạt mè đen, yến mạch, muối i-ốt, gia vị muối, chất ổn định, bột phô mai, đường dextrose, dầu mè, hành lá sấy, hạt diêm mạch đỏ, hạt chia đen, hương hành tím tự nhiên, nước tương, chất xử lý bột, chất tạo màu tổng hợp.\r\n\r\nSử dụng: Dùng trực tiếp ngay khi mở bao bì sản phẩm. Hướng dẫn sử dụng: Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Xuất xứ: Việt Nam.\r\n', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944511/cake-fantasy/vastkhvcdxyc3oagp8uw.webp', 'cake-fantasy/vastkhvcdxyc3oagp8uw', 'Cake', 0, 'ITEM-004-505922', NULL, 0, 5, 40000.00, 43000.00, 'piece', 0, 1.000, 1.000, 316.000, 'g', 8),
-(6, 'Bánh AFC Kinh Đô Vị Rau Cải ', 'Bánh AFC Kinh Đô Vị Rau Cải chứa nhiều thành phần dưỡng chất, thích hợp làm món ăn nhẹ bổ dưỡng cho những người bận rộn.\r\n\r\nBánh được làm từ những thành phần giàu chất dinh dưỡng, cung cấp năng lượng, protein, chất xơ, đặc biệt là vitamin D và canxi cho cơ thể thêm khỏe mạnh.\r\n\r\nThành phần: Bột mì, dầu thực vật (dầu cọ), shortening (dầu cọ), đường, chất xơ, mạch nha, chất béo thay thế bơ,...', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944584/cake-fantasy/azjz3b2xvvkizi5evwky.webp', 'cake-fantasy/azjz3b2xvvkizi5evwky', 'Cake', 0, 'ITEM-005-579070', NULL, 5, 5, 33000.00, 37000.00, 'piece', 0, 1.000, 1.000, 258.000, 'g', 24),
-(7, 'Baking soda Caster', 'Baking soda Caster là một loại bột mịn màu trắng, nguyên liệu an toàn được sử dụng trong ngành thực phẩm, làm bánh và trong cả đời sống hằng ngày. Sản phẩm có giá thành rẻ, an toàn, dễ sử dụng và bảo quản, trong làm bánh được dùng để tạo độ phồng hay giòn cho bánh.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944763/cake-fantasy/ncfgq8rfarbmtyhq0til.jpg', 'cake-fantasy/ncfgq8rfarbmtyhq0til', 'Cake Ingredients', 0, 'ING-001-757476', NULL, 7, 5, 23000.00, 25000.00, 'piece', 0, 50.000, 10.000, 450.000, 'g', NULL),
+(2, 'Bánh Cosy Marie', 'Bánh quy Cosy là thương hiệu bánh quy thơm ngon, nổi tiếng với hương vị thơm ngon cho gia đình bạn lựa chọn. Bánh quy Cosy Marie gói 240g gói vừa tiện lợi sử dụng cho cả gia đình, được yêu thích từ trẻ em cho đến người lớn, là món bánh quy thiết thực cho ăn vặt, quà vào dịp lễ, Tết.\r\n\r\nThành phần: Bột mì, dầu cọ, đường, chất tạo xốp (503(ii), 500(ii)), muối, hương thực phẩm tổng hợp, chất xử lý bột,...\r\n\r\nHướng dẫn sử dụng: Dùng trực tiếp.\r\n\r\nBảo quản: Để nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759943997/cake-fantasy/fgznmwmgmc3wvbw5r1gz.webp', 'cake-fantasy/fgznmwmgmc3wvbw5r1gz', 'Cake', 0, 'ITEM-001-991240', NULL, 1, 5, 25000.00, 27000.00, 'piece', 0, 1.000, 1.000, 240.000, 'g', 24),
+(3, 'Bánh Bouchee ', 'Bánh Bouchee Lotte Chocolat Vị Socola với lớp bánh mềm, được phủ sốt socola bên ngoài cùng với lớp nhân marshmallow cao cấp dai dai, ngọt nhẹ bên trong tạo nên hương vị hấp dẫn, sản phẩm này chắc chắn sẽ làm các bạn làm mê ngay từ miếng đầu tiên.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944349/cake-fantasy/fjotyvjvjrdi4lsfdawd.webp', 'cake-fantasy/fjotyvjvjrdi4lsfdawd', 'Cake', 0, 'ITEM-002-343610', NULL, 7, 5, 25000.00, 27000.00, 'piece', 0, 1.000, 1.000, 342.000, 'g', 15),
+(4, 'Bánh Marine Boy', 'Sản phẩm được sản xuất bởi Orion với dây chuyền công nghệ hiện đại của Hàn Quốc, mang đến sự an tâm cho người sử dụng. Bánh quy Marine Boy vị rong biển được đóng hộp nhỏ gọn, họa tiết trang trí bên ngoài hộp ngộ nghĩnh, sẽ khiến các em nhỏ thích thú khi sử dụng.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944435/cake-fantasy/olnq3rcmuez2rlywvq6a.webp', 'cake-fantasy/olnq3rcmuez2rlywvq6a', 'Cake', 0, 'ITEM-003-429479', NULL, 10, 5, 15000.00, 17000.00, 'piece', 0, 1.000, 1.000, 70.000, 'g', 6),
+(5, 'Bánh Hạt dinh dưỡng Goute', 'Bánh Hạt Dinh Dưỡng Goute có hương thơm lừng, cắn vào giòn tan, độ ngọt vừa phải, không tạo cảm giác ngấy.\r\n\r\nBánh cung cấp chất dinh dưỡng và năng lượng cho cơ thể hoạt động suốt ngày dài.\r\n\r\nThành phần: Bột mì, dầu dừa, đường, shortening, hạt mè trắng, sữa tươi, bột whey, mạch nha, chất tạo xốp, bơ, tinh bột bắp, hạt mè đen, yến mạch, muối i-ốt, gia vị muối, chất ổn định, bột phô mai, đường dextrose, dầu mè, hành lá sấy, hạt diêm mạch đỏ, hạt chia đen, hương hành tím tự nhiên, nước tương, chất xử lý bột, chất tạo màu tổng hợp.\r\n\r\nSử dụng: Dùng trực tiếp ngay khi mở bao bì sản phẩm. Hướng dẫn sử dụng: Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Xuất xứ: Việt Nam.\r\n', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944511/cake-fantasy/vastkhvcdxyc3oagp8uw.webp', 'cake-fantasy/vastkhvcdxyc3oagp8uw', 'Cake', 0, 'ITEM-004-505922', NULL, 10, 5, 40000.00, 43000.00, 'piece', 0, 1.000, 1.000, 316.000, 'g', 8),
+(6, 'Bánh AFC Kinh Đô Vị Rau Cải ', 'Bánh AFC Kinh Đô Vị Rau Cải chứa nhiều thành phần dưỡng chất, thích hợp làm món ăn nhẹ bổ dưỡng cho những người bận rộn.\r\n\r\nBánh được làm từ những thành phần giàu chất dinh dưỡng, cung cấp năng lượng, protein, chất xơ, đặc biệt là vitamin D và canxi cho cơ thể thêm khỏe mạnh.\r\n\r\nThành phần: Bột mì, dầu thực vật (dầu cọ), shortening (dầu cọ), đường, chất xơ, mạch nha, chất béo thay thế bơ,...', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944584/cake-fantasy/azjz3b2xvvkizi5evwky.webp', 'cake-fantasy/azjz3b2xvvkizi5evwky', 'Cake', 0, 'ITEM-005-579070', NULL, 10, 5, 33000.00, 37000.00, 'piece', 0, 1.000, 1.000, 258.000, 'g', 24),
+(7, 'Baking soda Caster', 'Baking soda Caster là một loại bột mịn màu trắng, nguyên liệu an toàn được sử dụng trong ngành thực phẩm, làm bánh và trong cả đời sống hằng ngày. Sản phẩm có giá thành rẻ, an toàn, dễ sử dụng và bảo quản, trong làm bánh được dùng để tạo độ phồng hay giòn cho bánh.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944763/cake-fantasy/ncfgq8rfarbmtyhq0til.jpg', 'cake-fantasy/ncfgq8rfarbmtyhq0til', 'Cake Ingredients', 0, 'ING-001-757476', NULL, 10, 5, 23000.00, 25000.00, 'piece', 0, 50.000, 10.000, 450.000, 'g', NULL),
 (8, 'Bơ thơm Margarine Cái Lân Calofic', 'Bơ thơm Margarine Cái Lân Calofic là loại nguyên liệu cơ bản giá rẻ được dùng nhiều trong quá trình làm các loại bánh có hương vị thơm ngon. Sản phẩm được sản xuất trong nước với nguồn nguyên liệu sẵn có, công nghệ hiện đại giúp giá thành rẻ hơn, phù hợp với đa số người dùng trong nước. ', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944867/cake-fantasy/ttyjd1dzyqljvhsnsmxn.jpg', 'cake-fantasy/ttyjd1dzyqljvhsnsmxn', 'Cake Ingredients', 0, 'ITEM-006-861732', NULL, 10, 5, 800000.00, 840000.00, 'piece', 0, 1.000, 1.000, 20000.000, 'g', NULL),
-(9, 'Bột bánh mì Bakers', 'Bột bánh mì bakers là bột mì cao cấp chuyên dùng để làm các loại bánh mì cao cấp, bánh mì sandwich, bánh mì baguette, bánh pizza, bánh croissant bánh nướng Đan Mạch.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944991/cake-fantasy/nhjq9u3mrelqa1evbeyo.jpg', 'cake-fantasy/nhjq9u3mrelqa1evbeyo', 'Cake Ingredients', 0, 'ING-002-985611', NULL, 1, 5, 25000.00, 29000.00, 'piece', 0, 50.000, 10.000, NULL, 'g', NULL),
-(10, 'Bong bóng sinh nhật phi hành gia', 'Bong bóng sinh nhật phi hành gia', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759946741/cake-fantasy/ioql57iug1zq15vh7gb0.jpg', 'cake-fantasy/ioql57iug1zq15vh7gb0', 'Party Items', 0, 'PRTY-001-736048', NULL, 0, 5, 300000.00, 350000.00, 'piece', 0, 1.000, 1.000, NULL, NULL, NULL),
-(11, 'CCc', 'sdawdas', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1760196418/cake-fantasy/j2lkxv47wk6ewiwq0dex.png', 'cake-fantasy/j2lkxv47wk6ewiwq0dex', 'Cake', 1, 'ITEM-006-416523', NULL, 10, 5, 12321.00, 12312.00, 'piece', 0, 1.000, 1.000, NULL, NULL, NULL),
-(12, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, '123456789', '123456789', 0, 5, 80000.00, 150000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(13, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, 'new123456', 'new123456', 0, 5, 100000.00, 50000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(14, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, 'TEST-1762230195345-123456789', 'TEST-1762230195345-123456789', 0, 5, 80000.00, 150000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(15, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, 'TEST-1762230237068-123456789', 'TEST-1762230237068-123456789', 0, 5, 80000.00, 150000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(16, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, 'TEST-1762230274888-123456789', 'TEST-1762230274888-123456789', 0, 5, 80000.00, 150000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(17, 'Bánh kem chocolate', 'Bánh kem chocolate ngon lạc', NULL, NULL, 'cake', 1, 'TEST-1762230312788-123456789', 'TEST-1762230312788-123456789', 0, 5, 80000.00, 150000.00, 'cái', 0, 1.000, 1.000, NULL, NULL, NULL),
-(18, '123123', '12321321', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1762910508/cake-fantasy/f6yazth8aov9mxxms52d.webp', 'cake-fantasy/f6yazth8aov9mxxms52d', 'Cake', 1, 'ITEM-013-504465', NULL, 0, 5, 1232123.00, 99999999.99, 'piece', 0, 1.000, 1.000, NULL, NULL, NULL);
+(9, 'Bột bánh mì Bakers', 'Bột bánh mì bakers là bột mì cao cấp chuyên dùng để làm các loại bánh mì cao cấp, bánh mì sandwich, bánh mì baguette, bánh pizza, bánh croissant bánh nướng Đan Mạch.', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759944991/cake-fantasy/nhjq9u3mrelqa1evbeyo.jpg', 'cake-fantasy/nhjq9u3mrelqa1evbeyo', 'Cake Ingredients', 0, 'ING-002-985611', NULL, 10, 5, 25000.00, 29000.00, 'piece', 0, 50.000, 10.000, NULL, 'g', NULL),
+(10, 'Bong bóng sinh nhật phi hành gia', 'Bong bóng sinh nhật phi hành gia', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1759946741/cake-fantasy/ioql57iug1zq15vh7gb0.jpg', 'cake-fantasy/ioql57iug1zq15vh7gb0', 'Party Items', 0, 'PRTY-001-736048', NULL, 9, 5, 300000.00, 350000.00, 'piece', 0, 1.000, 1.000, NULL, NULL, NULL),
+(11, 'CCc', 'sdawdas', 'https://res.cloudinary.com/dqhdsyaqo/image/upload/v1760196418/cake-fantasy/j2lkxv47wk6ewiwq0dex.png', 'cake-fantasy/j2lkxv47wk6ewiwq0dex', 'Cake', 0, 'ITEM-006-416523', NULL, 10, 5, 12321.00, 12312.00, 'piece', 0, 1.000, 1.000, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -202,9 +195,24 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `amount`, `address`, `status`, `payment`, `first_name`, `last_name`, `contact_number1`, `contact_number2`, `special_instructions`, `created_at`, `updated_at`) VALUES
-(1, 7, 40000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, '13123', '12312312', '0134567894', NULL, NULL, '2025-11-25 13:07:41', '2025-11-25 13:07:57'),
-(2, 7, 52000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'dádá', 'dsadsad', '0134567894', NULL, NULL, '2025-11-25 13:12:13', '2025-11-25 15:04:07'),
-(3, 7, 0.00, '', 'cart', 0, '', '', '', NULL, NULL, '2025-12-08 16:34:34', '2025-12-08 16:34:34');
+(1, 7, 0.00, '', 'cart', 0, '', '', '', NULL, NULL, '2025-10-08 18:52:06', '2025-10-08 18:52:06'),
+(2, 7, 285000.00, 'ádasdasd', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-08 18:52:24', '2025-10-08 18:52:25'),
+(3, 7, 312000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-08 18:54:39', '2025-10-08 18:54:40'),
+(4, 7, 168000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-08 18:55:23', '2025-10-08 18:55:24'),
+(5, 7, 555000.00, 'ádasd', 'Item Processing', 1, 'dá', 'đâs', '0134567894', NULL, NULL, '2025-10-08 18:58:42', '2025-10-08 18:58:43'),
+(6, 7, 285000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-08 19:01:20', '2025-10-10 17:27:44'),
+(7, 7, 365000.00, 'Hẻm 618 Âu Cơ , Phường Bảy Hiền, Thành phố Hồ Chí Minh, 72012', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 08:59:47', '2025-10-11 08:59:48'),
+(8, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:03:43', '2025-10-11 09:03:44'),
+(9, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:07:15', '2025-10-11 09:07:16'),
+(10, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:10:24', '2025-10-11 09:10:25'),
+(11, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '01345678213', NULL, NULL, '2025-10-11 09:12:31', '2025-10-11 09:12:32'),
+(12, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:13:32', '2025-10-11 09:13:33'),
+(13, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Item Processing', 1, 'Duy ', 'Toàn', '01345678213', NULL, NULL, '2025-10-11 09:15:26', '2025-10-11 09:15:27'),
+(14, 7, 42000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Delivered', 0, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:15:58', '2025-10-15 16:13:44'),
+(15, 7, 96000.00, 'Hẻm 285 Cách Mạng Tháng 8 285/36, Phường Hòa Hưng, Thành phố Thủ Đức, 70001', 'Delivered', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-11 09:17:46', '2025-10-15 16:14:31'),
+(16, 7, 96000.00, 'qư', 'Cancelled', 1, 'ưewq', 'ewqeqw', '0134567894', NULL, NULL, '2025-10-11 11:03:54', '2025-10-15 15:00:31'),
+(17, 7, 42000.00, 'Hẻm 411 Kênh Tân Hóa , Phường Tân Phú, Thành phố Hồ Chí Minh, 72012', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-25 13:05:01', '2025-10-25 13:05:02'),
+(18, 7, 96000.00, 'Hẻm 411 Kênh Tân Hóa , Phường Tân Phú, Thành phố Hồ Chí Minh, 72012', 'Item Processing', 1, 'Duy ', 'Toàn', '0134567894', NULL, NULL, '2025-10-25 13:08:18', '2025-10-25 13:08:19');
 
 -- --------------------------------------------------------
 
@@ -225,12 +233,24 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `item_id`, `quantity`, `price`) VALUES
-(1, 1, 7, 1, 25000.00),
-(2, 2, 6, 1, 37000.00),
-(3, 3, 6, 1, 37000.00),
-(4, 3, 6, 2, 37000.00),
-(5, 3, 6, 2, 37000.00),
-(6, 3, 6, 2, 37000.00);
+(3, 2, 2, 10, 27000.00),
+(15, 3, 3, 10, 27000.00),
+(31, 4, 4, 9, 17000.00),
+(50, 5, 2, 10, 27000.00),
+(51, 5, 3, 10, 27000.00),
+(62, 6, 2, 10, 27000.00),
+(135, 7, 10, 1, 350000.00),
+(136, 8, 2, 1, 27000.00),
+(137, 9, 2, 1, 27000.00),
+(138, 10, 2, 1, 27000.00),
+(139, 11, 2, 1, 27000.00),
+(140, 12, 2, 1, 27000.00),
+(141, 13, 2, 1, 27000.00),
+(142, 14, 2, 1, 27000.00),
+(143, 15, 3, 3, 27000.00),
+(146, 16, 2, 3, 27000.00),
+(156, 17, 2, 1, 27000.00),
+(170, 18, 2, 3, 27000.00);
 
 -- --------------------------------------------------------
 
@@ -304,21 +324,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES
 (3, 'Lithmi', 'liteenilanjith@gmail.com', '$2b$10$0Fihnrw9bKG0KlhhB82TDu2LMdGdMvENOLw6fhb7ZF32ukzHfXyuq'),
 (6, 'Kihansa', 'liteeknilanjith@gmail.com', '$2b$10$6CArbqOQwdvxNuUsWA5B1OFM.ufbSnlcvDoF4FIzBGIDVoBqCLro.'),
-(7, 'Voduytoan', 'voduytoan6a@gmail.com', '$2b$10$PuCB6TLFDtkExcmApEk9AOfHcbuHTiygKpQRXxfIt7n7IMnNkwnyK'),
-(8, 'Test User', 'test@example.com', '$2b$10$GzRQQS9mkr6bBnSFV.PXiujL.5B.Ncw7kbEQjp7bOFvBiou50yrwW'),
-(9, 'Test User', 'test-1762230196084@example.com', '$2b$10$0dFYnxoTplrsz/sbxvsIIeOROVvYoeoJza0r3pkOF6RRiSXf7TzMS'),
-(10, 'Test User', 'test-1762230238614@example.com', '$2b$10$5OPec.OxC.6XkveGNxetkORUGqgl2GIUk0Aexc6q8bZ8TN1hG4kSm'),
-(11, 'Test User', 'test-1762230276346@example.com', '$2b$10$SIAPllHSDFyvDhOkUlfYr.vZJfqIbhJ1/MZPSasRubtHAGRG/I4G6'),
-(12, 'Test User', 'test-1762230314257@example.com', '$2b$10$AF07SYBmSsYvQ5AwqGXJyOQMTPUbfq1h5B5xAqasPzAMhTOoC6FmC'),
-(13, 'Test Order User', 'order-test-1762230887786@example.com', '$2b$10$TtUNtUeO4dzZIFTTnAEPKuxG0ztcb7cobI5E.AQx7BGrrWzKFumhi'),
-(14, 'Test Order User', 'order-test-1762230939559@example.com', '$2b$10$RC0cNQuBrmvHLtRZAox9sOYfKEVHh/OhI3NV6X1LQWtRUEwmXEiAW'),
-(15, 'Test Order User', 'order-test-1762231046664@example.com', '$2b$10$hP32MNwPs5107ZE1HouyUeoz56.J/fyE1k.AYf8AwSvLtvzaauwzC'),
-(16, 'Test Order User', 'order-test-1762231152759@example.com', '$2b$10$bXEeHW065xmdL4LzVgKkD.zDH9va59nQcyQn0ZYbhnVH8k0397H3u'),
-(17, 'Test Order User', 'order-test-1762234954319@example.com', '$2b$10$BHD/nPkSiUPptVJyL/7O4ueCx3BempjVpzONIlhWn7ZlmwG0euK5e'),
-(18, 'Test Order User', 'order-test-1762234984088@example.com', '$2b$10$RuyatG8tJ2e1lbVtLs97CO3QNEfJN3hTaIjvbuKQIFUUuzOpslKfq'),
-(19, 'Test Order User', 'order-test-1762234992433@example.com', '$2b$10$Gn7En.Jhy8HDI3vQFULaVuVwmU9DDTGsN.KLaglvnqdWWGDgJBr3O'),
-(20, 'Test Order User', 'order-test-1762235039204@example.com', '$2b$10$5VDF5Y9meCNG1HCCU7XO3eXw9GtehhRGevhI5OXSeU8XrubQLgNxm'),
-(21, 'Test Order User', 'order-test-1762235219413@example.com', '$2b$10$5SkTx95Fleoxn9YhqDL/XOSLWIaK9P6GY20ePVFyK3NEVu/NdP64S');
+(7, 'Voduytoan', 'voduytoan6a@gmail.com', '$2b$10$PuCB6TLFDtkExcmApEk9AOfHcbuHTiygKpQRXxfIt7n7IMnNkwnyK');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -421,19 +427,19 @@ ALTER TABLE `grn_headers`
 -- AUTO_INCREMENT cho bảng `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
 
 --
 -- AUTO_INCREMENT cho bảng `reviews`
@@ -451,7 +457,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Ràng buộc đối với các bảng kết xuất

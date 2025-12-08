@@ -7,7 +7,7 @@ const router = express.Router();
 // Add item to cart
 router.post("/add", authMiddleware, async (req, res) => {
     try {
-        const { item_id, quantity = 1 } = req.body;
+        const { item_id, quantity = 1 } = req.body;             
         await Order.addItem(req.user.id, item_id, quantity);
         res.json({ 
             success: true, 
@@ -16,9 +16,11 @@ router.post("/add", authMiddleware, async (req, res) => {
         });
     } catch (error) {
         console.error("Add to cart error:", error);
+        console.error("Error stack:", error.stack);
         res.status(500).json({ 
             success: false, 
-            message: error.message || "Failed to add to cart"
+            message: error.message || "Failed to add to cart",
+            error: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
 });

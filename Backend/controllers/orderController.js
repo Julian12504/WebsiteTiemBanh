@@ -96,10 +96,17 @@ const placeOrder = async (req, res) => {
       } else {
         // Order was created but payment failed
         await Order.updatePaymentStatus(orderId, false);
+        
+        // Demo-friendly error message
+        const errorMessage = momoResult.message?.includes('Chữ ký không hợp lệ') 
+          ? "Demo: MoMo Payment đang dùng test credentials. Vui lòng chọn 'Test Payment' để hoàn tất đơn hàng."
+          : momoResult.message || "Không thể tạo link thanh toán MoMo";
+        
         res.status(500).json({
           success: false,
-          message: momoResult.message || "Không thể tạo link thanh toán Momo",
-          orderId
+          message: errorMessage,
+          orderId,
+          demoMode: true
         });
       }
       return;

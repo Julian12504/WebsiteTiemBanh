@@ -7,17 +7,17 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
   const paymentMethods = [
     {
       id: 'test',
-      name: 'Test Payment',
-      icon: '🧪',
-      description: 'Thanh toán test - nhấn là thành công ngay',
+      name: 'Thanh toán bằng tiền mặt',
+      icon: '💵',
+      description: 'Thanh toán khi nhận hàng (COD)',
       available: true
     },
     {
       id: 'momo',
       name: 'Ví MoMo',
       icon: '📱',
-      description: 'Thanh toán qua ví điện tử MoMo',
-      available: true
+      description: 'Thanh toán qua ví điện tử MoMo (Demo - dùng Test Payment để thử)',
+      available: true // Enabled for demo - sẽ lỗi do test credentials
     }
   ];
 
@@ -94,29 +94,29 @@ const PaymentMethod = ({ selectedMethod, onMethodChange, totalAmount }) => {
         </div>
       )}
 
-      {/* Test Payment Info */}
+      {/* Cash Payment Info */}
       {selectedMethod === 'test' && (
         <div className="test-payment-info">
           <div className="test-info-header">
-            <span className="test-icon">🧪</span>
-            <h4>Test Payment</h4>
+            <span className="test-icon">💵</span>
+            <h4>Thanh toán bằng tiền mặt (COD)</h4>
           </div>
           
           <div className="test-info-content">
-            <p><strong>Chế độ Test:</strong> Thanh toán sẽ thành công ngay lập tức khi bạn nhấn nút.</p>
+            <p><strong>Thanh toán khi nhận hàng:</strong> Bạn sẽ thanh toán bằng tiền mặt khi shipper giao hàng đến địa chỉ của bạn.</p>
             
             <div className="test-features">
               <div className="feature">
-                <span className="feature-icon">🧪</span>
-                <span>Test Mode - Không cần thông tin thẻ</span>
+                <span className="feature-icon">💵</span>
+                <span>Thanh toán trực tiếp cho shipper</span>
               </div>
               <div className="feature">
-                <span className="feature-icon">⚡</span>
-                <span>Thanh toán tức thì</span>
+                <span className="feature-icon">📦</span>
+                <span>Kiểm tra hàng trước khi thanh toán</span>
               </div>
               <div className="feature">
                 <span className="feature-icon">✅</span>
-                <span>Luôn thành công</span>
+                <span>An toàn và tiện lợi</span>
               </div>
             </div>
           </div>
