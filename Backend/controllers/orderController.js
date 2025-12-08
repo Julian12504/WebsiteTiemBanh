@@ -3,7 +3,7 @@ import momoPaymentService from "../services/momoPaymentService.js";
 import mockPaymentService from "../services/mockPaymentService.js";
 
 const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = process.env.FRONTEND_URL?.split(',')[0] || "http://localhost:5173";
   
   try {
     // Destructure all required fields from request body
