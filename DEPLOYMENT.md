@@ -6,6 +6,16 @@ Hướng dẫn này sẽ giúp bạn deploy:
 - **Backend API** lên **Railway** - Server xử lý logic
 - **Database MySQL** lên **Railway** - Lưu trữ dữ liệu
 
+## 🌐 Production URLs
+
+| Service | URL | Description |
+|---------|-----|-------------|
+| 🛍️ **Customer** | https://cake-shop-fe.vercel.app/ | Website khách hàng |
+| 👨‍💼 **Admin** | https://cake-shop-admin-livid.vercel.app | Quản lý tiệm bánh |
+| 🔌 **Backend** | https://cake-shop.up.railway.app | REST API + MySQL |
+
+**Admin Login:** `admin@gmail.com` / `admin123`
+
 ---
 
 ## 📁 Cấu Trúc Dự Án
