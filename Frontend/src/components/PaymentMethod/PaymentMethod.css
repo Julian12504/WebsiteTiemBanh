@@ -217,6 +217,14 @@
     padding: 12px;
   }
   
+  .payment-method-info h4 {
+    font-size: 15px;
+  }
+  
+  .payment-method-info p {
+    font-size: 13px;
+  }
+  
   .momo-steps {
     grid-template-columns: 1fr;
   }
@@ -228,5 +236,46 @@
   .momo-payment-info,
   .test-payment-info {
     padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-method-container h3 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .payment-method-card {
+    padding: 10px;
+  }
+  
+  .payment-method-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    min-width: 32px;
+  }
+  
+  .payment-method-info h4 {
+    font-size: 14px;
+  }
+  
+  .payment-method-info p {
+    font-size: 12px;
+  }
+  
+  .momo-payment-info,
+  .test-payment-info {
+    padding: 12px;
+    margin-top: 15px;
+  }
+  
+  .momo-info-header h4,
+  .test-info-header h4 {
+    font-size: 15px;
+  }
+  
+  .step-text,
+  .feature span:last-child {
+    font-size: 12px;
   }
 }

@@ -1,16 +1,17 @@
 .navbar{
-    padding: 0.8rem 45px;
+    padding: 0.5rem 45px;
     margin: 0px -6.8%;
     display: flex;
     justify-content: space-between; 
     align-items: center;
     color: white;
     background-color: #302B25;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 100;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .navbar .text{
@@ -20,31 +21,31 @@
 .navbar-menu{
     display: flex;
     list-style: none;
-    gap: 2.5rem;
+    gap: 1.8rem;
     color: #efe8e3;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
 }
 .navbar .logo {
-  margin-top: 5px;
-  margin-bottom: 5px;
-    width: max(5%, 80px);
+  margin-top: 2px;
+  margin-bottom: 2px;
+    width: max(5%, 65px);
     cursor: pointer;
 }
 
 .navbar-right{
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .navbar button{
     background: transparent;
-    font-size: 14px;
+    font-size: 13px;
     color: white;
     border: 2px solid #efe8e3;
     border-radius: 30px;
-    padding: 0.5rem 1.2rem;
+    padding: 0.4rem 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
@@ -81,11 +82,16 @@
 }
 
 .cart-icon{
-    height: 28px;
+    height: 22px;
 }
 
 .navbar-profile {
     position: relative;
+}
+
+.navbar-profile img {
+    width: 30px;
+    height: 30px;
 }
 
 .nav-profile-dropdown {
@@ -307,18 +313,64 @@
 }
 
 @media (max-width:750px) {
+    .navbar{
+        padding: 0.8rem 20px;
+        margin: 0px -5%;
+    }
+    
+    .navbar .logo{
+        width: 100px;
+    }
+    
     .navbar-menu{
         display: none;
+    }
+    
+    .navbar-right{
+        gap: 15px;
+    }
+    
+    .navbar-right img{
+        width: 24px;
+    }
+    
+    .navbar-right button{
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar{
+        padding: 0.6rem 15px;
+    }
+    
+    .navbar .logo{
+        width: 80px;
+    }
+    
+    .navbar-right{
+        gap: 10px;
+    }
+    
+    .navbar-right img{
+        width: 22px;
+    }
+    
+    .navbar-right button{
+        padding: 6px 12px;
+        font-size: 12px;
     }
 }
 
 @media (max-width: 768px) {
   .search-container {
-    width: 250px;
-    right: -70px;
+    width: 90vw;
+    max-width: 300px;
+    right: -20px;
   }
   
   .search-container:before {
-    right: 85px;
+    right: 30px;
   }
 }

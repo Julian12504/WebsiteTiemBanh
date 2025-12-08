@@ -46,16 +46,38 @@
     border: 1px solid #c9c9c9;
     padding: 10px;
     border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.login-popup-inputs input:focus {
+    border-color: #591b0d;
+    box-shadow: 0 0 0 3px rgba(89, 27, 13, 0.1);
+}
+
+.login-popup-inputs input:hover {
+    border-color: #a48c8c;
 }
 
 .login-popup-container button{
     border: none;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 12px;
+    border-radius: 8px;
     color: white;
-    background-color: #591b0d;
+    background: linear-gradient(135deg, #591b0d 0%, #7a2710 100%);
     font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(89, 27, 13, 0.2);
+}
+
+.login-popup-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(89, 27, 13, 0.3);
+}
+
+.login-popup-container button:active {
+    transform: translateY(0);
 }
 
 

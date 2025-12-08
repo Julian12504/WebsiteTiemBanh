@@ -65,6 +65,12 @@
     border-radius: 15px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+}
+
+.explore-category-list-item:hover img {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(212, 132, 108, 0.3);
 }
 
 .explore-category-list-item p{
@@ -73,6 +79,22 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.explore-category-list-item:hover p {
+    color: #591b0d;
+    font-weight: 600;
+}
+
+.explore-category-list-item.Active img {
+    border-color: #d4846c;
+    box-shadow: 0 8px 25px rgba(212, 132, 108, 0.4);
+    transform: scale(1.08);
+}
+
+.explore-category-list-item.Active p {
+    color: #591b0d;
+    font-weight: 700;
 }
 
 .explore-categories hr{

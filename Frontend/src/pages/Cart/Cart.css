@@ -6,14 +6,29 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 0.5fr;
     align-items: center;
-    color: grey;
+    color: #666;
     font-size: max(1vw, 12px);
     text-align: center;
+    font-weight: 600;
+    background: linear-gradient(135deg, rgba(244, 165, 130, 0.1) 0%, rgba(212, 132, 108, 0.1) 100%);
+    padding: 15px 0;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .cart-items-item{
     margin: 10px 0;
     color: black;
+    background: white;
+    padding: 15px 10px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cart-items-item:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
 .cart-items-item img{
@@ -302,6 +317,43 @@
         flex-direction: column-reverse;
     }
     
+    .cart-items{
+        padding: 15px;
+    }
+    
+    .cart-items-title{
+        grid-template-columns: 1.5fr 1fr 1fr 0.5fr;
+        font-size: 12px;
+        padding: 8px;
+    }
+    
+    .cart-items-item{
+        grid-template-columns: 1.5fr 1fr 1fr 0.5fr;
+        font-size: 13px;
+        padding: 10px 5px;
+    }
+    
+    .cart-items-item img{
+        width: 50px;
+    }
+    
+    .cart-total{
+        padding: 20px 15px;
+    }
+    
+    .cart-total h2{
+        font-size: 20px;
+    }
+    
+    .cart-total-details{
+        gap: 15px;
+    }
+    
+    .cart-total button{
+        padding: 12px;
+        font-size: 14px;
+    }
+    
     .delete-confirm-modal {
         max-width: 90%;
     }
@@ -312,5 +364,71 @@
     
     .delete-confirm-footer button {
         width: 100%;
+    }
+}
+
+@media (max-width: 480px){
+    .cart{
+        padding-top: 30px;
+    }
+    
+    .cart-items{
+        padding: 10px;
+    }
+    
+    .cart-items-title{
+        grid-template-columns: 1.5fr 1fr 0.8fr 0.3fr;
+        font-size: 11px;
+        padding: 6px;
+    }
+    
+    .cart-items-item{
+        grid-template-columns: 1.5fr 1fr 0.8fr 0.3fr;
+        font-size: 12px;
+        padding: 8px 3px;
+    }
+    
+    .cart-items-item img{
+        width: 40px;
+    }
+    
+    .cart-items-quantity{
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+    
+    .cart-promocode{
+        padding: 15px;
+    }
+    
+    .cart-promocode-input{
+        padding: 10px;
+    }
+    
+    .cart-promocode-input input{
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .cart-promocode-input button{
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+    
+    .cart-total{
+        padding: 15px 10px;
+    }
+    
+    .cart-total h2{
+        font-size: 18px;
+    }
+    
+    .cart-total-details p{
+        font-size: 13px;
+    }
+    
+    .cart-total button{
+        padding: 10px;
+        font-size: 13px;
     }
 }

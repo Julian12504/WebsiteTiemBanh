@@ -20,10 +20,25 @@
 .place-order-left input{
     margin-bottom: 15px;
     width: 100%;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 4px;
-    /* outline-color: #591b0d; */
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.place-order-left input:focus {
+    outline: none;
+    border-color: #591b0d;
+    box-shadow: 0 0 0 3px rgba(89, 27, 13, 0.1);
+}
+
+.place-order-left input:hover {
+    border-color: #a48c8c;
+}
+
+.place-order-left input::placeholder {
+    color: #999;
 }
 
 .place-order-left .multi-fields{
@@ -130,3 +145,64 @@ margin-top: 25px;
     font-family: inherit;
     resize: vertical;
   } 
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .place-order {
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 60px;
+  }
+  
+  .place-order-left,
+  .place-order-right {
+    max-width: 100%;
+  }
+  
+  .place-order-left .title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .place-order-left input {
+    font-size: 14px;
+  }
+  
+  .payment-button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .place-order {
+    margin-top: 40px;
+    gap: 20px;
+  }
+  
+  .place-order-left .title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .place-order-left input {
+    padding: 8px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  
+  .place-order-left .multi-fields {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .payment-button {
+    font-size: 14px;
+    padding: 10px;
+  }
+  
+  .location-btn {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+}
