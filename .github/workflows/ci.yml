@@ -139,10 +139,24 @@ jobs:
         with:
           node-version: '20'
       
+      # Setup Database Schema
+      - name: Import Database Schema
+        run: |
+          mysql -h 127.0.0.1 -u root -proot cake_fantasy_db < sql/cake_fantasy_db.sql
+      
       # Setup Backend
       - name: Install Backend dependencies
         working-directory: Backend
         run: npm ci
+      
+      - name: Seed Database
+        working-directory: Backend
+        run: npm run seed
+        env:
+          DB_HOST: localhost
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_NAME: cake_fantasy_db
       
       - name: Start Backend server
         working-directory: Backend
