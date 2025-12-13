@@ -252,9 +252,10 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(89, 27, 13, 0.2);
+  min-height: 44px; /* Fix height để không bị thay đổi */
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:hover:not(.loading):not(.added):not(.error):not(.disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(89, 27, 13, 0.3);
   background: linear-gradient(135deg, #7a2710 0%, #591b0d 100%);
@@ -288,17 +289,11 @@
   transition: left 0.5s;
 }
 
-.add-to-cart-btn:hover::before {
+.add-to-cart-btn:hover:not(.loading):not(.added):not(.error):not(.disabled)::before {
   left: 100%;
 }
 
-.add-to-cart-btn:hover {
-  background: linear-gradient(135deg, #ff5252, #ff7979);
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4);
-}
-
-.add-to-cart-btn:active {
+.add-to-cart-btn:active:not(.loading):not(.added):not(.error):not(.disabled) {
   transform: translateY(-1px) scale(0.98);
   transition: all 0.1s;
 }
@@ -308,7 +303,7 @@
   transition: transform 0.3s ease;
 }
 
-.add-to-cart-btn:hover .cart-icon {
+.add-to-cart-btn:hover:not(.loading):not(.added):not(.error):not(.disabled) .cart-icon {
   transform: scale(1.2) rotate(10deg);
 }
 
@@ -328,10 +323,25 @@
 .add-to-cart-btn.loading {
   pointer-events: none;
   opacity: 0.7;
+  background: linear-gradient(135deg, #591b0d 0%, #7a2710 100%);
+  transform: none !important; /* Prevent scale on loading */
 }
 
 .add-to-cart-btn.loading .cart-icon {
   animation: cartBounce 0.8s infinite;
+}
+
+/* Error state */
+.add-to-cart-btn.error {
+  background: linear-gradient(135deg, #f44336, #e53935);
+  transform: none !important; /* Prevent scale on error */
+  pointer-events: none;
+}
+
+/* Added state */
+.add-to-cart-btn.added {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  transform: none !important; /* Prevent scale when added - animation handles this */
 }
 
 @keyframes cartBounce {
