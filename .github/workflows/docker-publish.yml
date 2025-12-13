@@ -1,0 +1,39 @@
+name: Build and Publish Docker Images
+
+on:
+  workflow_dispatch:  # Only run manually, not on push
+  # push:
+  #   branches: [ main ]
+
+env:
+  DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_USERNAME }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ backend, frontend, admin ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.service == 'backend' && './Backend' || (matrix.service == 'frontend' && './Frontend') || './Admin' }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.service }}:latest
+          file: ${{ matrix.service == 'backend' && './Backend/Dockerfile' || (matrix.service == 'frontend' && './Frontend/Dockerfile') || './Admin/Dockerfile' }}

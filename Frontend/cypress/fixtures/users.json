@@ -1,0 +1,48 @@
+{
+  "validUser": {
+    "name": "Test User Valid",
+    "email": "validuser@test.com",
+    "password": "ValidPass123!"
+  },
+  "testUser1": {
+    "name": "Nguyễn Văn Test",
+    "email": "testuser1@example.com",
+    "password": "TestPass123!"
+  },
+  "testUser2": {
+    "name": "Trần Thị Demo",
+    "email": "demo@example.com",
+    "password": "DemoPass456!"
+  },
+  "existingUser": {
+    "email": "existing@test.com",
+    "password": "ExistingPass123!",
+    "note": "This user should already exist in test database"
+  },
+  "invalidUsers": [
+    {
+      "name": "",
+      "email": "test@test.com",
+      "password": "Pass123!",
+      "expectedError": "Vui lòng nhập tên"
+    },
+    {
+      "name": "Test User",
+      "email": "invalid-email",
+      "password": "Pass123!",
+      "expectedError": "Email không hợp lệ"
+    },
+    {
+      "name": "Test User",
+      "email": "test@test.com",
+      "password": "123",
+      "expectedError": "Mật khẩu phải có ít nhất 8 ký tự"
+    },
+    {
+      "name": "Test User",
+      "email": "",
+      "password": "Pass123!",
+      "expectedError": "Vui lòng nhập email"
+    }
+  ]
+}

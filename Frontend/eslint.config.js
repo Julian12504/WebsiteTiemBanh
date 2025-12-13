@@ -3,9 +3,11 @@ import globals from 'globals'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import vitest from 'eslint-plugin-vitest'
+import testingLibrary from 'eslint-plugin-testing-library'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'coverage'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -33,6 +35,25 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+    },
+  },
+  // Test files configuration
+  {
+    files: ['**/__tests__/**/*.{js,jsx}', '**/*.test.{js,jsx}', '**/*.spec.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...vitest.environments.env.globals,
+      },
+    },
+    plugins: {
+      vitest,
+      'testing-library': testingLibrary,
+    },
+    rules: {
+      ...vitest.configs.recommended.rules,
+      ...testingLibrary.configs.react.rules,
+      'react/prop-types': 'off', // Disable prop-types in test files
     },
   },
 ]
