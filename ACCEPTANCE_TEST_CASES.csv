@@ -1,4 +1,4 @@
-Test ID,Epic,User Story,Test Scenario,Priority,Pre-condition,Test Steps,Expected Result,Actual Result,Status,Bug ID,Notes,Tester,Date
+﻿Test ID,Epic,User Story,Test Scenario,Priority,Pre-condition,Test Steps,Expected Result,Actual Result,Status,Bug ID,Notes,Tester,Date
 TC_ACC_001,User Management,US-001: Đăng ký tài khoản,Đăng ký với thông tin hợp lệ,HIGH,"Chưa có tài khoản; Browser đã xóa cache","1. Truy cập http://localhost:5173
 2. Click nút Đăng nhập
 3. Click tab Tạo tài khoản

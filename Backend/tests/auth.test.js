@@ -24,7 +24,8 @@ describe('🔐 Module4_Auth - Phân quyền & Xác thực hoạt động chính 
     try {
       if (!token) throw new Error('Token không tồn tại');
       if (token === 'invalid') throw new Error('Token không hợp lệ');
-      if (token === 'expired') throw new Error('Token hết hạn');
+      // BUG: Không check token expiration - missing logic
+      // if (token === 'expired') throw new Error('Token hết hạn');
       
       return {
         userId: 1,
@@ -103,5 +104,129 @@ describe('🔐 Module4_Auth - Phân quyền & Xác thực hoạt động chính 
   it('TC_AUTH_013: Admin nên có quyền quản lý users', () => {
     const admin = { userId: 1, role: 'admin' };
     expect(checkPermission(admin, 'manage_users')).toBe(true);
+  });
+
+  it('TC_AUTH_014: Nên xử lý token hết hạn', () => {
+    expect(() => {
+      validateToken('expired', 'secret');
+    }).toThrow('Token hết hạn');
+  });
+
+  it('TC_AUTH_015: Nên validate password length', () => {
+    const validatePassword = (password) => {
+      if (!password || password.length < 8) {
+        throw new Error('Mật khẩu phải có ít nhất 8 ký tự');
+      }
+      return true;
+    };
+
+    expect(() => validatePassword('123')).toThrow('Mật khẩu phải có ít nhất 8 ký tự');
+    expect(validatePassword('12345678')).toBe(true);
+  });
+
+  it('TC_AUTH_016: Nên validate email format', () => {
+    const validateEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Email không hợp lệ');
+      }
+      return true;
+    };
+
+    expect(() => validateEmail('invalid-email')).toThrow('Email không hợp lệ');
+    expect(() => validateEmail('test@')).toThrow('Email không hợp lệ');
+    expect(validateEmail('test@example.com')).toBe(true);
+  });
+
+  it('TC_AUTH_017: Nên kiểm tra email trùng lặp', () => {
+    // FIXED: API check duplicate email đúng cách
+    const checkDuplicateEmail = (email, existingUsers) => {
+      const exists = existingUsers.some(user => user.email === email);
+      if (exists) {
+        throw new Error('Email đã được sử dụng');
+      }
+      return true;
+    };
+
+    const users = [
+      { id: 1, email: 'user1@example.com' },
+      { id: 2, email: 'user2@example.com' }
+    ];
+
+    // Test PASS: Throw error đúng với email trùng
+    expect(() => checkDuplicateEmail('user1@example.com', users)).toThrow('Email đã được sử dụng');
+    expect(checkDuplicateEmail('newuser@example.com', users)).toBe(true);
+  });
+
+  it('TC_AUTH_018: Nên register user mới thành công', () => {
+    const register = (name, email, password) => {
+      if (!name) throw new Error('Vui lòng nhập tên');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error('Email không hợp lệ');
+      }
+      if (!password || password.length < 8) {
+        throw new Error('Mật khẩu phải có ít nhất 8 ký tự');
+      }
+
+      return {
+        id: Math.random().toString(36).substr(2, 9),
+        name,
+        email,
+        role: 'user',
+        createdAt: new Date()
+      };
+    };
+
+    const newUser = register('Test User', 'test@example.com', 'password123');
+    expect(newUser.id).toBeDefined();
+    expect(newUser.role).toBe('user');
+    expect(newUser.email).toBe('test@example.com');
+  });
+
+  it('TC_AUTH_019: Nên login thành công với credentials đúng', () => {
+    const login = (email, password, users) => {
+      const user = users.find(u => u.email === email);
+      if (!user) throw new Error('Email hoặc mật khẩu không đúng');
+      if (user.password !== password) throw new Error('Email hoặc mật khẩu không đúng');
+      
+      return {
+        token: 'valid_token_' + user.id,
+        user: { id: user.id, email: user.email, role: user.role }
+      };
+    };
+
+    const users = [
+      { id: 1, email: 'test@example.com', password: 'password123', role: 'user' }
+    ];
+
+    const result = login('test@example.com', 'password123', users);
+    expect(result.token).toContain('valid_token_');
+    expect(result.user.email).toBe('test@example.com');
+  });
+
+  it('TC_AUTH_020: Nên logout thành công', () => {
+    const logout = () => {
+      return { token: null, message: 'Đăng xuất thành công' };
+    };
+
+    const result = logout();
+    expect(result.token).toBeNull();
+    expect(result.message).toBe('Đăng xuất thành công');
+  });
+
+  it('TC_AUTH_021: Nên bảo vệ route yêu cầu authentication', () => {
+    // BUG: requireAuth không validate token đúng cách
+    const requireAuth = (token) => {
+      if (!token) {
+        throw new Error('Vui lòng đăng nhập');
+      }
+      // Bug: Không validate token, chỉ return user mock
+      return { userId: 1, role: 'user' };
+    };
+
+    expect(() => requireAuth(null)).toThrow('Vui lòng đăng nhập');
+    // Test này sẽ FAIL vì expect throw error nhưng bug không throw
+    expect(() => requireAuth('invalid')).toThrow('Phiên đăng nhập không hợp lệ');
+    expect(requireAuth('valid_token')).toBeDefined();
   });
 });

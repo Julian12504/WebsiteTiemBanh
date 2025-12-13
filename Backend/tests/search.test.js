@@ -14,6 +14,11 @@ describe('🔍 Module1_Search - Tìm kiếm và lọc sản phẩm', () => {
   ];
 
   const searchItems = (items, query) => {
+    // BUG: Không sanitize input, dễ bị SQL injection
+    // Ký tự đặc biệt sẽ gây lỗi
+    if (/[@#$%^&*]/.test(query)) {
+      throw new Error('SQL injection detected: Special characters not sanitized');
+    }
     return items.filter(item => 
       item.name.toLowerCase().includes(query.toLowerCase())
     );
@@ -85,5 +90,35 @@ describe('🔍 Module1_Search - Tìm kiếm và lọc sản phẩm', () => {
       expect(item.price).toBeGreaterThanOrEqual(100000);
       expect(item.stock).toBeGreaterThan(0);
     });
+  });
+
+  it('TC_SEARCH_008: Nên xử lý tìm kiếm với chuỗi rỗng', () => {
+    const result = searchItems(items, '');
+    expect(result.length).toBe(4); // Trả về tất cả sản phẩm
+  });
+
+  it('TC_SEARCH_009: Nên xử lý tìm kiếm với ký tự đặc biệt', () => {
+    const result = searchItems(items, '@#$%');
+    expect(result).toEqual([]);
+  });
+
+  it('TC_SEARCH_010: Nên sort sản phẩm theo giá tăng dần', () => {
+    const sortByPriceAsc = (items) => {
+      return [...items].sort((a, b) => a.price - b.price);
+    };
+    
+    const result = sortByPriceAsc(items);
+    expect(result[0].price).toBe(30000);
+    expect(result[result.length - 1].price).toBe(200000);
+  });
+
+  it('TC_SEARCH_011: Nên sort sản phẩm theo giá giảm dần', () => {
+    const sortByPriceDesc = (items) => {
+      return [...items].sort((a, b) => b.price - a.price);
+    };
+    
+    const result = sortByPriceDesc(items);
+    expect(result[0].price).toBe(200000);
+    expect(result[result.length - 1].price).toBe(30000);
   });
 });
