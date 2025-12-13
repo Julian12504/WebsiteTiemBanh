@@ -223,15 +223,49 @@ describe('E2E: User Registration and Login Flow', () => {
       // Verify logged in
       cy.window().its('localStorage.token').should('exist');
       
-      // Click profile icon to open dropdown
-      cy.get('.navbar-profile, .profile-icon').click();
+      // Wait for login popup to close and page to stabilize
+      cy.wait(2000);
       
-      // Wait for dropdown to appear and click logout
-      cy.get('.nav-profile-dropdown').should('be.visible');
-      cy.contains('li', /Đăng xuất/i).click();
+      // Wait for profile icon to be visible (after login)
+      cy.get('.navbar-profile').should('be.visible');
+      
+      // Find and click logout button directly (force click to bypass CSS hover)
+      // The dropdown is hidden by CSS :hover, but element exists in DOM
+      cy.get('.nav-profile-dropdown')
+        .find('li')
+        .contains(/Đăng xuất/i)
+        .click({ force: true });
       
       // Verify logout
       cy.window().its('localStorage.token').should('not.exist');
+      cy.contains('button', 'Đăng nhập').should('be.visible');
+    });
+
+    it('TC_E2E_LOGOUT_002: Should clear session on logout', () => {
+      // Login first
+      const timestamp = Date.now();
+      cy.register(`Logout Test 2 ${timestamp}`, `logout2${timestamp}@test.com`, 'LogoutTest123!');
+      
+      // Verify logged in
+      cy.window().its('localStorage.token').should('exist');
+      
+      // Wait for page to stabilize
+      cy.wait(2000);
+      
+      // Force click logout (bypass CSS :hover)
+      cy.get('.nav-profile-dropdown')
+        .find('li')
+        .contains(/Đăng xuất/i)
+        .click({ force: true });
+      
+      // Try to access protected page
+      cy.visit('/myorders');
+      
+      // Should stay on /myorders but show login prompt message
+      cy.url().should('include', '/myorders');
+      cy.contains(/Vui lòng đăng nhập|Please login|đăng nhập để xem/i).should('be.visible');
+      
+      // Login button should be visible
       cy.contains('button', 'Đăng nhập').should('be.visible');
     });
   });

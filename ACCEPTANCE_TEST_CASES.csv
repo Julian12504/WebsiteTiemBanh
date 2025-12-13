@@ -1,0 +1,97 @@
+Test ID,Epic,User Story,Test Scenario,Priority,Pre-condition,Test Steps,Expected Result,Actual Result,Status,Bug ID,Notes,Tester,Date
+TC_ACC_001,User Management,US-001: Đăng ký tài khoản,Đăng ký với thông tin hợp lệ,HIGH,"Chưa có tài khoản; Browser đã xóa cache","1. Truy cập http://localhost:5173
+2. Click nút Đăng nhập
+3. Click tab Tạo tài khoản
+4. Nhập Tên: Nguyễn Văn A
+5. Nhập Email: nguyenvana@gmail.com
+6. Nhập Password: MatKhau123!
+7. Click Tạo tài khoản","Toast Đăng ký thành công; Tự động đăng nhập; Popup đóng; Header hiển thị tên Nguyễn Văn A",,,,
+TC_ACC_002,User Management,US-001: Đăng ký tài khoản,Đăng ký với email đã tồn tại,HIGH,Email existing@test.com đã được đăng ký,"1. Mở popup đăng ký
+2. Nhập Tên: Test User
+3. Nhập Email: existing@test.com
+4. Nhập Password: Pass123!
+5. Click Tạo tài khoản","Hiển thị lỗi Email đã được sử dụng; Không tạo tài khoản mới; Form không reset",,,,
+TC_ACC_003,User Management,US-001: Đăng ký tài khoản,Đăng ký với email không hợp lệ,MEDIUM,-,"1. Mở popup đăng ký
+2. Nhập Email: invalid-email
+3. Nhập các field khác hợp lệ
+4. Click Tạo tài khoản","Hiển thị lỗi Email không hợp lệ; Không submit form",,,,
+TC_ACC_004,User Management,US-001: Đăng ký tài khoản,Đăng ký với password ngắn (<8 ký tự),MEDIUM,-,"1. Mở popup đăng ký
+2. Nhập Password: 123
+3. Nhập các field khác hợp lệ
+4. Click Tạo tài khoản","Hiển thị lỗi Mật khẩu phải có ít nhất 8 ký tự; Không submit form",,,,
+TC_ACC_005,User Management,US-001: Đăng ký tài khoản,Đăng ký bỏ trống trường bắt buộc,LOW,-,"1. Mở popup đăng ký
+2. Bỏ trống trường Tên
+3. Nhập Email và Password hợp lệ
+4. Click Tạo tài khoản","Hiển thị lỗi Vui lòng nhập tên; Focus vào field Tên",,,,
+TC_ACC_006,User Management,US-002: Đăng nhập,Đăng nhập với tài khoản hợp lệ,HIGH,Đã có tài khoản test@test.com / Pass123!,"1. Mở trang chủ
+2. Click Đăng nhập
+3. Nhập Email: test@test.com
+4. Nhập Password: Pass123!
+5. Click Đăng nhập","Toast Đăng nhập thành công; Popup đóng; Header hiển thị tên user; Token lưu vào localStorage",,,,
+TC_ACC_007,User Management,US-002: Đăng nhập,Đăng nhập với email sai,MEDIUM,-,"1. Click Đăng nhập
+2. Nhập Email: wrong@test.com
+3. Nhập Password: Pass123!
+4. Click Đăng nhập","Hiển thị lỗi Email hoặc mật khẩu không đúng; Không đăng nhập; Form không reset",,,,
+TC_ACC_008,User Management,US-002: Đăng nhập,Đăng nhập với password sai,MEDIUM,-,"1. Click Đăng nhập
+2. Nhập Email: test@test.com
+3. Nhập Password sai: WrongPass
+4. Click Đăng nhập","Hiển thị lỗi Email hoặc mật khẩu không đúng; Không đăng nhập",,,,
+TC_ACC_009,User Management,US-003: Đăng xuất,Đăng xuất thành công,HIGH,Đã đăng nhập,"1. Click vào tên user ở header
+2. Click Đăng xuất","Toast Đăng xuất thành công; Header không còn tên user; Hiện nút Đăng nhập; Token bị xóa; Redirect về trang chủ",,,,
+TC_ACC_010,Product Browsing,US-004: Xem danh sách sản phẩm,Xem tất cả sản phẩm,HIGH,Database có ít nhất 5 sản phẩm,"1. Vào trang chủ
+2. Cuộn xuống phần Sản phẩm","Hiển thị danh sách sản phẩm dạng grid; Mỗi card: Ảnh, Tên, Giá, Nút Thêm vào giỏ; Load < 3 giây",,,,
+TC_ACC_011,Product Browsing,US-004: Xem danh sách sản phẩm,Lọc sản phẩm theo category Cake,HIGH,-,"1. Vào trang chủ
+2. Click category Bánh","Chỉ hiển thị sản phẩm Cake; Category Bánh được highlight",,,,
+TC_ACC_012,Product Browsing,US-004: Xem danh sách sản phẩm,Lọc sản phẩm theo category Cake Ingredients,MEDIUM,-,1. Click category Nguyên liệu làm bánh,"Hiển thị các nguyên liệu; Category được highlight",,,,
+TC_ACC_013,Product Browsing,US-005: Tìm kiếm sản phẩm,Tìm kiếm với keyword hợp lệ,HIGH,Có sản phẩm tên Bánh kem,"1. Nhập bánh kem vào search box
+2. Nhấn Enter hoặc click icon search","Hiển thị danh sách sản phẩm có chứa bánh kem; Highlight keyword",,,,
+TC_ACC_014,Product Browsing,US-005: Tìm kiếm sản phẩm,Tìm kiếm không có kết quả,MEDIUM,-,"1. Nhập sản phẩm không tồn tại xyz123
+2. Nhấn Enter","Hiển thị Không tìm thấy sản phẩm; Gợi ý tìm kiếm khác",,,,
+TC_ACC_015,Product Browsing,US-005: Tìm kiếm sản phẩm,Tìm kiếm với ô trống,LOW,-,"1. Để trống search box
+2. Click icon search","Hiển thị Vui lòng nhập từ khóa hoặc hiển thị tất cả sản phẩm",,,,
+TC_ACC_016,Product Browsing,US-006: Xem chi tiết sản phẩm,Xem chi tiết 1 sản phẩm,HIGH,-,1. Click vào 1 sản phẩm bất kỳ,"Chuyển sang trang chi tiết; URL: /item/:id; Hiển thị: Ảnh lớn, Tên, Giá, Mô tả, Số lượng selector, Nút Thêm vào giỏ",,,,
+TC_ACC_017,Product Browsing,US-006: Xem chi tiết sản phẩm,Tăng/giảm số lượng trên trang chi tiết,MEDIUM,Đang ở trang chi tiết sản phẩm,"1. Click nút +
+2. Click nút -","Số lượng tăng/giảm; Không giảm < 1; Giá tổng = Đơn giá × Số lượng",,,,
+TC_ACC_018,Cart & Checkout,US-007: Thêm sản phẩm vào giỏ,Thêm sản phẩm từ trang danh sách,HIGH,Đã đăng nhập,"1. Hover vào 1 sản phẩm
+2. Click nút Thêm vào giỏ","Toast Đã thêm vào giỏ hàng; Icon giỏ tăng số; Sản phẩm xuất hiện trong giỏ",,,,
+TC_ACC_019,Cart & Checkout,US-007: Thêm sản phẩm vào giỏ,Thêm sản phẩm từ trang chi tiết,HIGH,Đã đăng nhập,"1. Vào trang chi tiết sản phẩm
+2. Chọn số lượng = 3
+3. Click Thêm vào giỏ","Toast thành công; Giỏ hàng có sản phẩm với số lượng = 3",,,,
+TC_ACC_020,Cart & Checkout,US-007: Thêm sản phẩm vào giỏ,Thêm cùng sản phẩm 2 lần,MEDIUM,Đã có sản phẩm A (số lượng 2) trong giỏ,1. Thêm lại sản phẩm A (số lượng 1),"Số lượng sản phẩm A = 3; Không tạo item mới trong giỏ",,,,
+TC_ACC_021,Cart & Checkout,US-008: Quản lý giỏ hàng,Xem giỏ hàng,HIGH,Giỏ có 2 sản phẩm,1. Click icon giỏ hàng,"Chuyển sang /cart; Hiển thị danh sách sản phẩm; Mỗi item: Ảnh, Tên, Giá, Số lượng, Tổng, Nút xóa; Hiển thị Tổng tiền",,,,
+TC_ACC_022,Cart & Checkout,US-008: Quản lý giỏ hàng,Cập nhật số lượng trong giỏ,HIGH,Giỏ có sản phẩm A (số lượng 2),"1. Vào trang giỏ hàng
+2. Tăng số lượng sản phẩm A lên 5","Số lượng = 5; Tổng tiền sản phẩm = Giá × 5; Tổng giỏ hàng cập nhật",,,,
+TC_ACC_023,Cart & Checkout,US-008: Quản lý giỏ hàng,Xóa sản phẩm khỏi giỏ,HIGH,Giỏ có 2 sản phẩm,1. Click nút X ở sản phẩm thứ nhất,"Sản phẩm biến mất; Tổng tiền giảm; Giỏ còn 1 sản phẩm",,,,
+TC_ACC_024,Cart & Checkout,US-008: Quản lý giỏ hàng,Xóa sản phẩm cuối cùng,MEDIUM,Giỏ có 1 sản phẩm,1. Xóa sản phẩm đó,"Giỏ trống; Hiển thị Giỏ hàng trống; Nút Thanh toán disabled/ẩn",,,,
+TC_ACC_025,Cart & Checkout,US-009: Thanh toán đơn hàng,Thanh toán COD thành công,HIGH,Giỏ có ít nhất 1 sản phẩm; Đã đăng nhập,"1. Vào giỏ hàng
+2. Click Thanh toán
+3. Điền thông tin: Họ: Nguyễn, Tên: Văn A, Địa chỉ: 123 Lê Lợi, TP: TP.HCM, SĐT: 0901234567
+4. Chọn Thanh toán khi nhận hàng (COD)
+5. Click Đặt hàng","Toast Đặt hàng thành công; Chuyển /orders; Đơn hàng status Pending; Giỏ trống",,,,
+TC_ACC_026,Cart & Checkout,US-009: Thanh toán đơn hàng,Thanh toán thiếu thông tin,MEDIUM,Giỏ có sản phẩm,"1. Click Thanh toán
+2. Bỏ trống Địa chỉ
+3. Click Đặt hàng","Hiển thị lỗi Vui lòng nhập địa chỉ; Không tạo đơn hàng",,,,
+TC_ACC_027,Cart & Checkout,US-009: Thanh toán đơn hàng,Thanh toán với giỏ trống,LOW,Giỏ hàng trống,1. Vào /order trực tiếp,"Redirect về trang chủ/giỏ hàng; Hiển thị Giỏ hàng trống",,,,
+TC_ACC_028,Cart & Checkout,US-010: Xem lịch sử đơn hàng,Xem danh sách đơn hàng,HIGH,Đã đăng nhập; Đã có 2 đơn hàng,"1. Click menu Đơn hàng
+2. Hoặc vào URL /orders","Hiển thị danh sách đơn hàng; Mỗi đơn: Mã, Ngày, Trạng thái, Tổng; Sắp xếp mới nhất trước",,,,
+TC_ACC_029,Cart & Checkout,US-010: Xem lịch sử đơn hàng,Xem chi tiết 1 đơn hàng,MEDIUM,Có đơn hàng,1. Click vào 1 đơn hàng,"Hiển thị chi tiết: Danh sách sản phẩm, Địa chỉ giao hàng, Trạng thái, Thời gian",,,,
+TC_ACC_030,Admin Panel,US-011: Admin đăng nhập,Admin đăng nhập thành công,HIGH,Có tài khoản admin: admin@cakefantasy.com / Admin123!,"1. Truy cập http://localhost:5174
+2. Nhập email admin
+3. Nhập password
+4. Click Đăng nhập","Đăng nhập thành công; Chuyển Dashboard; Hiển thị Sidebar menu; Header hiển thị tên admin",,,,
+TC_ACC_031,Admin Panel,US-012: Admin thêm sản phẩm,Thêm sản phẩm đầy đủ thông tin,HIGH,Đã đăng nhập admin,"1. Click menu Thêm mặt hàng
+2. Upload ảnh sản phẩm
+3. Nhập Tên: Bánh Test
+4. Nhập Mô tả
+5. Chọn Danh mục: Cake
+6. Nhập Giá vốn: 100000
+7. Nhập Giá bán: 150000
+8. Click Thêm mặt hàng","Toast Thêm mặt hàng thành công; Chuyển về trang List; Sản phẩm Bánh Test xuất hiện",,,,
+TC_ACC_032,Admin Panel,US-012: Admin thêm sản phẩm,Thêm sản phẩm thiếu thông tin,MEDIUM,Đã đăng nhập admin,"1. Click Thêm mặt hàng
+2. Bỏ trống Tên
+3. Nhập các field khác
+4. Click Thêm mặt hàng","Hiển thị lỗi Vui lòng nhập Tên; Không tạo sản phẩm",,,,
+TC_ACC_033,Admin Panel,US-013: Admin quản lý đơn hàng,Xem danh sách đơn hàng,HIGH,Có ít nhất 3 đơn hàng trong DB,1. Click menu Đơn hàng,"Hiển thị danh sách đơn hàng; Mỗi đơn: Mã, Tên khách, SĐT, Địa chỉ, Sản phẩm, Tổng tiền, Trạng thái",,,,
+TC_ACC_034,Admin Panel,US-013: Admin quản lý đơn hàng,Cập nhật trạng thái đơn hàng,HIGH,Có đơn hàng status Pending,"1. Vào trang Orders
+2. Chọn dropdown trạng thái
+3. Chọn Processing","Trạng thái cập nhật; Toast Cập nhật thành công; Database cập nhật",,,,
