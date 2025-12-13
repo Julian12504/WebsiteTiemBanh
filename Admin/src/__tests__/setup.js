@@ -1,3 +1,25 @@
+// Fix for webidl-conversions issue with jsdom
+if (typeof globalThis.WeakRef === 'undefined') {
+  globalThis.WeakRef = class WeakRef {
+    constructor(target) {
+      this._target = target;
+    }
+    deref() {
+      return this._target;
+    }
+  };
+}
+
+if (typeof globalThis.FinalizationRegistry === 'undefined') {
+  globalThis.FinalizationRegistry = class FinalizationRegistry {
+    constructor(callback) {
+      this._callback = callback;
+    }
+    register() {}
+    unregister() {}
+  };
+}
+
 import '@testing-library/jest-dom';
 import { cleanup } from '@testing-library/react';
 import { afterEach, vi } from 'vitest';

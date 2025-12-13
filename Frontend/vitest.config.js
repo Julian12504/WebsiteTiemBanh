@@ -8,10 +8,15 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/__tests__/setup.js',
     css: true,
-    pool: 'vmThreads',
-    environmentOptions: {
-      jsdom: {
-        resources: 'usable',
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
+    server: {
+      deps: {
+        inline: ['vitest-canvas-mock'],
       },
     },
     coverage: {
