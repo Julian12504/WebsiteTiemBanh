@@ -50,7 +50,7 @@ describe('E2E: Complete Checkout Flow', () => {
     cy.get('input[type="number"], .quantity-input').should('have.value', '1');
     
     // Step 6: Add to cart
-    cy.get('.add-to-cart-btn, .add-to-cart-button').not('.disabled').first().click();
+    cy.get('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').first().click();
     
     // Step 7: Verify success toast (message includes quantity and unit)
     cy.contains(/Đã thêm.*vào giỏ hàng|Added to cart|thêm.*giỏ|Đã thêm/i, { timeout: 5000 })
@@ -114,11 +114,11 @@ describe('E2E: Complete Checkout Flow', () => {
     cy.visit('/');
     
     // Add first product using "Thêm vào giỏ" button directly from homepage
-    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
     
     // Add second product
-    cy.get('.item').eq(1).find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').eq(1).find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
     
     // Go to cart
@@ -131,7 +131,7 @@ describe('E2E: Complete Checkout Flow', () => {
   it('TC_E2E_CHECKOUT_003: Should update quantity in cart', () => {
     // Add product via UI (more reliable than API)
     cy.visit('/');
-    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
     
     // Visit cart
@@ -150,9 +150,9 @@ describe('E2E: Complete Checkout Flow', () => {
   it('TC_E2E_CHECKOUT_004: Should remove item from cart', () => {
     // Add 2 products via UI
     cy.visit('/');
-    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
-    cy.get('.item').eq(1).find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').eq(1).find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
     
     cy.visit('/cart');
@@ -192,7 +192,7 @@ describe('E2E: Complete Checkout Flow', () => {
   it('TC_E2E_CHECKOUT_006: Should validate delivery information', () => {
     // Add product via UI
     cy.visit('/');
-    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').not('.disabled').click();
+    cy.get('.item').first().find('.add-to-cart-btn, .add-to-cart-button').filter(':not([disabled])').click();
     cy.wait(1000);
     
     cy.visit('/cart');
