@@ -47,7 +47,7 @@
     "eslint-plugin-testing-library": "^7.13.5",
     "eslint-plugin-vitest": "^0.5.4",
     "globals": "^15.15.0",
-    "jsdom": "^27.3.0",
+    "jsdom": "^25.0.1",
     "vite": "^6.2.0",
     "vitest": "^4.0.15"
   }
