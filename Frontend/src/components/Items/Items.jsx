@@ -64,15 +64,20 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
     e.stopPropagation(); // Ngăn không cho click event bubble lên parent
     
     const button = e.target.closest('.add-to-cart-btn');
-    const originalText = button.innerHTML;
+    const iconSpan = button.querySelector('.cart-icon');
+    const textSpan = button.querySelector('.btn-text');
+    const originalIcon = iconSpan.textContent;
+    const originalText = textSpan.textContent;
     
     // Kiểm tra số lượng tồn kho
     if (stock_quantity <= 0) {
       button.classList.add('error');
-      button.innerHTML = '<span class="cart-icon">❌</span>Hết hàng';
+      iconSpan.textContent = '❌';
+      textSpan.textContent = 'Hết hàng';
       setTimeout(() => {
         button.classList.remove('error');
-        button.innerHTML = originalText;
+        iconSpan.textContent = originalIcon;
+        textSpan.textContent = originalText;
       }, 2000);
       return;
     }
@@ -82,50 +87,47 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
       const currentCartQuantity = cartItems[id] || 0;
       if (currentCartQuantity >= stock_quantity) {
         button.classList.add('error');
-        button.innerHTML = '<span class="cart-icon">⚠️</span>Đủ rồi';
+        iconSpan.textContent = '⚠️';
+        textSpan.textContent = 'Đủ rồi';
         setTimeout(() => {
           button.classList.remove('error');
-          button.innerHTML = originalText;
+          iconSpan.textContent = originalIcon;
+          textSpan.textContent = originalText;
         }, 2000);
         return;
       }
     }
     
-    // Thêm class loading
-    button.classList.add('loading');
-    button.innerHTML = '<span class="cart-icon">🛒</span>Đang thêm...';
-    
-    // Simulate loading time
-    await new Promise(resolve => setTimeout(resolve, 800));
-    
-    // Thêm vào giỏ hàng
+    // Thêm vào giỏ hàng ngay lập tức
     const success = await addToCart(id);
     
     if (success === true) {
       // Thêm class success
-      button.classList.remove('loading');
       button.classList.add('added');
-      button.innerHTML = '<span class="cart-icon">✅</span>Đã thêm!';
+      iconSpan.textContent = '✅';
+      textSpan.textContent = 'Đã thêm!';
       
       // Reset sau 2 giây
       setTimeout(() => {
         button.classList.remove('added');
-        button.innerHTML = originalText;
+        iconSpan.textContent = originalIcon;
+        textSpan.textContent = originalText;
       }, 2000);
     } else if (success === false) {
       // Chưa đăng nhập - không hiển thị lỗi, chỉ reset về trạng thái ban đầu
-      button.classList.remove('loading');
-      button.innerHTML = originalText;
+      iconSpan.textContent = originalIcon;
+      textSpan.textContent = originalText;
     } else {
       // Thêm class error cho các lỗi khác
-      button.classList.remove('loading');
       button.classList.add('error');
-      button.innerHTML = '<span class="cart-icon">❌</span>Lỗi';
+      iconSpan.textContent = '❌';
+      textSpan.textContent = 'Lỗi';
       
       // Reset sau 2 giây
       setTimeout(() => {
         button.classList.remove('error');
-        button.innerHTML = originalText;
+        iconSpan.textContent = originalIcon;
+        textSpan.textContent = originalText;
       }, 2000);
     }
   };
@@ -166,7 +168,7 @@ const Items = ({ id, name, price, image, unit, category, weight_value, weight_un
           title={stock_quantity <= 0 ? "Sản phẩm đã hết hàng" : "Thêm vào giỏ hàng"}
         >
           <span className="cart-icon">🛒</span>
-          {stock_quantity <= 0 ? 'Hết hàng' : 'Thêm vào giỏ'}
+          <span className="btn-text">{stock_quantity <= 0 ? 'Hết hàng' : 'Thêm vào giỏ'}</span>
         </button>
       </div>
     </div>
