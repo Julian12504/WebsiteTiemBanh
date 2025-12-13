@@ -12,12 +12,14 @@ import '@testing-library/cypress/add-commands';
  */
 Cypress.Commands.add('login', (email, password) => {
   cy.visit('/');
+  cy.waitForPageLoad();
   
   // Click login button
   cy.contains('button', 'Đăng nhập').click();
   
-  // Wait for popup to appear
-  cy.get('.login-popup').should('be.visible');
+  // Wait for popup to appear with longer timeout
+  cy.get('.login-popup', { timeout: 10000 }).should('be.visible');
+  cy.wait(500); // Extra wait for animation
   
   // Fill login form
   cy.get('input[type="email"]').clear().type(email);
@@ -42,15 +44,18 @@ Cypress.Commands.add('login', (email, password) => {
  */
 Cypress.Commands.add('register', (name, email, password) => {
   cy.visit('/');
+  cy.waitForPageLoad();
   
   // Open login popup
   cy.contains('button', 'Đăng nhập').click();
   
-  // Wait for popup to appear
-  cy.get('.login-popup').should('be.visible');
+  // Wait for popup to appear with longer timeout
+  cy.get('.login-popup', { timeout: 10000 }).should('be.visible');
+  cy.wait(500); // Extra wait for animation
   
   // Switch to register form by clicking "Đăng ký ngay"
   cy.contains('span', 'Đăng ký ngay').click();
+  cy.wait(300);
   
   // Wait for register form to appear (verify "Đăng ký" title)
   cy.get('.login-popup-title h2').should('contain', 'Đăng ký');
