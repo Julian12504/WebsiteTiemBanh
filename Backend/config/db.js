@@ -5,7 +5,7 @@ import 'dotenv/config';
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
+  password: process.env.DB_PASSWORD || process.env.DB_PASS || '',
   database: process.env.DB_NAME || 'cake_fantasy_db',
   waitForConnections: true,
   connectionLimit: 20, // Increase connection limit
