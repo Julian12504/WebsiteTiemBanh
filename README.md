@@ -330,6 +330,60 @@ Database: **cake_fantasy_db** (MySQL 8.0, UTF-8)
 
 ---
 
+## 🧪 Testing Strategy
+
+Dự án có **coverage toàn diện** với 3 loại testing:
+
+### Test Coverage Summary
+
+| Test Type | Tool | Files | Test Cases | Pass Rate | Coverage |
+|-----------|------|-------|------------|-----------|----------|
+| **Unit & Integration** | Jest | Backend (4 modules) | 64 cases | 92.2% | Auth, Cart, Order, Search |
+| **E2E Testing** | Cypress | Frontend (3 modules) | 27 cases | 100% | User flows, UI interactions |
+| **Acceptance Testing** | Manual | Full system | 40 cases | 100% | Business requirements |
+| **TOTAL** | - | - | **131 cases** | **95.4%** | - |
+
+### Test Modules Breakdown
+
+#### 📌 Module 1: User Management & Authentication (10 E2E cases)
+- **Registration (4 cases):** Valid registration, duplicate email, invalid email format, required fields validation
+- **Login (4 cases):** Valid credentials, invalid email, wrong password, toggle login/register forms
+- **Logout (2 cases):** Successful logout, session data cleanup
+
+#### 📌 Module 2: Product Browsing & Search (11 E2E cases)
+- **Search (3 cases):** Valid keyword search, no results handling, view all search results
+- **Browse (5 cases):** Display all products, filter by category, view product details, navigate categories, show product images
+- **Product Detail (3 cases):** Adjust quantity, handle quantity decrease, show product reviews
+
+#### 📌 Module 3: Shopping Cart & Checkout (6 E2E cases)
+- **Cart Management (4 cases):** Complete purchase journey (E2E), add multiple products, update quantity, remove items
+- **Checkout (2 cases):** Empty cart message, validate delivery information
+
+### Running Tests
+
+**Backend Unit/Integration Tests:**
+```bash
+cd Backend
+npm test                    # Run all tests
+npm run test:watch         # Watch mode
+npm run test:coverage      # Generate coverage report
+```
+
+**Frontend E2E Tests:**
+```bash
+cd Frontend
+npm run cypress            # Interactive mode
+npm run cypress:headless   # Headless mode (CI)
+```
+
+**Test Reports:**
+- [UNIT_INTEGRATION_TEST_CASES.csv](./UNIT_INTEGRATION_TEST_CASES.csv) - 64 backend test cases
+- [E2E_TEST_REPORT.md](./E2E_TEST_REPORT.md) - 27 Cypress E2E tests
+- [ACCEPTANCE_TEST_RESULTS.csv](./ACCEPTANCE_TEST_RESULTS.csv) - 40 acceptance tests
+- [TEST_SUMMARY_REPORT.md](./TEST_SUMMARY_REPORT.md) - Comprehensive test summary
+
+---
+
 ## 🚀 CI/CD Pipeline
 
 Dự án sử dụng **GitHub Actions** để tự động hóa testing, building và deployment.
@@ -344,19 +398,30 @@ File: `.github/workflows/ci.yml`
 
 **Jobs:**
 
-1. **Backend Tests**
-   - Chạy unit tests với Jest
-   - Kiểm tra lỗi ESLint
-   - Coverage report
+1. **Backend Tests (Jest)**
+   - Run 64 unit & integration tests
+   - Code quality checks (ESLint)
+   - Generate test coverage report
+   - **Pass rate: 92.2%** (59/64 tests pass)
 
-2. **Frontend Build**
-   - Build React app
-   - Kiểm tra lỗi biên dịch
+2. **Frontend E2E Tests (Cypress)**
+   - Run 27 E2E test scenarios
+   - Test on Chrome (Electron 138)
+   - Validate user flows & UI interactions
+   - **Pass rate: 100%** (27/27 tests pass)
+
+3. **Build Verification**
+   - Build Backend (Node.js 20)
+   - Build Frontend (React + Vite)
+   - Build Admin Panel (React + Vite)
    - Validate dependencies
 
-3. **Admin Build**
-   - Build Admin panel
-   - Kiểm tra lỗi biên dịch
+**CI Configuration:**
+- Node.js version: 20.x
+- MySQL version: 8.0
+- Test timeout: 10 minutes
+- Retry failed tests: 2 attempts
+- Continue on test failures (for demonstration)
 
 ### Workflow 2: Docker Publish
 
@@ -553,9 +618,35 @@ dockerfilePath = "Dockerfile"
 
 ## 📚 Documentation
 
+### 📖 Project Documentation
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Hướng dẫn chi tiết deploy production (Vercel + Railway)
-- **[CI-CD_README.md](./CI-CD_README.md)** - GitHub Actions CI/CD pipeline setup
-- **Backend API Docs** - http://localhost:4000/api-docs (khi chạy local)
+- **[CI-CD_README.md](./CI-CD_README.md)** - GitHub Actions CI/CD pipeline setup & configuration
+- **[TEST_STRATEGY.md](./TEST_STRATEGY.md)** - Testing strategy & approach
+- **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** - Guide for running tests locally
+
+### 📊 Test Reports & Documentation
+- **[UNIT_INTEGRATION_TEST_CASES.csv](./UNIT_INTEGRATION_TEST_CASES.csv)** - 64 backend test cases (Auth, Cart, Order, Search)
+- **[E2E_TEST_REPORT.md](./E2E_TEST_REPORT.md)** - 27 Cypress E2E tests with detailed results
+- **[ACCEPTANCE_TEST_RESULTS.csv](./ACCEPTANCE_TEST_RESULTS.csv)** - 40 acceptance test cases (100% pass)
+- **[TEST_SUMMARY_REPORT.md](./TEST_SUMMARY_REPORT.md)** - Comprehensive test summary with defects & recommendations
+- **[TEST_DATA_SPECIFICATION.md](./TEST_DATA_SPECIFICATION.md)** - Test data specification & examples
+- **[TEST_DESIGN_MATRIX.csv](./TEST_DESIGN_MATRIX.csv)** - Complete test design matrix (75 E2E test scenarios)
+
+### 🎯 Test Coverage by Module
+
+| Module | Description | Test Cases | Status |
+|--------|-------------|------------|--------|
+| **Module 1** | User Management & Authentication: Đăng ký (4), Đăng nhập (4), Đăng xuất (2), Token storage, Session management. | 10 cases | ✅ 100% |
+| **Module 2** | Product Browsing: Tìm kiếm (3), Duyệt sản phẩm (5), Chi tiết sản phẩm (3), Filter category, View images. | 11 cases | ✅ 100% |
+| **Module 3** | Cart & Checkout: Complete purchase journey, Thêm/Xóa giỏ hàng, Tăng giảm SL, Validate delivery info, Empty cart, Thanh toán COD. | 6 cases | ✅ 100% |
+
+### 📋 Pre-Conditions for Testing
+
+| Module | Pre-Condition |
+|--------|---------------|
+| **Module 1** | Backend/Frontend running; Database seeded; Browser cache cleared. |
+| **Module 2** | Có ít nhất 10 sản phẩm trong DB thuộc nhiều category; Hình ảnh và giá hợp lệ. |
+| **Module 3** | User đã đăng nhập; Sản phẩm còn hàng (In stock); Cart badge functional. |
 
 ---
 
