@@ -1,6 +1,6 @@
 # 🍰 Cake Fantasy - Hệ thống Quản lý Tiệm Bánh
 
-[![Watch the video](https://www.youtube.com/watch?v=v1P57pXms24/maxresdefault.jpg)](https://www.youtube.com/watch?v=v1P57pXms24)
+[![Watch the video](https://img.youtube.com/vi/v1P57pXms24/maxresdefault.jpg)](https://www.youtube.com/watch?v=v1P57pXms24)
 ## 📚 Tổng quan
 
 **Cake Fantasy** là một nền tảng **quản lý tiệm bánh** full-stack được thiết kế để xử lý toàn bộ quy trình kinh doanh: từ website bán hàng cho khách hàng, hệ thống quản trị nội bộ, cho đến backend API và cơ sở dữ liệu.
