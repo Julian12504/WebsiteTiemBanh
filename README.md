@@ -31,18 +31,19 @@ Hệ thống bao gồm 3 ứng dụng độc lập trong một monorepo:
 
 ## 🧱 Stack Overview
 
-| Category | Tools / Frameworks |
-|----------|-------------------|
-| **Frontend** | React 19, Vite 6, Axios, React Router |
-| **Admin** | React 19, Vite 6, Chart.js, Socket.io |
-| **Backend** | Node.js, Express, Sequelize ORM |
-| **Database** | MySQL 8.0, UTF-8 encoding |
-| **Authentication** | JWT, Bcrypt |
-| **Payment** | MoMo Payment Gateway, Mock Payment |
-| **Storage** | Cloudinary (images), Local uploads |
-| **CI/CD** | GitHub Actions |
-| **Deployment** | Vercel (Frontend/Admin), Railway (Backend/DB) |
-| **Containerization** | Docker, Docker Compose |
+| Category | Tools / Frameworks | Version |
+|----------|-------------------|---------|
+| **Frontend** | React, Vite, Axios, React Router | React 18, Vite 5.x |
+| **Admin** | React, Vite, Chart.js, Socket.io | React 18, Vite 5.x |
+| **Backend** | Node.js, Express, Sequelize ORM | Node 20.19.6, Express 4.21.2 |
+| **Database** | MySQL, UTF-8 encoding | MySQL 8.0 |
+| **Authentication** | JWT, Bcrypt | - |
+| **Payment** | MoMo Payment Gateway, Mock Payment | - |
+| **Storage** | Cloudinary (images), Local uploads | - |
+| **Testing** | Jest, Cypress, Vitest | Jest (Backend), Cypress 13.16.1 (E2E), Vitest 3.0.3 (Frontend) |
+| **CI/CD** | GitHub Actions | Node 20, MySQL 8.0, Electron 138 |
+| **Deployment** | Vercel (Frontend/Admin), Railway (Backend/DB) | - |
+| **Containerization** | Docker, Docker Compose | - |
 
 ---
 
@@ -68,6 +69,7 @@ Hệ thống bao gồm 3 ứng dụng độc lập trong một monorepo:
     * [5. Chạy các services](#5-chạy-các-services)
   * [🔌 API Endpoints](#-api-endpoints)
   * [📊 Database Schema](#-database-schema)
+  * [🧪 Testing Strategy](#-testing-strategy)
   * [🚀 CI/CD Pipeline](#-cicd-pipeline)
   * [☁️ Production Deployment](#%EF%B8%8F-production-deployment)
     * [1. Deploy Backend lên Railway](#1-deploy-backend-lên-railway)
@@ -377,10 +379,9 @@ npm run cypress:headless   # Headless mode (CI)
 ```
 
 **Test Reports:**
-- [UNIT_INTEGRATION_TEST_CASES.csv](./UNIT_INTEGRATION_TEST_CASES.csv) - 64 backend test cases
-- [E2E_TEST_REPORT.md](./E2E_TEST_REPORT.md) - 27 Cypress E2E tests
-- [ACCEPTANCE_TEST_RESULTS.csv](./ACCEPTANCE_TEST_RESULTS.csv) - 40 acceptance tests
-- [TEST_SUMMARY_REPORT.md](./TEST_SUMMARY_REPORT.md) - Comprehensive test summary
+- [Test_Case.xlsx](./docs/Test_Case.xlsx) - Backend unit & integration test cases (64 cases)
+- [Test_Case_E2E.xlsx](./docs/Test_Case_E2E.xlsx) - Cypress E2E test cases (27 cases)
+- [Test Design.xlsx](./docs/Test%20Design.xlsx) - Complete test design documentation
 
 ---
 
@@ -619,18 +620,24 @@ dockerfilePath = "Dockerfile"
 ## 📚 Documentation
 
 ### 📖 Project Documentation
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Hướng dẫn chi tiết deploy production (Vercel + Railway)
 - **[CI-CD_README.md](./CI-CD_README.md)** - GitHub Actions CI/CD pipeline setup & configuration
-- **[TEST_STRATEGY.md](./TEST_STRATEGY.md)** - Testing strategy & approach
-- **[TESTING_GUIDE.md](./TESTING_GUIDE.md)** - Guide for running tests locally
+- **[KTPM.docx](./docs/KTPM.docx)** - Tài liệu đồ án KTPM đầy đủ
+- **[ScreenDesign.xlsx](./docs/ScreenDesign.xlsx)** - Thiết kế màn hình giao diện
+- **[UseCase.xlsx](./docs/UseCase.xlsx)** - Use case diagram & specification
 
-### 📊 Test Reports & Documentation
-- **[UNIT_INTEGRATION_TEST_CASES.csv](./UNIT_INTEGRATION_TEST_CASES.csv)** - 64 backend test cases (Auth, Cart, Order, Search)
-- **[E2E_TEST_REPORT.md](./E2E_TEST_REPORT.md)** - 27 Cypress E2E tests with detailed results
-- **[ACCEPTANCE_TEST_RESULTS.csv](./ACCEPTANCE_TEST_RESULTS.csv)** - 40 acceptance test cases (100% pass)
-- **[TEST_SUMMARY_REPORT.md](./TEST_SUMMARY_REPORT.md)** - Comprehensive test summary with defects & recommendations
-- **[TEST_DATA_SPECIFICATION.md](./TEST_DATA_SPECIFICATION.md)** - Test data specification & examples
-- **[TEST_DESIGN_MATRIX.csv](./TEST_DESIGN_MATRIX.csv)** - Complete test design matrix (75 E2E test scenarios)
+### 📊 Test Documentation
+- **[Test_Case.xlsx](./docs/Test_Case.xlsx)** - 64 backend test cases (Unit & Integration)
+  - Module Auth: 21 test cases (Authentication & Authorization)
+  - Module Cart: 15 test cases (Shopping cart operations)
+  - Module Order: 17 test cases (Order management)
+  - Module Search: 11 test cases (Product search functionality)
+  
+- **[Test_Case_E2E.xlsx](./docs/Test_Case_E2E.xlsx)** - 27 Cypress E2E test cases
+  - Module 1 (User Management): 10 test cases
+  - Module 2 (Product Browsing): 11 test cases
+  - Module 3 (Cart & Checkout): 6 test cases
+  
+- **[Test Design.xlsx](./docs/Test%20Design.xlsx)** - Complete test design matrix & documentation
 
 ### 🎯 Test Coverage by Module
 
