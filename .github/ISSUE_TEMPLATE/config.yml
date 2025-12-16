@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/Julian12504/WebsiteTiemBanh/blob/main/README.md
+    about: Xem tài liệu hướng dẫn sử dụng dự án
+  - name: 💬 Discussions
+    url: https://github.com/Julian12504/WebsiteTiemBanh/discussions
+    about: Thảo luận về dự án, đặt câu hỏi, chia sẻ ý tưởng
