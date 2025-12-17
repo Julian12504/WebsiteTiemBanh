@@ -91,7 +91,7 @@ Hệ thống bao gồm 3 ứng dụng độc lập trong một monorepo:
 | 👨‍💼 **Admin Panel** | [https://cake-shop-admin-livid.vercel.app](https://cake-shop-admin-livid.vercel.app) | Quản lý tiệm bánh - dashboard, sản phẩm, đơn hàng |
 | 🔌 **Backend API** | [https://cake-shop.up.railway.app](https://cake-shop.up.railway.app) | REST API + MySQL database |
 
-**Tài khoản Admin:** `admin@gmail.com` / `admin123`
+**Tài khoản Admin:** `admin@gmail.com` / `12345678`
 
 ---
 
